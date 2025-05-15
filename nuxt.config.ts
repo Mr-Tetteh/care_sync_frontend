@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
 
     devtools: {enabled: true},
-    modules: ['shadcn-nuxt'],
+    modules: ['shadcn-nuxt', '@nuxt/image', 'nuxt-toast'],
     shadcn: {
         /**
          * Prefix for all the imported component
