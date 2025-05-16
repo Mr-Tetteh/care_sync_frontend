@@ -2,7 +2,11 @@
 
 import {useAuth} from "~/composables /UseAuth";
 
-const {form} = useAuth()
+const {form , login} = useAuth()
+
+const onsubmit = () => {
+  login()
+}
 </script>
 <template>
   <div class="flex min-h-screen items-center justify-center p-6 md:p-10">
