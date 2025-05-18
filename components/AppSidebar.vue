@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-vue-next"
+import {Calendar, ChartAreaIcon, ChartPieIcon, ClapperboardIcon, Home, Inbox, Search, Settings} from "lucide-vue-next"
 import {
   Sidebar,
   SidebarContent,
@@ -10,17 +10,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import {useAuth} from "~/composables /UseAuth";
 
+const {logout} = useAuth()
 // Menu items.
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: ChartPieIcon,
+  },
+  {
+    title: "Appointments",
+    url: "/patients/appointments",
     icon: Inbox,
   },
   {
@@ -38,6 +45,15 @@ const items = [
     url: "#",
     icon: Settings,
   },
+
+
+  {
+    title: "login",
+    url: "/Auth/login",
+    icon: Settings,
+  },
+
+
 ];
 </script>
 
@@ -55,6 +71,7 @@ const items = [
                   <span>{{item.title}}</span>
                 </a>
               </SidebarMenuButton>
+
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>

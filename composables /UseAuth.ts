@@ -1,5 +1,5 @@
 import {toast} from "vue-sonner";
-import { jwtDecode } from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
 
 export const useAuth = () => {
 
@@ -56,10 +56,18 @@ export const useAuth = () => {
             authToken.value = data.value.access_token
 
             toast.success('Login successful')
-            // navigateTo()
+            navigateTo('/dashboard')
         } catch (error) {
             toast.error(error.data.message)
         }
+    }
+
+    const logout = async => {
+
+        token.value = null
+        navigateTo('/auth/login')
+
+
     }
 
     interface JwtPayload {
@@ -67,7 +75,8 @@ export const useAuth = () => {
         email: string;
         first_name: string;
         last_name: string;
-        other_names: string;ll
+        other_names: string;
+        ll
         iat: number;
         exp: number;
     }
@@ -77,7 +86,9 @@ export const useAuth = () => {
         form,
         input,
         register,
-        login
+        login,
+        authToken,
+        logout
     }
 }
 

@@ -1,4 +1,5 @@
 import {toast} from "vue-sonner";
+import {useAuth} from "~/composables /UseAuth";
 
 export const useAppointments = () => {
     const input = ref({
@@ -8,7 +9,9 @@ export const useAppointments = () => {
         appointment_date: '',
         reason: '',
     })
+    const appoointment = ref()
 
+    const {authToken} = useAuth()
     const appointment = async () => {
         try {
             const {data, error} = await useFetch('http://localhost:8080/patients-appointment', {
@@ -16,11 +19,31 @@ export const useAppointments = () => {
                 body: input.value
             })
             if (error.value) {
-                throw  new error
+                throw new error
             }
             toast.success('Appointment created successfully')
-        }catch (error) {
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000);
+        } catch (error) {
             toast.error(error.data.message)
+        }
+
+    }
+
+    const readAppointment = async () => {
+        try {
+            const {data, error} = await useFetch('http://localhost:8080/patients-appointment', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+
+                }
+            })
+            return data
+        }catch (err){
+            toast.error(err)
         }
 
     }
@@ -28,6 +51,7 @@ export const useAppointments = () => {
 
     return {
         input,
-        appointment
+        appointment,
+        readAppointment
     }
 }
