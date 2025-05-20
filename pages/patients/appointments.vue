@@ -82,10 +82,10 @@ const {data: details} = await useAsyncData('details', async () => {
                             <i class="bi bi-pencil-square mr-1"></i>
                             Edit
                           </button>
-                          <button @click="delete_hospital(item.id)"
+                          <button @click="deleteAppointment(item.id)"
                                   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200 transform hover:-translate-y-1">
                             <i class="bi bi-trash mr-1"></i>
-                            Delete Staff
+                            Delete Appointment
                           </button>
                         </div>
                       </td>
