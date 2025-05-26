@@ -21,7 +21,7 @@ export const useAuth = () => {
 
     const register = async () => {
         try {
-            const {data, error} = await useFetch('http://localhost:8080/users', {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/auth/register`, {
                 method: 'POST',
                 body: input.value
             })
@@ -43,7 +43,7 @@ export const useAuth = () => {
 
     const login = async () => {
         try {
-            const {data, error} = await useFetch('http://localhost:8080/auth/login', {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/auth/login`, {
                 method: 'POST',
                 body: form.value,
                 headers: {
@@ -71,15 +71,41 @@ export const useAuth = () => {
     }
 
     interface JwtPayload {
-        sub: string;
+        id: string;
+        username: string;
         email: string;
-        first_name: string;
-        last_name: string;
-        other_names: string;
-        ll
+        firstName: string;
+        lastName: string;
+        role: string,
+        profile_picture: string
+        date_of_birth: string
+        phone: string
         iat: number;
         exp: number;
     }
+
+    const payloadToken = useCookie('session_token', {
+        sameSite: 'lax',
+        secure: false, // true if using HTTPS
+    })
+
+    const user = computed<JwtPayload | null>(() => {
+
+        if (!payloadToken.value) {
+            return null
+        }
+        try {
+            return jwtDecode<JwtPayload>(payloadToken.value)
+        } catch (err) {
+            return null
+        }
+    })
+
+
+    const token = useCookie('session_token', {
+        sameSite: 'lax',
+        secure: false,
+    })
 
 
     return {
@@ -88,7 +114,8 @@ export const useAuth = () => {
         register,
         login,
         authToken,
-        logout
+        logout,
+        user
     }
 }
 

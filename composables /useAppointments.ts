@@ -14,7 +14,7 @@ export const useAppointments = () => {
     const {authToken} = useAuth()
     const appointment = async () => {
         try {
-            const {data, error} = await useFetch('http://localhost:8080/patients-appointment', {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/patients-appointment`, {
                 method: 'POST',
                 body: input.value
             })
@@ -33,7 +33,7 @@ export const useAppointments = () => {
 
     const readAppointment = async () => {
         try {
-            const {data, error} = await useFetch('http://localhost:8080/patients-appointment', {
+            const {data, error} = await  useFetch(useRuntimeConfig().public.api+`/patients-appointment`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

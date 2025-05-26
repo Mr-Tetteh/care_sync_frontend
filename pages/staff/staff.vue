@@ -1,22 +1,24 @@
 <script setup lang="ts">
 
-import AppSidebar from "~/components/AppSidebar.vue";
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
-import {useAppointments} from "~/composables /useAppointments";
+import AppSidebar from "~/components/AppSidebar.vue";
+import {useStaff} from "~/composables /useStaff";
 
-const {readAppointment} = useAppointments()
+const {getStaff} = useStaff()
 
+const {data: staff} = await useAsyncData('staff', async () => {
+  const res = await getStaff();
+  return res.value || []
+});
 
-const {data: details} = await useAsyncData('details', async () => {
-  const res = await readAppointment();
-  return res.value
-});</script>
+</script>
 
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main>
+    <main class="min-h-screen bg-gray-50 w-full">
       <SidebarTrigger/>
+      <slot/>
       <div class="min-h-screen bg-gray-100">
         <div id="main">
           <header class="mb-4">
@@ -28,7 +30,7 @@ const {data: details} = await useAsyncData('details', async () => {
             <!-- Header Section -->
             <div class="flex justify-between items-center mb-6">
               <div>
-                <h3 class="mb-2 text-2xl font-semibold">Appointments List</h3>
+                <h3 class="mb-2 text-2xl font-semibold">Staff List</h3>
               </div>
             </div>
             <!-- Table Card -->
@@ -55,25 +57,23 @@ const {data: details} = await useAsyncData('details', async () => {
                   <table class="w-full table-auto">
                     <thead class="bg-gray-100">
                     <tr>
-                      <th class="py-3 px-4 text-left">Name</th>
+                      <th class="py-3 px-4 text-left">Full Name</th>
                       <th class="py-3 px-4 text-left">Contact</th>
-                      <th class="py-3 px-4 text-left">Appointment Date</th>
-                      <th class="py-3 px-4 text-left">Appointment Time</th>
-                      <th class="py-3 px-4 text-left">Reason</th>
-                      <th class="py-3 px-4 text-left">Status</th>
-                      <th class="py-3 px-4 text-left">Approved By</th>
+                      <th class="py-3 px-4 text-left">Email</th>
+                      <th class="py-3 px-4 text-left">Role</th>
+                      <th class="py-3 px-4 text-left">Gender</th>
+                      <th class="py-3 px-4 text-left">Date of Birth</th>
                       <th class="py-3 px-4 text-left">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in details" :key="item.id" class="border-t hover:bg-gray-50">
-                      <td class="py-4 px-4">{{ item.full_name }}</td>
-                      <td class="py-4 px-4">{{ item.phone_number }}</td>
-                      <td class="py-4 px-4">{{ item.appointment_date }}</td>
-                      <td class="py-4 px-4">{{ item.appointment_time }}</td>
-                      <td class="py-4 px-4">{{ item.reason }}</td>
-                      <td class="py-4 px-4">{{ item.status }}</td>
-                      <td class="py-4 px-4">Daniel</td>
+                    <tr v-for="item in staff" :key="item.id" class="border-t hover:bg-gray-50">
+                      <td class="py-4 px-4">{{ item.first_name }} {{other_names}} {{ item.last_name }}</td>
+                      <td class="py-4 px-4">{{ item.phone }}</td>
+                      <td class="py-4 px-4">{{ item.email }}</td>
+                      <td class="py-4 px-4">{{ item.role }}</td>
+                      <td class="py-4 px-4">{{ item.gender }}</td>
+                      <td class="py-4 px-4">{{ item.date_of_birth }}</td>
                       <td class="py-4 px-4">
                         <div class="flex gap-2">
                           <button
@@ -98,13 +98,8 @@ const {data: details} = await useAsyncData('details', async () => {
           </div>
         </div>
       </div>
-
-      <slot/>
-
     </main>
-
   </SidebarProvider>
-
 </template>
 
 <style scoped>
