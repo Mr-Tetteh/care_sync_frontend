@@ -48,12 +48,11 @@ const onSubmit = () => {
                 <DialogContent>
                   <DialogHeader>
                     <DialogDescription>
-                      <body
-                          class="bg-gray-100  flex items-center justify-center  px-4 sm:px-6 lg:px-8">
+                      <body>
                       <div
                           class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-md w-full border border-gray-200">
-                        <div class="bg-gradient-to-r from-blue-600 to-blue-400 px-6 py-4">
-                          <h2 class="text-xl font-bold text-white py-12 px-6">Book an Appointment</h2>
+                        <div class="bg-gradient-to-r from-blue-600 to-blue-400 ">
+                          <h2 class="text-xl font-bold text-white py-6 px-6">Book an Appointment</h2>
                           <p class="text-blue-100 text-sm mt-1">Fill out the form below to schedule your visit</p>
                         </div>
 
