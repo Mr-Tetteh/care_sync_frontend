@@ -8,6 +8,7 @@ export const useAppointments = () => {
         appointment_time: '',
         appointment_date: '',
         reason: '',
+        status: ''
     })
     const appoointment = ref()
 
@@ -31,6 +32,25 @@ export const useAppointments = () => {
 
     }
 
+
+    const editAppointment = async (id) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/patients-appointment/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                }
+            })
+            if (error.value) {
+                throw new error
+            }
+            input.value =  data.value
+        } catch (error) {
+            toast.error(error.data.message)
+        }
+    }
+
     const readAppointment = async () => {
         try {
             const {data, error} = await  useFetch(useRuntimeConfig().public.api+`/patients-appointment`, {
@@ -52,6 +72,7 @@ export const useAppointments = () => {
     return {
         input,
         appointment,
-        readAppointment
+        readAppointment,
+        editAppointment
     }
 }
