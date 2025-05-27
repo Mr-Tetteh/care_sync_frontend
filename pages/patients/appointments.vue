@@ -5,7 +5,7 @@ import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import {useAppointments} from "~/composables /useAppointments";
 import {useAsyncData} from "#app";
 
-const {readAppointment, input, editAppointment} = useAppointments()
+const {readAppointment, input, editAppointment, updateAppointment} = useAppointments()
 
 
 const {data: details} = await useAsyncData('details', async () => {
@@ -15,6 +15,11 @@ const {data: details} = await useAsyncData('details', async () => {
 
 const edit = async (id) => {
   await editAppointment(id);
+};
+
+const onUpdate = async (id) => {
+  await updateAppointment(id);
+  // Optionally, you can reset the input or close the dialog after updating
 };
 
 </script>
@@ -95,14 +100,14 @@ const edit = async (id) => {
                                       d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
                               </svg>
 
-                              Edit Profile
+                              Set Appointment Status
                             </DialogTrigger>
                             <DialogContent>
                               <DialogHeader>
                                 <DialogTitle>Request</DialogTitle>
                                 <DialogDescription>
-                                  <div class="p-6">
-                                    <form class="space-y-6" @submit.prevent="onSubmit">
+                                  <div class="p-6" >
+                                    <form class="space-y-6" @submit.prevent="onUpdate(item.id)">
                                       <div>
                                         <label for="fullName" class="block text-sm font-medium text-gray-700">Full
                                           Name</label>
@@ -113,6 +118,7 @@ const edit = async (id) => {
                                               v-model="input.full_name"
                                               class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
                                               placeholder="Enter your full name"
+                                              disabled
                                           />
                                         </div>
                                       </div>
@@ -127,6 +133,7 @@ const edit = async (id) => {
                                               v-model="input.phone_number"
                                               class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
                                               placeholder="Enter your phone number"
+                                              disabled
                                           />
                                         </div>
                                       </div>
@@ -140,6 +147,7 @@ const edit = async (id) => {
                                               id="appointmentDate"
                                               v-model="input.appointment_date"
                                               class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                                              disabled
                                           />
                                         </div>
                                       </div>
@@ -153,6 +161,7 @@ const edit = async (id) => {
                                               id="appointmentTime"
                                               v-model="input.appointment_time"
                                               class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                                              disabled
                                           />
                                         </div>
                                       </div>
@@ -164,6 +173,7 @@ const edit = async (id) => {
                                 <textarea
                                     v-model="input.reason"
                                     class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                                    disabled
                                 ></textarea>
 
                                         </div>
