@@ -51,6 +51,28 @@ export const useAppointments = () => {
         }
     }
 
+    const updateAppointment = async (id) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/patients-appointment/${id}`, {
+                method: 'PATCH',
+                body: input.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                }
+            })
+            if (error.value) {
+                throw new error
+            }
+            toast.success('Appointment deleted successfully')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1000);
+        } catch (error) {
+            toast.error(error.data.message)
+        }
+    }
+
     const readAppointment = async () => {
         try {
             const {data, error} = await  useFetch(useRuntimeConfig().public.api+`/patients-appointment`, {
@@ -73,6 +95,7 @@ export const useAppointments = () => {
         input,
         appointment,
         readAppointment,
-        editAppointment
+        editAppointment,
+        updateAppointment
     }
 }

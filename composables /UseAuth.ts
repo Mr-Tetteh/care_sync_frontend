@@ -17,11 +17,13 @@ export const useAuth = () => {
         email: '',
         phone: '',
         password: '',
+        role: ''
     })
+
 
     const register = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/auth/register`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/auth/register`, {
                 method: 'POST',
                 body: input.value
             })
@@ -39,6 +41,53 @@ export const useAuth = () => {
         sameSite: 'strict',
         secure: false
     })
+    const userById = async (id) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/staff/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                }
+            })
+            if (error.value) {
+                throw new Error(error.value.message)
+            }
+            // Make sure to return the data
+            return data.value
+        } catch (error) {
+            toast.error(error.message)
+            throw error
+        }
+    }
+
+    const updateUser = async (id) => {
+        try {
+            const { data, error } = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
+                method: 'PATCH',
+                body: input.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                },
+            });
+
+            if (error.value) {
+                // Display error safely
+                toast.error(error.value.data?.message || 'An error occurred while updating the user.');
+                return;
+            }
+
+            toast.success('User updated successfully');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        } catch (err) {
+            console.error(err); // Log for debugging
+            toast.error(err?.message || 'Unexpected error occurred.');
+        }
+    };
+
 
 
     const login = async () => {
@@ -66,8 +115,6 @@ export const useAuth = () => {
 
         token.value = null
         navigateTo('/auth/login')
-
-
     }
 
     interface JwtPayload {
@@ -115,7 +162,9 @@ export const useAuth = () => {
         login,
         authToken,
         logout,
-        user
+        user,
+        userById,
+        updateUser
     }
 }
 
