@@ -23,8 +23,8 @@ const edit = async (id) => {
   }
 }
 
-const  onUpdate = async (id) => {
- await updateUser(id);
+const onUpdate = async (id) => {
+  await updateUser(id);
 }
 
 </script>
@@ -199,8 +199,6 @@ const  onUpdate = async (id) => {
                                             <option value="Pharmacist">Pharmacist</option>
                                             <option value="Patient">Patient</option>
 
-
-
                                           </select>
 
                                         </div>
@@ -211,7 +209,7 @@ const  onUpdate = async (id) => {
                                             type="submit"
                                             class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                                         >
-                                          Update Appointment
+                                          Update User
                                         </button>
                                       </div>
                                     </form>
@@ -222,6 +220,13 @@ const  onUpdate = async (id) => {
 
                             </DialogContent>
                           </Dialog>
+
+                          <NuxtLink :to="`/patients/patents_record/${item.id}`"
+                                      class="bg-blue-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition
+                                       duration-200 transform hover:-translate-y-1">
+                            Create a Document
+                          </NuxtLink>
+
 
                           <button @click="deleteAppointment(item.id)"
                                   class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition duration-200 transform hover:-translate-y-1">

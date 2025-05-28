@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/image": "^1.10.0",
     "@tailwindcss/vite": "^4.1.6",
+    "@tinymce/tinymce-vue": "^6.1.0",
     "@vueuse/core": "^13.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

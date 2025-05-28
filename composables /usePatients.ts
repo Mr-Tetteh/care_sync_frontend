@@ -3,7 +3,7 @@ import {toast} from "vue-sonner";
 
 export const usePatients = () => {
 
-    const {authToken}= useAuth()
+    const {authToken} = useAuth()
 
 
     const getPatients = async () => {
@@ -25,8 +25,10 @@ export const usePatients = () => {
     }
 
 
+
+
     return {
-        getPatients
+        getPatients,
     }
 
 }
