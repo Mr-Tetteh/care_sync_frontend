@@ -1,18 +1,61 @@
+<
 <script setup lang="ts">
-import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
+import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import Editor from '@tinymce/tinymce-vue';
 import {usePatients} from "~/composables /usePatients";
+import {toast} from "vue-sonner";
+import {ref, onMounted} from 'vue'
+import {useAuth} from "~/composables /UseAuth";
 
-const {input, patient_record} =  usePatients()
+const params = useRoute().params
+const {authToken} = useAuth()
+const input = ref({
+  nurse_notes: '',
+  doctor_notes: '',
+  laboratory_notes: '',
+  user: ''
+})
+
+onMounted(() => {
+  input.value.user = params.id
+})
+
+const patient_record = async () => {
+  try {
+    const {data, error} = await useFetch(useRuntimeConfig().public.api + '/patients-records', {
+      method: 'POST',
+      body: input.value,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken.value}`,
+      }
+    })
+    if (error.value) {
+      toast(error.value.message || 'An error occurred while creating the patient record')
+    } else {
+      toast.success('Patient record created successfully')
+    }
+    setTimeout(() => {
+      window.location.href = '/patients/patients'
+    }, 1000)
+  } catch (error) {
+    toast.error(error.message || 'An error occurred while creating the patient record');
+  }
+}
+
+const onsubmit = () => {
+  patient_record()
+}
 </script>
 
 <template>
   <SidebarProvider>
-    <AppSidebar />
-    <main>
-      <SidebarTrigger />
-      <div class="min-h-screen bg-gray-100">
+    <AppSidebar/>
+    <main class="w-full">
+      <SidebarTrigger/>
+
+      <div class="min-h-screen bg-gray-50">
         <div id="main">
           <header class="mb-4">
             <a href="#" class="block xl:hidden">
@@ -22,11 +65,11 @@ const {input, patient_record} =  usePatients()
 
           <div class="px-4">
             <!-- Header Section -->
-            <div class="flex justify-between items-center mb-6">
-              <h3 class="text-2xl font-semibold">Appointments Record</h3>
+            <div class="flex justify-center items-center mb-6 p-5">
+              <h3 class="text-2xl font-semibold">Appointments Record </h3>
             </div>
 
-            <form class="flex flex-col items-center gap-8 mb-6">
+            <form class="flex flex-col items-center gap-8 mb-6" @submit.prevent="onsubmit()">
               <!-- Nurse Session -->
               <div class="w-full max-w-4xl">
                 <p class="text-center text-2xl mb-4">Nurse Session</p>
@@ -92,3 +135,4 @@ const {input, patient_record} =  usePatients()
 <style scoped>
 /* Optional: remove if using Tailwind's utility classes correctly */
 </style>
+
