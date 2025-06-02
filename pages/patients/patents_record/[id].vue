@@ -9,7 +9,7 @@ import {ref, onMounted} from 'vue'
 import {useAuth} from "~/composables /UseAuth";
 
 const params = useRoute().params
-const {authToken} = useAuth()
+const {authToken, user} = useAuth()
 const input = ref({
   nurse_notes: '',
   doctor_notes: '',
@@ -66,7 +66,7 @@ const onsubmit = () => {
           <div class="px-4">
             <!-- Header Section -->
             <div class="flex justify-center items-center mb-6 p-5">
-              <h3 class="text-2xl font-semibold">Appointments Record </h3>
+              <h3 class="text-2xl font-semibold">Patient Record</h3>
             </div>
 
             <form class="flex flex-col items-center gap-8 mb-6" @submit.prevent="onsubmit()">
@@ -86,7 +86,7 @@ const onsubmit = () => {
               </div>
 
               <!-- Doctor Session -->
-              <div class="w-full max-w-4xl">
+              <div class="w-full max-w-4xl" v-if="user.role =='Doctor'">
                 <p class="text-center text-2xl mb-4">Doctor's Session</p>
                 <editor
                     id="doctor-editor"
@@ -101,7 +101,7 @@ const onsubmit = () => {
               </div>
 
               <!-- Lab Session -->
-              <div class="w-full max-w-4xl">
+              <div class="w-full max-w-4xl"v-if="user.role =='Lab_Technician'">
                 <p class="text-center text-2xl mb-4">Lab Technician Session</p>
                 <editor
                     id="lab-editor"
