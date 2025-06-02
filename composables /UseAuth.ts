@@ -17,13 +17,12 @@ export const useAuth = () => {
         email: '',
         phone: '',
         password: '',
-        role: ''
     })
 
 
     const register = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/auth/register`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users`, {
                 method: 'POST',
                 body: input.value
             })

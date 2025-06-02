@@ -99,12 +99,8 @@ const items = [
                       <DropdownMenuItem class="hover:bg-gray-200">
                         <RouterLink to="/patients/patients" class="py-2 px-4">All Patients</RouterLink>
                       </DropdownMenuItem>
-                      <DropdownMenuItem class="hover:bg-gray-200">
-                        <button class="py-2 px-4">All Patients.</button>
-                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenuRoot>
-
 
                   <SidebarMenuItem v-if="!user">
                     <SidebarMenuButton asChild>
