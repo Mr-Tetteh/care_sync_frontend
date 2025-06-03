@@ -20,12 +20,13 @@ const {user, logout} = useAuth()
             <div class="flex justify-between items-center">
               <div>
                 <h2 class="text-2xl font-bold text-gray-800">CareSync Dashboard</h2>
-                <p class="text-gray-600">Welcome back, {{user.first_name}} {{user?.other_names}} {{user.last_name}}</p>
+                <p class="text-gray-600">Welcome back, {{user?.role}} {{user?.first_name}} {{user?.other_names}} {{user?.last_name}}</p>
               </div>
               <div class="flex items-center space-x-4">
                 <div class="flex items-center">
                   <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold mr-2">
-                    {{user.first_name[0]}}{{user?.other_names[0]}} {{user.last_name[0]}}
+<!--                    {{user?.first_name[0]}}{{user?.other_names[0]}} {{user?.last_name[0]}}-->
+                    {{user.first_name[0]}}{{user.last_name[0]}}
                   </div>
                   <span class="font-medium">Daniel</span>
                 </div>

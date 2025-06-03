@@ -45,11 +45,6 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
       <SidebarTrigger/>
       <div class="min-h-screen bg-gray-100">
         <div id="main">
-          <header class="mb-4">
-            <a href="#" class="block xl:hidden">
-              <i class="text-2xl bi bi-justify"></i>
-            </a>
-          </header>
           <div class="px-4">
             <div class="records-container">
               <div class="card shadow-sm mb-4" v-for="(record, $index) in past_record" :key="record.id">
@@ -84,7 +79,7 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
                   <hr class="my-4"/>
 
                   <!-- Doctor's Assessment -->
-                  <div class="section-container">
+                  <div class="section-container" v-if="record.doctor_notes">
                     <div class="section-header gap-3">
                       <i class="bi bi-file-medical text-primary me-2"></i>
                       <h5 class="mb-0">Doctor's Assessment</h5>
@@ -105,7 +100,7 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
                   <hr class="my-4">
 
                   <!-- Laboratory Results -->
-                  <div class="section-container">
+                  <div class="section-container" v-if="record.laboratory_notes">
                     <div class="section-header gap-3">
                       <i class="bi bi-flask text-primary me-2"></i>
                       <h5 class="mb-0">Laboratory Results</h5>
@@ -133,7 +128,7 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
               </div>
 
               <!-- Empty State (shown when no records) -->
-              <div v-if="!past_record || past_record.length === 0" class="card shadow-sm">
+              <div v-if="!past_record || past_record.length === 0" class="card shadow-sm no_record">
                 <div class="card-body text-center py-5">
                   <i class="bi bi-clipboard-x text-muted fs-1"></i>
                   <h5 class="mt-3">No Records Found</h5>
@@ -213,6 +208,8 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
 .section-header i {
   font-size: 1.5rem;
 }
+
+
 
 /* Vital Card Improvements */
 .vital-card {

@@ -5,8 +5,8 @@ import AppSidebar from "~/components/AppSidebar.vue";
 import {useStaff} from "~/composables /useStaff";
 import {useAuth} from "~/composables /UseAuth";
 
-const {getStaff} = useStaff()
-const {input,userById, updateUser} = useAuth()
+const {getStaff, deleteUser} = useStaff()
+const {input, userById, updateUser, user} = useAuth()
 
 const {data: staff} = await useAsyncData('staff', async () => {
   const res = await getStaff();
@@ -22,7 +22,7 @@ const edit = async (id) => {
   }
 }
 
-const  onUpdate = async (id) => {
+const onUpdate = async (id) => {
   await updateUser(id);
 }
 
@@ -78,7 +78,7 @@ const  onUpdate = async (id) => {
                       <th class="py-3 px-4 text-left">Role</th>
                       <th class="py-3 px-4 text-left">Gender</th>
                       <th class="py-3 px-4 text-left">Date of Birth</th>
-                      <th class="py-3 px-4 text-left">Actions</th>
+                      <th class="py-3 px-4 text-left" v-if="user.role == 'Manager'">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -95,6 +95,7 @@ const  onUpdate = async (id) => {
                           <Dialog>
                             <DialogTrigger class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-amber-500
                               hover:bg-amber-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+                                           v-if="user.role == 'Manager'"
                                            @click="edit(item.id)"
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -211,7 +212,7 @@ const  onUpdate = async (id) => {
                                             type="submit"
                                             class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                                         >
-                                          Update Appointment
+                                          Update Staff
                                         </button>
                                       </div>
                                     </form>
@@ -222,7 +223,7 @@ const  onUpdate = async (id) => {
 
                             </DialogContent>
                           </Dialog>
-                          <button @click="deleteAppointment(item.id)"
+                          <button v-if="user.role == 'Manager'" @click="deleteUser(item.id)"
                                   class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="size-6">
