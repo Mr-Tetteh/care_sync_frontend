@@ -80,7 +80,7 @@ export const useAuth = () => {
             toast.success('User updated successfully');
             setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            });
         } catch (err) {
             console.error(err); // Log for debugging
             toast.error(err?.message || 'Unexpected error occurred.');
