@@ -52,7 +52,7 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
                   <!-- Section Title -->
                   <div class="d-flex align-items-center mb-4 gap-3">
                     <i class="bi bi-journal-medical text-primary fs-3 me-2"></i>
-                    <h4 class="mb-0">Medical Record #{{$index + 1}}</h4>
+                    <h4 class="mb-0">Medical Record #{{$index + 1}}  {{new Date(record.created_at) }}</h4>
                   </div>
 
                   <!-- Vitals Section -->
@@ -120,10 +120,10 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
 
                 </div>
                 <div class="flex col-6 float-start">
-                  <button class="btn btn-primary">
+                  <NuxtLink :to="`/patients/update_record/${record.id}`" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i>
                     Additional Records
-                  </button>
+                  </NuxtLink>
                 </div>
               </div>
 
