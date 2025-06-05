@@ -14,11 +14,11 @@ const input = ref({
   nurse_notes: '',
   doctor_notes: '',
   laboratory_notes: '',
-  user: ''
+  patient: ''
 })
 
 onMounted(() => {
-  input.value.user = params.id
+  input.value.patient = params.id
 })
 
 const patient_record = async () => {
