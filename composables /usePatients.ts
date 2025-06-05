@@ -8,7 +8,7 @@ export const usePatients = () => {
 
     const getPatients = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/patients`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patient`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
