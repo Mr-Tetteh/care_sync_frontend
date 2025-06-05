@@ -118,6 +118,25 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
                     </div>
                   </div>
 
+                  <!-- Laboratory Results -->
+                  <div class="section-container" v-if="record.pharmacist_notes">
+                    <div class="section-header gap-3">
+                      <i class="bi bi-flask text-primary me-2"></i>
+                      <h5 class="mb-0">Pharmacist Results</h5>
+                    </div>
+                    <div class="row g-3">
+                      <div class="col-md-12">
+                        <div class="vital-card">
+                          <i class="bi bi-clipboard2-data text-primary"></i>
+                          <div>
+                            <small class="text-muted mb-2">Pharmacist Notes</small>
+                            <div v-html="record.pharmacist_notes"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="flex col-6 float-start">
                   <NuxtLink :to="`/patients/update_record/${record.id}`" class="btn btn-primary">

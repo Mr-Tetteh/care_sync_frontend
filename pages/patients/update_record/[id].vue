@@ -14,6 +14,7 @@ const input = ref({
   nurse_notes: '',
   doctor_notes: '',
   laboratory_notes: '',
+  pharmacist_notes : '',
   user: ''
 })
 
@@ -21,7 +22,8 @@ const patient_record_update = async () => {
   const requestBody = {
     nurse_notes: input.value.nurse_notes,
     doctor_notes: input.value.doctor_notes,
-    laboratory_notes: input.value.laboratory_notes
+    laboratory_notes: input.value.laboratory_notes,
+    pharmacist_notes: input.value.pharmacist_notes
   };
   try {
     const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params.id}`, {
@@ -122,7 +124,7 @@ const onsubmit = () => {
 
             <form class="flex flex-col items-center gap-8 mb-6" @submit.prevent="onsubmit()">
               <!-- Nurse Session -->
-              <div class="w-full max-w-4xl">
+              <div class="w-full max-w-4xl" v-if="user.role == 'Nurse'">
                 <p class="text-center text-2xl mb-4">Nurse Session</p>
                 <editor
                     id="nurse-editor"
@@ -137,7 +139,7 @@ const onsubmit = () => {
               </div>
 
               <!-- Doctor Session -->
-              <div class="w-full max-w-4xl">
+              <div class="w-full max-w-4xl" v-if="user.role == 'Doctor'">
                 <p class="text-center text-2xl mb-4">Doctor's Session</p>
                 <editor
                     id="doctor-editor"
@@ -152,7 +154,7 @@ const onsubmit = () => {
               </div>
 
               <!-- Lab Session -->
-              <div class="w-full max-w-4xl" >
+              <div class="w-full max-w-4xl" v-if="user.role == 'Lab_Technician'">
                 <p class="text-center text-2xl mb-4">Lab Technician Session</p>
                 <editor
                     id="lab-editor"
@@ -165,6 +167,21 @@ const onsubmit = () => {
                   }"
                 />
               </div>
+
+              <div class="w-full max-w-4xl" v-if="user.role == 'Pharmacist'">
+                <p class="text-center text-2xl mb-4">Pharmacist Session</p>
+                <editor
+                    id="lab-editor"
+                    v-model="input.pharmacist_notes"
+                    apiKey="ymk7tbhj4ul5sgm1y5zx7dc6g2qravp7l63cs23wxpvepxoh"
+                    :init="{
+                    plugins: 'advlist anchor autolink charmap code fullscreen help image insertdatetime link lists media preview searchreplace table visualblocks wordcount',
+                    toolbar: 'undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                    height: 300
+                  }"
+                />
+              </div>
+
 
               <!-- Submit Button -->
               <div>
