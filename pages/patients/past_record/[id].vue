@@ -4,6 +4,7 @@ import AppSidebar from "~/components/AppSidebar.vue";
 import {useAsyncData, useRoute} from "#app";
 import {toast} from "vue-sonner";
 import {useAuth} from "~/composables /UseAuth";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion'
 
 const {authToken} = useAuth()
 
@@ -11,7 +12,7 @@ const params = useRoute().params.id
 
 const file = async (params) => {
   try {
-    const { data, error } = await useFetch(
+    const {data, error} = await useFetch(
         useRuntimeConfig().public.api + `/patients-records/patients/${params}`,
         {
           method: 'GET',
@@ -36,95 +37,147 @@ const file = async (params) => {
 const {data: past_record} = await useAsyncData('past_record', async () => {
   return await file(params); // Added return statement
 });
+
+
+function formatDateWithOrdinal(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString('en-US', { month: 'long' });
+  const year = date.getFullYear();
+
+  const getOrdinal = (n) => {
+    if (n > 3 && n < 21) return 'th'; // 4th to 20th
+    switch (n % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+
+  return `${day}${getOrdinal(day)} ${month}, ${year}`;
+}
+
 </script>
 
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main class="w-full">
+    <main class="w-full bg-gray-100">
       <SidebarTrigger/>
-      <div class="min-h-screen bg-gray-100">
+      <div class="min-h-screen ">
         <div id="main">
-          <div class="px-4">
-            <div class="records-container">
+          <div class="px-4 ">
+            <div class="records-container main_drop">
+
               <div class="card shadow-sm mb-4" v-for="(record, $index) in past_record" :key="record.id">
-                <div class="card-body">
-                  <!-- Section Title -->
-                  <div class="d-flex align-items-center mb-4 gap-3">
-                    <i class="bi bi-journal-medical text-primary fs-3 me-2"></i>
-                    <h4 class="mb-0">Medical Record #{{$index + 1}}  {{new Date(record.created_at) }}</h4>
-                  </div>
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>{{ formatDateWithOrdinal(record.created_at) }}</AccordionTrigger>
+                    <AccordionContent>
+                      <div class="card-body">
+                        <!-- Section Title -->
+                        <div class="d-flex align-items-center mb-4 gap-3">
+                          <i class="bi bi-journal-medical text-primary fs-3 me-2"></i>
+                          <h4 class="mb-0">Medical Record #{{ $index + 1 }} {{ new Date(record.created_at) }}</h4>
+                        </div>
 
-                  <!-- Vitals Section -->
-                  <div class="section-container">
-                    <div class="section-header">
-                      <i class="bi bi-activity text-primary me-2"></i>
-                      <h5 class="mb-0">Nurse Notes</h5>
-                    </div>
-                    <div class="row g-3">
-                      <div class="col-md-12">
-                        <div class="vital-card">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                          </svg>
-                          <div>
-                            <!-- Fixed: Display HTML content properly -->
-                            <div v-html="record.nurse_notes"></div>
+                        <!-- Vitals Section -->
+                        <div class="section-container">
+                          <div class="section-header">
+                            <i class="bi bi-activity text-primary me-2"></i>
+                            <h5 class="mb-0">Nurse Notes</h5>
+                          </div>
+                          <div class="row g-3">
+                            <div class="col-md-12">
+                              <div class="vital-card">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5"
+                                     stroke="currentColor" class="size-6">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                </svg>
+                                <div>
+                                  <!-- Fixed: Display HTML content properly -->
+                                  <div v-html="record.nurse_notes"></div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  <hr class="my-4"/>
+                        <hr class="my-4"/>
 
-                  <!-- Doctor's Assessment -->
-                  <div class="section-container" v-if="record.doctor_notes">
-                    <div class="section-header gap-3">
-                      <i class="bi bi-file-medical text-primary me-2"></i>
-                      <h5 class="mb-0">Doctor's Assessment</h5>
-                    </div>
-                    <div class="row g-3">
-                      <div class="col-md-12">
-                        <div class="vital-card">
-                          <i class="bi bi-journal-medical text-primary"></i>
-                          <div>
-                            <small class="text-muted mb-2">Doctor Notes</small>
-                            <div v-html="record.doctor_notes"></div>
+                        <!-- Doctor's Assessment -->
+                        <div class="section-container" v-if="record.doctor_notes">
+                          <div class="section-header gap-3">
+                            <i class="bi bi-file-medical text-primary me-2"></i>
+                            <h5 class="mb-0">Doctor's Assessment</h5>
+                          </div>
+                          <div class="row g-3">
+                            <div class="col-md-12">
+                              <div class="vital-card">
+                                <i class="bi bi-journal-medical text-primary"></i>
+                                <div>
+                                  <small class="text-muted mb-2">Doctor Notes</small>
+                                  <div v-html="record.doctor_notes"></div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  <hr class="my-4">
+                        <hr class="my-4">
 
-                  <!-- Laboratory Results -->
-                  <div class="section-container" v-if="record.laboratory_notes">
-                    <div class="section-header gap-3">
-                      <i class="bi bi-flask text-primary me-2"></i>
-                      <h5 class="mb-0">Laboratory Results</h5>
-                    </div>
-                    <div class="row g-3">
-                      <div class="col-md-12">
-                        <div class="vital-card">
-                          <i class="bi bi-clipboard2-data text-primary"></i>
-                          <div>
-                            <small class="text-muted mb-2">Laboratory Notes</small>
-                            <div v-html="record.laboratory_notes"></div>
+                        <!-- Laboratory Results -->
+                        <div class="section-container" v-if="record.laboratory_notes">
+                          <div class="section-header gap-3">
+                            <i class="bi bi-flask text-primary me-2"></i>
+                            <h5 class="mb-0">Laboratory Results</h5>
+                          </div>
+                          <div class="row g-3">
+                            <div class="col-md-12">
+                              <div class="vital-card">
+                                <i class="bi bi-clipboard2-data text-primary"></i>
+                                <div>
+                                  <small class="text-muted mb-2">Laboratory Notes</small>
+                                  <div v-html="record.laboratory_notes"></div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
 
-                </div>
-                <div class="flex col-6 float-start">
-                  <NuxtLink :to="`/patients/update_record/${record.id}`" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i>
-                    Additional Records
-                  </NuxtLink>
-                </div>
+                        <!-- Laboratory Results -->
+                        <div class="section-container" v-if="record.pharmacist_notes">
+                          <div class="section-header gap-3">
+                            <i class="bi bi-flask text-primary me-2"></i>
+                            <h5 class="mb-0">Pharmacist Results</h5>
+                          </div>
+                          <div class="row g-3">
+                            <div class="col-md-12">
+                              <div class="vital-card">
+                                <i class="bi bi-clipboard2-data text-primary"></i>
+                                <div>
+                                  <small class="text-muted mb-2">Pharmacist Notes</small>
+                                  <div v-html="record.pharmacist_notes"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="flex col-6 float-start">
+                          <NuxtLink :to="`/patients/update_record/${record.id}`" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i>
+                            Additional Records
+                          </NuxtLink>
+                        </div>
+
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
 
               <!-- Empty State (shown when no records) -->
@@ -135,6 +188,7 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
                   <p class="text-muted">No medical records are available for this patient.</p>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -148,6 +202,9 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
 .records-container {
   max-width: 1200px;
   margin: 0 auto;
+}
+.main_drop {
+  margin-top: 10%;
 }
 
 /* Card Styling */
@@ -208,7 +265,6 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
 .section-header i {
   font-size: 1.5rem;
 }
-
 
 
 /* Vital Card Improvements */
