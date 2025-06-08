@@ -37,11 +37,7 @@ const onUpdate = async (id) => {
       <slot/>
       <div class="min-h-screen bg-gray-100">
         <div id="main">
-          <header class="mb-4">
-            <a href="#" class="block xl:hidden">
-              <i class="text-2xl bi bi-justify"></i>
-            </a>
-          </header>
+
           <div class="px-4">
             <!-- Header Section -->
             <div class="flex justify-between items-center mb-6">
@@ -51,22 +47,34 @@ const onUpdate = async (id) => {
             </div>
             <!-- Table Card -->
             <div class="bg-white rounded-lg shadow-md">
-              <div class="px-6 py-4 border-b">
-                <div class="flex justify-between items-center">
-                  <div class="w-64">
-                    <div
-                        class="flex items-center border rounded-md focus-within:ring-2 focus-within:ring-blue-400 focus-within:border-blue-400">
-                  <span class="bg-white px-3 py-2">
-                    <i class="bi bi-search"></i>
-                  </span>
-                      <input
-                          type="text"
-                          class="w-full py-2 px-2 outline-none"
-                          placeholder="Search staff..."
-                      >
-                    </div>
+              <div class="px-6 py-4 border-b flex items-center justify-between gap-4">
+                <RouterLink
+                    class="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition text-lg font-semibold"
+                    to="patient_register.vue"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                       stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                  </svg>
+                  Register Patient
+                </RouterLink>
+                <form class="flex items-center gap-2 w-full max-w-md">
+                  <div
+                      class="flex items-center border rounded-md px-2 bg-white focus-within:ring-2 focus-within:ring-blue-400 focus-within:border-blue-400 w-full">
+                    <i class="bi bi-search text-gray-400 text-xl"></i>
+                    <input
+                        type="text"
+                        class="w-full py-2 px-2 outline-none bg-transparent"
+                        placeholder="Search patients..."
+                    >
                   </div>
-                </div>
+                  <button type="submit"
+                          class="ml-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition flex items-center gap-1">
+                    <i class="bi bi-arrow-right-circle"></i>
+                    Search
+                  </button>
+                </form>
               </div>
               <div class="p-6">
                 <div class="overflow-x-auto">
@@ -90,138 +98,6 @@ const onUpdate = async (id) => {
                       <td class="py-4 px-4">{{ item.date_of_birth }}</td>
                       <td class="py-4 px-4">
                         <div class="flex gap-2">
-                          <Dialog>
-                            <DialogTrigger class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-amber-500
-                              hover:bg-amber-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform
-                               hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-500
-                               focus:ring-offset-2 rounded-2xl" v-if="user.role == 'Manager'"
-                                           @click="edit(item.id)">
-
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                   stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
-                              </svg>
-                              Edit Role
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Edit profile</DialogTitle>
-                                <DialogDescription>
-                                  <div class="p-6">
-                                    <form class="space-y-6" @submit.prevent="onUpdate(item.id)">
-                                      <div>
-                                        <label for="fullName" class="block text-sm font-medium text-gray-700">First
-                                          Name</label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                          <input
-                                              v-model="input.first_name"
-                                              type="text"
-                                              class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
-                                              placeholder="Enter your full name"
-                                              disabled
-                                          />
-                                        </div>
-                                      </div>
-
-                                      <div>
-                                        <label for="fullName" class="block text-sm font-medium text-gray-700">Last
-                                          Name</label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                          <input
-                                              type="text"
-                                              id="fullName"
-                                              v-model="input.last_name"
-                                              class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
-                                              placeholder="Enter your full name"
-                                              disabled
-                                          />
-                                        </div>
-                                      </div>
-
-
-                                      <div>
-                                        <label for="fullName" class="block text-sm font-medium text-gray-700">Email
-                                        </label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                          <input
-                                              type="text"
-                                              id="fullName"
-                                              v-model="input.email"
-                                              class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
-                                              placeholder="Enter your full name"
-                                              disabled
-                                          />
-                                        </div>
-                                      </div>
-
-
-                                      <div>
-                                        <label for="fullName" class="block text-sm font-medium text-gray-700">Phone
-                                        </label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                          <input
-                                              type="text"
-                                              id="fullName"
-                                              v-model="input.phone"
-                                              class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-400"
-                                              placeholder="Enter your full name"
-                                              disabled
-                                          />
-                                        </div>
-                                      </div>
-
-
-                                      <div>
-                                        <label for="appointmentDate" class="block text-sm font-medium text-gray-700">
-                                          Date of birth</label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                          <input
-                                              type="date"
-                                              id="appointmentDate"
-                                              v-model="input.date_of_birth"
-                                              class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                                              disabled
-                                          />
-                                        </div>
-                                      </div>
-
-
-                                      <div>
-                                        <label for="appointmentTime" class="block text-sm font-medium text-gray-700">
-                                          Role</label>
-                                        <div class="mt-1 relative rounded-md shadow-sm">
-                                          <select v-model="input.role"
-                                                  class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-                                          >
-                                            <option value="Manager">Manager</option>
-                                            <option value="Doctor">Doctor</option>
-                                            <option value="Nurse">Nurse</option>
-                                            <option value="Lab_Technician">Lab Technician</option>
-                                            <option value="Pharmacist">Pharmacist</option>
-                                            <option value="Patient">Patient</option>
-
-                                          </select>
-
-                                        </div>
-                                      </div>
-
-                                      <div class="pt-2">
-                                        <button
-                                            type="submit"
-                                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                                        >
-                                          Update User
-                                        </button>
-                                      </div>
-                                    </form>
-
-                                  </div>
-                                </DialogDescription>
-                              </DialogHeader>
-
-                            </DialogContent>
-                          </Dialog>
 
                           <NuxtLink :to="`/patients/patents_record/${item.id}`"
                                     class="inline-flex items-center px-3 py-1.5
@@ -229,8 +105,10 @@ const onUpdate = async (id) => {
                                            hover:bg-blue-900 rounded-md shadow-sm transition-all duration-200
                                            ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2
                                            focus:ring-amber-500 focus:ring-offset-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
                             </svg>
 
                             Create
