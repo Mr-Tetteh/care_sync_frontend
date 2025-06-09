@@ -12,10 +12,11 @@ export const usePharmacy = () => {
         drug_description: '',
         additional_note: ''
     })
+    const drugs = ref()
 
     const upload_drug = async () => {
 
-        const { data, error } = await useFetch(useRuntimeConfig().public.api + `/pharmacy`, {
+        const {data, error} = await useFetch(useRuntimeConfig().public.api + `/pharmacy`, {
             method: 'POST',
             body: input.value,
             headers: {
@@ -31,8 +32,29 @@ export const usePharmacy = () => {
             console.log('Server response:', data.value);
         }
     };
+
+    const retrieve_drugs = async () => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/pharmacy`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast.error(error.value)
+            }
+            return data
+        } catch (error) {
+            toast.error(error.value)
+        }
+    }
+
     return {
         input,
-        upload_drug
+        upload_drug,
+        drugs,
+        retrieve_drugs
     }
 }

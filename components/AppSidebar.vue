@@ -135,7 +135,7 @@ const items = [
                         <RouterLink to="/pharmacy/upload_drug" class="py-2 px-4">Upload Drug</RouterLink>
                       </DropdownMenuItem>
                       <DropdownMenuItem class="hover:bg-gray-200 ">
-                        <RouterLink to="/auth/register" class="py-2 px-4">Register Staff</RouterLink>
+                        <RouterLink to="/pharmacy/uploaded_drugs" class="py-2 px-4">Uploaded Drugs</RouterLink>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenuRoot>
