@@ -24,13 +24,13 @@ export const usePharmacy = () => {
                 'Authorization': `Bearer ${authToken.value}`,
             }
         });
-
         if (error.value) {
             toast.error(error.value.data?.message || 'An unexpected error occurred.');
         } else {
             toast.success('You have successfully uploaded the drug');
             console.log('Server response:', data.value);
         }
+        window.location.href = "/pharmacy/uploaded_drugs"
     };
 
     const retrieve_drugs = async () => {
