@@ -7,6 +7,7 @@ import {useAuth} from "~/composables /UseAuth";
 
 const {getStaff, deleteUser} = useStaff()
 const {input, userById, updateUser, user} = useAuth()
+const searchQuery = ref('')
 
 const {data: staff} = await useAsyncData('staff', async () => {
   const res = await getStaff();
@@ -25,6 +26,23 @@ const edit = async (id) => {
 const onUpdate = async (id) => {
   await updateUser(id);
 }
+
+
+const filteredStaff = computed(() => {
+  if (!searchQuery.value || !staff.value) return staff.value
+
+  return staff.value.filter(staffMember => {
+    const searched = searchQuery.value.toLowerCase();
+    const fullName = `${staffMember.first_name || ''} ${staffMember.other_names || ''} ${staffMember.last_name || ''}`.toLowerCase()
+    const email = (staffMember.email || '').toLowerCase()
+    // Make sure to use consistent property name - either phone or phone_number
+    const phone = (staffMember.phone || staffMember.phone_number || '').toLowerCase()
+
+    return fullName.includes(searched) ||
+        email.includes(searched) ||
+        phone.includes(searched);
+  });
+});
 
 </script>
 
@@ -59,6 +77,7 @@ const onUpdate = async (id) => {
                     <i class="bi bi-search"></i>
                   </span>
                       <input
+                          v-model="searchQuery"
                           type="text"
                           class="w-full py-2 px-2 outline-none"
                           placeholder="Search staff..."
@@ -82,8 +101,8 @@ const onUpdate = async (id) => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in staff" :key="item.id" class="border-t hover:bg-gray-50">
-                      <td class="py-4 px-4">{{ item.first_name }} {{ other_names }} {{ item.last_name }}</td>
+                    <tr v-for="item in filteredStaff" :key="item.id" class="border-t hover:bg-gray-50">
+                      <td class="py-4 px-4">{{ item.first_name }} {{ item.other_names }} {{ item.last_name }}</td>
                       <td class="py-4 px-4">{{ item.phone }}</td>
                       <td class="py-4 px-4">{{ item.email }}</td>
                       <td class="py-4 px-4">{{ item.role }}</td>
@@ -238,6 +257,28 @@ const onUpdate = async (id) => {
                     </tbody>
                   </table>
                 </div>
+                <div v-if="!filteredStaff?.length" class="text-center py-16">
+                  <div class="max-w-md mx-auto">
+                    <svg class="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                      {{ searchQuery ? 'No patients found' : 'No patients registered' }}
+                    </h3>
+                    <p class="text-slate-500 text-sm">
+                      {{ searchQuery ? 'Try adjusting your search criteria.' : 'Get started by registering your first patient.' }}
+                    </p>
+                    <div v-if="searchQuery" class="mt-4">
+                      <button
+                          @click="searchQuery = ''"
+                          class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                      >
+                        Clear search
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
