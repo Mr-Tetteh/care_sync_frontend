@@ -21,11 +21,15 @@ export const useAuth = () => {
 
 
     const register = async () => {
+
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users`, {
                 method: 'POST',
                 body: input.value
             })
+            if (!error){
+              return   toast.error(error)
+            }
             toast.success('User registered successfully')
             setTimeout(() => {
                 navigateTo('/auth/login')

@@ -6,6 +6,7 @@ import {usePharmacy} from "~/composables /usePharmacy";
 
 const {retrieve_drugs, drugs} = usePharmacy()
 const searchQuery = ref('')
+const cart = ref([])
 
 const {data: details} = await useAsyncData('details', async () => {
   const res = await retrieve_drugs();
@@ -24,6 +25,26 @@ const filteredDetails = computed(() => {
     )
   })).filter(category => category.drugs.length > 0);
 });
+
+const addToCart = (drug, event) => {
+
+  const quantityInput = event.target.querySelector('.quantity-input');
+  const drug_quantity = parseInt(quantityInput.value);
+
+  const cartItem = {
+    id: drug.id,
+    DrugName: drug.drug_name,
+    DrugPrice: drug.drug_price,
+    DrugQuantity: drug_quantity
+  };
+
+  cart.value.push(cartItem);
+
+  const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  cartItems.push(cartItem);
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+};
+
 </script>
 
 <template>
@@ -41,7 +62,11 @@ const filteredDetails = computed(() => {
               <p class="text-slate-600 text-sm">Manage your medication stock</p>
             </div>
           </div>
-
+          <RouterLink to="/pharmacy/cart_check_out" v-if="cart.length">
+            <div class="cart-bubble">
+              {{ cart.length }}
+            </div>
+          </RouterLink>
           <!-- Enhanced Search -->
           <div class="relative w-full max-w-md">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -127,18 +152,35 @@ const filteredDetails = computed(() => {
                             {{ drug.drug_quantity }} in stock
                           </span>
                         </div>
-
-                        <!-- Action Button -->
-                        <button
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
-                            :disabled="drug.drug_quantity === 0">
-                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                          </svg>
-                          Add to Cart
-                        </button>
                       </div>
+
+                      <div class="mt-4 flex items-center justify-between">
+                        <!-- Action Button -->
+                        <form @submit.prevent="(event) => addToCart(drug, event)">
+                          <div class="input-group p-5 space-x-5">
+                            <input type="number"
+                                   min="1"
+                                   :max="drug.drug_quantity"
+                                   value="1"
+                                   class="quantity-input box-border"
+                                   :disabled="drug.quantity <= 0">
+                            <button
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500
+                                to-indigo-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-700
+                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all
+                                 duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+                                :disabled="drug.drug_quantity === 0">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                              </svg>
+                              Add to Cart
+                            </button>
+                          </div>
+
+                        </form>
+                      </div>
+
 
                       <!-- Low Stock Warning -->
                       <div v-if="drug.drug_quantity < 10 && drug.drug_quantity > 0"
@@ -184,6 +226,23 @@ const filteredDetails = computed(() => {
 </template>
 
 <style scoped>
+.cart-bubble {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #000;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
