@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {useAuth} from "~/composables /UseAuth";
+import AppSidebar from "~/components/AppSidebar.vue";
+import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 
 const {input, register} = useAuth()
 
@@ -12,6 +14,10 @@ const onsubmit = async () => {
 </script>
 
 <template>
+  <SidebarProvider>
+    <AppSidebar/>
+    <main class="w-full h-screen bg-gray-100">
+      <SidebarTrigger/>
   <div id="app" class="bg-gray-100">
     <div class="flex min-h-screen items-center justify-center p-6 md:p-10">
       <div class="flex flex-col md:flex-row w-full max-w-4xl gap-6 bg-white rounded-xl shadow-lg overflow-hidden">
@@ -98,7 +104,7 @@ const onsubmit = async () => {
               </div>
             </div>
 
-            <div>
+            <div class="w-full">
               <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
               <div class="form-input-focus relative rounded-md">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -110,31 +116,7 @@ const onsubmit = async () => {
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <div class="form-input-focus relative rounded-md">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  <i class="fas fa-lock"></i>
-                </span>
-                <input v-model="input.password" type="password"
-                       class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm
-                        focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                       placeholder="Enter your Password"/>
-                <span class="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-gray-400">
-                  <i class="fas fa-eye"></i>
-                </span>
-              </div>
-            </div>
-
-
             <!-- Full width elements, span both columns -->
-            <div class="col-span-full flex items-center justify-between text-gray-600 text-sm">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
-                <span>Remember me</span>
-              </label>
-              <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Forgot password?</a>
-            </div>
 
             <div class="col-span-full mt-2">
               <button
@@ -144,12 +126,6 @@ const onsubmit = async () => {
                 Create Account
               </button>
             </div>
-
-            <div class="col-span-full text-center text-sm text-gray-600 mt-4">
-              Already a buddy? <a href="/auth/login" class="text-indigo-600 hover:text-indigo-800 font-medium">Sign
-              In</a>
-            </div>
-
 
           </form>
         </div>
@@ -168,7 +144,9 @@ const onsubmit = async () => {
       </div>
     </div>
   </div>
-
+    </main>
+  </SidebarProvider>
+  >
 </template>
 
 <style>

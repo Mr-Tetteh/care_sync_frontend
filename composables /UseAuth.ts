@@ -8,6 +8,7 @@ export const useAuth = () => {
         password: '',
     })
 
+
     const input = ref({
         first_name: '',
         last_name: '',
@@ -16,29 +17,40 @@ export const useAuth = () => {
         date_of_birth: '',
         email: '',
         phone: '',
-        password: '',
+        password: 'welcome to care sync',
     })
 
 
     const register = async () => {
-
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users`, {
                 method: 'POST',
                 body: input.value
             })
-            if (!error){
-              return   toast.error(error)
+
+            if (error.value) {
+                const message = error.value.data?.message;
+
+                if (Array.isArray(message)) {
+                    // Show each validation message separately
+                    message.forEach((msg: string) => toast.error(msg));
+                } else {
+                    // Fallback for other errors
+                    toast.error(message || 'Registration failed');
+                }
+
+                return;
             }
+
             toast.success('User registered successfully')
             setTimeout(() => {
                 navigateTo('/auth/login')
-            }, 2000);
-        } catch (error) {
-            return toast.error(error.data.message)
+            }, 2000)
+        } catch (err: any) {
+            return toast.error(err?.message || 'Unexpected error occurred')
         }
-
     }
+
 
     const authToken = useCookie('session_token', {
         sameSite: 'strict',
@@ -66,7 +78,7 @@ export const useAuth = () => {
 
     const updateUser = async (id) => {
         try {
-            const { data, error } = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
                 method: 'PATCH',
                 body: input.value,
                 headers: {
@@ -90,7 +102,6 @@ export const useAuth = () => {
             toast.error(err?.message || 'Unexpected error occurred.');
         }
     };
-
 
 
     const login = async () => {

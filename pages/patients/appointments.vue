@@ -27,7 +27,7 @@ const onUpdate = async (id) => {
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main>
+    <main class="w-full h-screen bg-gray-100">
       <SidebarTrigger/>
       <div class="min-h-screen bg-gray-50 w-full">
         <div id="main">
