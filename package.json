@@ -13,6 +13,7 @@
     "@nuxt/image": "^1.10.0",
     "@tailwindcss/vite": "^4.1.6",
     "@tinymce/tinymce-vue": "^6.1.0",
+    "@vee-validate/nuxt": "^4.15.1",
     "@vueuse/core": "^13.3.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -28,7 +29,8 @@
     "tw-animate-css": "^1.2.9",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1",
-    "vue-sonner": "^1.3.2"
+    "vue-sonner": "^1.3.2",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

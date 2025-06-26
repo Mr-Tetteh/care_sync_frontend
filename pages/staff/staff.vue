@@ -49,7 +49,7 @@ const filteredStaff = computed(() => {
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main class="min-h-screen bg-gray-50 w-full">
+    <main class="bg-gray-100 w-full">
       <SidebarTrigger/>
       <slot/>
       <div class="min-h-screen bg-gray-100">

@@ -17,7 +17,7 @@ const Onsubmit = async () =>{
     <main class="min-h-screen bg-gray-50 w-full">
       <SidebarTrigger/>
       <slot/>
-      <body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-x-hidden">
+      <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-x-hidden">
       <!-- Floating background elements -->
       <div class="floating-pills top-20 left-10 text-6xl text-blue-300">
         <i class="fas fa-pills"></i>
@@ -283,7 +283,7 @@ const Onsubmit = async () =>{
           </div>
         </div>
       </div>
-      </body>
+      </div>
     </main>
   </SidebarProvider>
 

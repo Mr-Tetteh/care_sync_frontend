@@ -31,9 +31,9 @@ const items = [
     url: "/patients/appointments",
     icon: Inbox,
   },
-
-
 ];
+
+
 </script>
 
 <template>
@@ -175,10 +175,10 @@ const items = [
             </DropdownMenuTrigger>
 
             <DropdownMenuContent side="top" class="w-[--reka-popper-anchor-width]">
-              <DropdownMenuItem class="flex items-center py-2 px-3">
+              <RouterLink :to="`/profile/${user.id}`" class="flex items-center py-2 px-3">
                 <Settings class="h-4 w-4 mr-2"/>
                 <span>Account</span>
-              </DropdownMenuItem>
+              </RouterLink>
               <DropdownMenuItem class="flex items-center py-2 px-3">
                 <span @click="logout">Sign out</span>
               </DropdownMenuItem>
