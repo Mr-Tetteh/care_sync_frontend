@@ -3,9 +3,16 @@
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import {usePharmacy} from "~/composables /usePharmacy";
+import {definePageMeta} from "#imports";
 
 const {input, upload_drug} = usePharmacy()
 
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+  role: ['Pharmacist', 'Manager']
+})
 const Onsubmit = async () =>{
   await upload_drug()
 }

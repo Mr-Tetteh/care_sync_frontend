@@ -4,10 +4,17 @@ import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import {useStaff} from "~/composables /useStaff";
 import {useAuth} from "~/composables /UseAuth";
+import {definePageMeta} from "#imports";
 
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 const {getStaff, deleteUser} = useStaff()
 const {input, userById, updateUser, user} = useAuth()
 const searchQuery = ref('')
+
 
 const {data: staff} = await useAsyncData('staff', async () => {
   const res = await getStaff();

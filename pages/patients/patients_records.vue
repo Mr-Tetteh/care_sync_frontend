@@ -3,8 +3,15 @@ import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import Editor from '@tinymce/tinymce-vue';
 import {usePatients} from "~/composables /usePatients";
+import {definePageMeta} from "#imports";
 
 const {input, patient_record} =  usePatients()
+
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 </script>
 
 <template>

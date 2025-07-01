@@ -5,6 +5,13 @@ import {useAsyncData, useRoute} from "#app";
 import {toast} from "vue-sonner";
 import {useAuth} from "~/composables /UseAuth";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion'
+import {definePageMeta} from "#imports";
+
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 
 const {authToken} = useAuth()
 

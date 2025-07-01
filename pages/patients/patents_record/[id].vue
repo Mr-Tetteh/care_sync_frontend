@@ -7,6 +7,13 @@ import {usePatients} from "~/composables /usePatients";
 import {toast} from "vue-sonner";
 import {ref, onMounted} from 'vue'
 import {useAuth} from "~/composables /UseAuth";
+import {definePageMeta} from "#imports";
+
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 
 const params = useRoute().params
 const {authToken, user} = useAuth()
