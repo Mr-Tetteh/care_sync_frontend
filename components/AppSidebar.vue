@@ -176,7 +176,7 @@ const items = [
 
             <DropdownMenuContent side="top" class="w-[--reka-popper-anchor-width]">
               <RouterLink :to="`/profile/${user.id}`" class="flex items-center py-2 px-3">
-                <Settings class="h-4 w-4 mr-2"/>
+                <Settings class="h-4 w-4 mr-2" />
                 <span>Account</span>
               </RouterLink>
               <DropdownMenuItem class="flex items-center py-2 px-3">
