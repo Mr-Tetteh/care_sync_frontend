@@ -8,6 +8,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
+  role: ['Pharmacist']
 })
 const currentDateTime = (new Date())
 const cartItems = ref([])
@@ -50,7 +51,7 @@ const handleComplete = async () => {
     toast.success("Transaction completed successfully!");
     cartItems.value = [];
     // window.location.href = '/pharmacy/all-drugs';
-  }catch (error){
+  } catch (error) {
     toast.error("An error occurred while completing the transaction. Please try again later.");
   }
 }

@@ -11,6 +11,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
+  role: ['Pharmacist', 'Manager']
 })
 const Onsubmit = async () =>{
   await upload_drug()

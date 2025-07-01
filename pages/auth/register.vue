@@ -15,6 +15,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
+  role: ['admin']
 })
 
 </script>
