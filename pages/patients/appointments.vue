@@ -4,9 +4,15 @@ import AppSidebar from "~/components/AppSidebar.vue";
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import {useAppointments} from "~/composables /useAppointments";
 import {useAsyncData} from "#app";
+import {definePageMeta} from "#imports";
 
 const {readAppointment, input, editAppointment, updateAppointment} = useAppointments()
 
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 
 const {data: details} = await useAsyncData('details', async () => {
   const res = await readAppointment();

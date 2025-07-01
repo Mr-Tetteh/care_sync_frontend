@@ -2,7 +2,13 @@
 
 import {useAuth} from "~/composables /UseAuth";
 import {toast} from "vue-sonner";
+import {definePageMeta} from "#imports";
 
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 const currentDateTime = (new Date())
 const cartItems = ref([])
 

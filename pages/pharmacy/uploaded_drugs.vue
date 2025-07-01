@@ -3,8 +3,16 @@ import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import {useAsyncData} from "#app";
 import {usePharmacy} from "~/composables /usePharmacy";
+import {definePageMeta} from "#imports";
 
 const {retrieve_drugs, drugs} = usePharmacy()
+
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
+
 const searchQuery = ref('')
 const cart = ref([])
 

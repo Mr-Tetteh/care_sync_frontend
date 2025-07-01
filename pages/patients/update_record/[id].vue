@@ -7,6 +7,13 @@ import {toast} from "vue-sonner";
 import {ref, onMounted, watch} from 'vue'
 import {useAuth} from "~/composables /UseAuth";
 import {useAsyncData} from "#app";
+import {definePageMeta} from "#imports";
+
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 
 const params = useRoute().params
 const {authToken, user} = useAuth()

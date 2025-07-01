@@ -2,8 +2,14 @@
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import {usePatients} from "~/composables /usePatients";
-import {useAuth} from "~/composables /UseAuth"; // Fixed path (removed space)
+import {useAuth} from "~/composables /UseAuth";
+import {definePageMeta} from "#imports"; // Fixed path (removed space)
 
+definePageMeta({
+
+  title: 'Register Staff',
+  middleware: ['check-auth'],
+})
 const {getPatients} = usePatients()
 const {userById, input, updateUser, user} = useAuth()
 const searchQuery = ref('')
