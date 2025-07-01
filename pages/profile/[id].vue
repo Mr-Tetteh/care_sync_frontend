@@ -3,8 +3,10 @@
 import AppSidebar from "~/components/AppSidebar.vue";
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import {useAccount} from "~/composables /useAccount";
+import {useAuth} from "~/composables /UseAuth";
 
 const {get_user_details, input} = useAccount();
+const {changePassword,password } = useAuth()
 const params = useRoute().params.id;
 
 onMounted(async () => {
@@ -15,6 +17,9 @@ const onSubmit = async () => {
   alert('well')
 }
 
+const changePass = async () => {
+  await changePassword()
+}
 </script>
 
 <template>
@@ -328,7 +333,7 @@ const onSubmit = async () => {
 
                 <!-- Form Section -->
                 <div class="p-8 bg-gradient-to-b from-white to-gray-50/50">
-                  <form class="space-y-8" id="passwordForm">
+                  <form @submit.prevent="changePass" class="space-y-8" id="passwordForm">
                     <!-- Current Password Section -->
                     <div class="space-y-6">
                       <div class="flex items-center space-x-3 mb-6">
@@ -347,6 +352,7 @@ const onSubmit = async () => {
                         </label>
                         <div class="relative">
                           <input
+                              v-model="password.oldPassword"
                               type="password"
                               id="currentPassword"
                               name="currentPassword"
@@ -375,6 +381,7 @@ const onSubmit = async () => {
                         </label>
                         <div class="relative">
                           <input
+                              v-model="password.newPassword"
                               type="password"
                               id="newPassword"
                               name="newPassword"
@@ -409,19 +416,9 @@ const onSubmit = async () => {
                               name="confirmPassword"
                               class="block w-full px-4 py-4 pr-12 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 text-gray-900 placeholder-gray-400 transition-all duration-300 bg-white hover:border-gray-300 group-hover:shadow-lg"
                               placeholder="Confirm your new password"
-                              required
-                              oninput="checkPasswordMatch()"
+                              v-model="password.confirmNewPassword"
+
                           />
-                          <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center"
-                                  onclick="togglePassword('confirmPassword')">
-                            <svg class="w-5 h-5 text-gray-400 hover:text-gray-600 transition-colors" fill="none"
-                                 stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                          </button>
                         </div>
                         <div id="matchIndicator" class="mt-2 text-sm hidden">
                           <div class="flex items-center space-x-2">

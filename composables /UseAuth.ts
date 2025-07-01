@@ -20,6 +20,11 @@ export const useAuth = () => {
         password: 'welcome to care sync',
     })
 
+    const password = ref({
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: ''
+    })
 
     const register = async () => {
         try {
@@ -76,6 +81,33 @@ export const useAuth = () => {
         }
     }
 
+    const changePassword = async () => {
+   if (password.value.newPassword !== password.value.confirmNewPassword) {
+       toast.error('New password and confirm password do not match');
+       return;
+   }
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/change-password`, {
+                method: 'PUT',
+                body: password.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                },
+            })
+            if (error.value) {
+                // Display error safely
+                toast.error(error.value.data?.message || 'An error occurred while changing the password.');
+                return;
+            }
+            toast.success('Password changed successfully');
+            logout()
+        } catch (err) {
+            toast.error(err?.message || 'An error occurred while changing the password.');
+        }
+
+    }
+
     const updateUser = async (id) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
@@ -117,7 +149,6 @@ export const useAuth = () => {
                 throw error.value
             }
             authToken.value = data.value.access_token
-
             toast.success('Login successful')
             navigateTo('/dashboard')
         } catch (error) {
@@ -178,7 +209,9 @@ export const useAuth = () => {
         logout,
         user,
         userById,
-        updateUser
+        updateUser,
+        changePassword,
+        password
     }
 }
 
