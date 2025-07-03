@@ -1,18 +1,10 @@
 <script setup lang="ts">
 
-
-import {useAuth} from "~/composables /UseAuth";
-
-const {reset, forgetPassword} = useAuth();
-
-const onsubmit = async () => {
-  forgetPassword()
-}
 </script>
 
 <template>
   <div
-      class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+      class="min-h-screen bg-gradient-to-br from-slate-900 via-yellow-900 to-slate-900 flex items-center justify-center p-4">
     <!-- Animated background elements -->
     <div class="absolute inset-0 overflow-hidden">
       <div class="floating-orb orb-1"></div>
@@ -23,8 +15,8 @@ const onsubmit = async () => {
     <div class="relative z-10 w-full max-w-6xl">
       <!-- Header -->
       <div class="text-center mb-8">
-        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4 animate-fade-in">
-          Forgot Password
+        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-blue-400 bg-clip-text text-transparent mb-4 animate-fade-in">
+          Reset Password
         </h1>
         <p class="text-gray-300 text-lg animate-fade-in-delay">
           Don't worry, we'll help you get back to your account
@@ -45,32 +37,30 @@ const onsubmit = async () => {
                 </svg>
               </div>
               <h2 class="form-title">Password Recovery</h2>
-              <p class="form-subtitle">Enter your email address and we'll send you a link to reset your password</p>
+              <p class="form-subtitle">Enter your new password to reset your password</p>
             </div>
 
             <div class="input-group">
-              <label class="input-label">Email Address</label>
-              <div class="input-wrapper" :class="{ 'focused': isEmailFocused, 'filled': reset.email }">
-                <div class="input-icon">
-                  <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
-                    <g id="Layer_3" data-name="Layer 3">
-                      <path
-                          d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z"></path>
-                    </g>
-                  </svg>
-                </div>
+              <label class="input-label">New Password</label>
+              <div class="input-wrapper">
                 <input
-                    v-model="reset.email"
                     type="email"
                     class="input"
-                    placeholder="Enter your email address"
-                    @focus="isEmailFocused = true"
-                    @blur="isEmailFocused = false"
-                    required
+                    placeholder="Enter new password"
                 />
               </div>
             </div>
 
+            <div class="input-group">
+              <label class="input-label">Confirm Password</label>
+              <div class="input-wrapper">
+                <input
+                    type="email"
+                    class="input"
+                    placeholder="Enter new Confirm password"
+                />
+              </div>
+            </div>
             <button
                 type="submit"
                 class="submit-button"
@@ -81,20 +71,10 @@ const onsubmit = async () => {
                 <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
                 </svg>
-                Send Reset Link
+                Update Password
               </span>
-              <span v-else class="loading-spinner"></span>
             </button>
 
-            <div class="form-footer">
-              <RouterLink to="/auth/login" class="back-link">
-                <svg class="back-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                </svg>
-                Back to Login
-              </RouterLink>
-            </div>
           </form>
         </div>
 
@@ -103,7 +83,7 @@ const onsubmit = async () => {
           <div class="illustration-wrapper">
             <div class="glow-effect"></div>
             <NuxtImg
-                src="../public/images/Doctors-bro (1).svg"
+                src="../public/images/Reset password-bro.svg"
                 alt="Password Reset Illustration"
                 class="illustration-image"
             />
@@ -117,8 +97,8 @@ const onsubmit = async () => {
       </div>
     </div>
   </div>
-</template>
 
+</template>
 
 <style scoped>
 /* Animations */
