@@ -29,6 +29,12 @@ export const useAuth = () => {
     const reset = ref({
         email: ''
     })
+
+    const resetPassword = ref({
+        token: '',
+        newPassword: '',
+        confirmNewPassword: ''
+    })
     const register = async () => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users`, {
@@ -217,6 +223,30 @@ export const useAuth = () => {
             toast.error(error.data.message || 'An error occurred while sending the reset password email.')
         }
 
+    }
+
+    const resetAccountPassword = async () => {
+        if (resetPassword.value.newPassword !== resetPassword.value.confirmNewPassword) {
+            toast.error('New password and confirm password do not match');
+            return;
+        }
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/reset-password`, {
+                method: 'POST',
+                body: resetPassword.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            if (error.value) {
+                toast.error(error.value.data?.message || 'An error occurred while resetting the password.');
+                return;
+            }
+            toast.success('Password reset successfully');
+            navigateTo('/auth/login')
+        } catch (err) {
+            toast.error(err?.message || 'An error occurred while resetting the password.');
+        }
     }
 
     return {
