@@ -59,16 +59,9 @@ const onsubmit = () => {
               <input type="radio"/>
               <label>Remember me </label>
             </div>
-            <span class="span">Forgot password?</span>
+            <RouterLink to="/auth/forgot_password" class="span">Forgot password?</RouterLink>
           </div>
           <button class="button-submit">Sign In</button>
-          <p class="p">Don't have an account? <NuxtLink class="span" to="/auth/register">Sign Up</NuxtLink></p>
-          <p class="p line">Or With</p>
-
-          <div class="flex-row">
-            <button class="btn google">Google</button>
-            <button class="btn apple">Apple</button>
-          </div>
         </form>
       </div>
 
