@@ -12,7 +12,7 @@ import {
 import {Button} from '@/components/ui/button'
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar"
 import AppSidebar from "~/components/AppSidebar.vue"
-import {usePatients} from "~/composables /usePatients";
+import {usePatients} from "~/composables/usePatients";
 import {definePageMeta} from "#imports";
 
 definePageMeta({

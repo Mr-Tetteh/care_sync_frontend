@@ -1,4 +1,4 @@
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 
 export default defineNuxtRouteMiddleware((to, from) => {
     const authToken = useCookie('session_token', {

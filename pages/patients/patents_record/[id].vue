@@ -3,10 +3,10 @@
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import Editor from '@tinymce/tinymce-vue';
-import {usePatients} from "~/composables /usePatients";
+import {usePatients} from "~/composables/usePatients";
 import {toast} from "vue-sonner";
 import {ref, onMounted} from 'vue'
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports";
 
 definePageMeta({

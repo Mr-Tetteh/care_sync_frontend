@@ -3,7 +3,7 @@ import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
 import {useAsyncData, useRoute} from "#app";
 import {toast} from "vue-sonner";
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion'
 import {definePageMeta} from "#imports";
 

@@ -2,7 +2,7 @@
 
 import LoginForm from "~/components/LoginForm.vue";
 
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 
 const {form, login} = useAuth()
 

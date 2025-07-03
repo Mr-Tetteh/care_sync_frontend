@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
-import {usePatients} from "~/composables /usePatients";
-import {useAuth} from "~/composables /UseAuth";
+import {usePatients} from "~/composables/usePatients";
+import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports"; // Fixed path (removed space)
 
 definePageMeta({

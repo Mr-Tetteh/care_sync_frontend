@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 import AppSidebar from "~/components/AppSidebar.vue";
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import {definePageMeta} from "#imports";
