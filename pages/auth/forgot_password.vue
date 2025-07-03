@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 
 const {reset, forgetPassword} = useAuth();
 

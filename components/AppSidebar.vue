@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import {DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem} from "reka-ui"
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 
 
 const {user, logout} = useAuth()

@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {useAppointments} from "~/composables /useAppointments";
+import {useAppointments} from "~/composables/useAppointments";
 
 const {input, appointment} = useAppointments()
 

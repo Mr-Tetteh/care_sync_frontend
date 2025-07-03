@@ -2,8 +2,8 @@
 
 import AppSidebar from "~/components/AppSidebar.vue";
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
-import {useAccount} from "~/composables /useAccount";
-import {useAuth} from "~/composables /UseAuth";
+import {useAccount} from "~/composables/useAccount";
+import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports";
 
 const {get_user_details, input} = useAccount();

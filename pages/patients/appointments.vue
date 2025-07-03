@@ -2,7 +2,7 @@
 
 import AppSidebar from "~/components/AppSidebar.vue";
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
-import {useAppointments} from "~/composables /useAppointments";
+import {useAppointments} from "~/composables/useAppointments";
 import {useAsyncData} from "#app";
 import {definePageMeta} from "#imports";
 

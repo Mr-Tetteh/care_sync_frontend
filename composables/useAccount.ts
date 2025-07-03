@@ -1,5 +1,5 @@
 import {toast} from "vue-sonner";
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 
 export const useAccount = () => {
     const input = ref ({

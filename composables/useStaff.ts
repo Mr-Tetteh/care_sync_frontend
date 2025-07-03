@@ -1,4 +1,4 @@
-import {useAuth} from "~/composables /UseAuth";
+import {useAuth} from "~/composables/UseAuth";
 import {toast} from "vue-sonner";
 
 export const useStaff = () => {

@@ -2,8 +2,8 @@
 
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar";
 import AppSidebar from "~/components/AppSidebar.vue";
-import {useStaff} from "~/composables /useStaff";
-import {useAuth} from "~/composables /UseAuth";
+import {useStaff} from "~/composables/useStaff";
+import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports";
 
 definePageMeta({
