@@ -103,7 +103,7 @@ const onsubmit = async () => {
           <div class="illustration-wrapper">
             <div class="glow-effect"></div>
             <NuxtImg
-                src="../public/images/Doctors-bro (1).svg"
+                src="../public/images/Forgot password-pana.svg"
                 alt="Password Reset Illustration"
                 class="illustration-image"
             />
