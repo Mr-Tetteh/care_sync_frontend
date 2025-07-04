@@ -1,5 +1,13 @@
 <script setup lang="ts">
+ import {useAuth} from "~/composables/UseAuth";
+ import { useRoute } from 'vue-router'
 
+
+ const  {resetPassword, resetAccountPassword} = useAuth()
+
+ const onsubmit = async () => {
+   await resetAccountPassword()
+ }
 </script>
 
 <template>
@@ -44,9 +52,10 @@
               <label class="input-label">New Password</label>
               <div class="input-wrapper">
                 <input
-                    type="email"
+                    type="password"
                     class="input"
                     placeholder="Enter new password"
+                    v-model="resetPassword.newPassword"
                 />
               </div>
             </div>
@@ -55,9 +64,10 @@
               <label class="input-label">Confirm Password</label>
               <div class="input-wrapper">
                 <input
-                    type="email"
+                    type="password"
                     class="input"
                     placeholder="Enter new Confirm password"
+                    v-model="resetPassword.confirmNewPassword"
                 />
               </div>
             </div>

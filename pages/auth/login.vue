@@ -130,6 +130,8 @@ const onsubmit = () => {
               <div class="floating-icon icon-4">📋</div>
             </div>
           </div>
+
+
           <NuxtImg
               src="../public/images/Doctors-bro (1).svg"
               alt="Healthcare Management Illustration"
@@ -488,7 +490,6 @@ const onsubmit = () => {
 
 .illustration-container {
   position: relative;
-  background: linear-gradient(45deg, #f87171, #fb7185);
   border-radius: 24px;
   padding: 2rem;
   overflow: hidden;

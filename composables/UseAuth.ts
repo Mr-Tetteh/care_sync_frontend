@@ -31,7 +31,7 @@ export const useAuth = () => {
     })
 
     const resetPassword = ref({
-        token: '',
+        resetToken: '',
         newPassword: '',
         confirmNewPassword: ''
     })
@@ -230,9 +230,14 @@ export const useAuth = () => {
             toast.error('New password and confirm password do not match');
             return;
         }
+        if (!resetPassword.value.token) {
+            const route = useRoute()
+            resetPassword.value.resetToken = route.query.token as string
+        }
+
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/reset-password`, {
-                method: 'POST',
+                method: 'PUT',
                 body: resetPassword.value,
                 headers: {
                     'Content-Type': 'application/json',
@@ -262,7 +267,9 @@ export const useAuth = () => {
         changePassword,
         password,
         reset,
-        forgetPassword
+        forgetPassword,
+        resetPassword,
+        resetAccountPassword
     }
 }
 
