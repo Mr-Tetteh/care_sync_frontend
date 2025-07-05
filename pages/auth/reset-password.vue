@@ -1,13 +1,13 @@
 <script setup lang="ts">
- import {useAuth} from "~/composables/UseAuth";
- import { useRoute } from 'vue-router'
+import {useAuth} from "~/composables/UseAuth";
+import {useRoute} from 'vue-router'
 
 
- const  {resetPassword, resetAccountPassword} = useAuth()
+const {resetPassword, resetAccountPassword} = useAuth()
 
- const onsubmit = async () => {
-   await resetAccountPassword()
- }
+const onsubmit = async () => {
+  await resetAccountPassword()
+}
 </script>
 
 <template>
