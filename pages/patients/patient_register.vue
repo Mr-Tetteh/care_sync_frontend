@@ -78,16 +78,16 @@ const handleSubmit = () => {
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main class="bg-gray-50 w-full p-10 justify-center">
+    <main class="bg-gray-50 md:w-full p-10 md:justify-center">
       <SidebarTrigger/>
       <div class="min-h-screen p-10">
         <div id="main">
-          <header class="mb-8">
+          <header class="mb-8 md:ml-52">
             <h1 class="text-3xl font-bold text-gray-900">Setup Wizard</h1>
             <p class="text-gray-600 mt-2">Complete the following steps to get started</p>
           </header>
 
-          <div class="max-w-4xl">
+          <div class="max-w-3xl  lg:ml-52">
             <form @submit.prevent="handleSubmit">
 
               <Stepper v-model="currentStep" class="mb-8">
