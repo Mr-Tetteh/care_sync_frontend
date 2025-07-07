@@ -6,16 +6,20 @@ export default defineNuxtRouteMiddleware((to, from) => {
         secure: false
     })
 
-    const user = useAuth()
+    const {user} = useAuth()
 
     if(!authToken.value) {
         return navigateTo('/auth/login')
     }
 
 
-    const requiredRole = to.meta.role;
+    const requiredRoles = to.meta.role;
 
-    if (requiredRole && user.value?.role !== requiredRole) {
+    if (
+        requiredRoles &&
+        Array.isArray(requiredRoles) &&
+        !requiredRoles.includes(user.value?.role)
+    ) {
         return navigateTo('/dashboard');
     }
 })

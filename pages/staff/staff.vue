@@ -9,7 +9,7 @@ import {definePageMeta} from "#imports";
 definePageMeta({
 
   title: 'Register Staff',
-  middleware: ['check-auth'],
+  middleware: ['check-auth']
 })
 const {getStaff, deleteUser} = useStaff()
 const {input, userById, updateUser, user} = useAuth()
@@ -104,7 +104,7 @@ const filteredStaff = computed(() => {
                       <th class="py-3 px-4 text-left">Role</th>
                       <th class="py-3 px-4 text-left">Gender</th>
                       <th class="py-3 px-4 text-left">Date of Birth</th>
-                      <th class="py-3 px-4 text-left" v-if="user.role == 'Manager'">Actions</th>
+                      <th class="py-3 px-4 text-left" v-if="user.role == 'Administrator'">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -121,7 +121,7 @@ const filteredStaff = computed(() => {
                           <Dialog>
                             <DialogTrigger class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-amber-500
                               hover:bg-amber-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
-                                           v-if="user.role == 'Manager'"
+                                           v-if="user.role == 'Administrator'"
                                            @click="edit(item.id)"
                             >
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -221,7 +221,7 @@ const filteredStaff = computed(() => {
                                           <select v-model="input.role"
                                                   class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                                           >
-                                            <option value="Manager">Manager</option>
+                                            <option value="Administrator">Administrator</option>
                                             <option value="Doctor">Doctor</option>
                                             <option value="Nurse">Nurse</option>
                                             <option value="Lab_Technician">Lab Technician</option>
@@ -249,7 +249,7 @@ const filteredStaff = computed(() => {
 
                             </DialogContent>
                           </Dialog>
-                          <button v-if="user.role == 'Manager'" @click="deleteUser(item.id)"
+                          <button v-if="user.role == 'Administrator'" @click="deleteUser(item.id)"
                                   class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="size-6">

@@ -11,7 +11,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
-  role: ['Pharmacist', 'Manager']
+  role: ['Pharmacist', 'Administrator']
 })
 
 const searchQuery = ref('')

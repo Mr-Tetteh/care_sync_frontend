@@ -17,6 +17,7 @@ export const useAuth = () => {
         date_of_birth: '',
         email: '',
         phone: '',
+        role: '',
         password: 'welcome to care sync',
     })
 
@@ -58,7 +59,7 @@ export const useAuth = () => {
 
             toast.success('User registered successfully')
             setTimeout(() => {
-                navigateTo('/auth/login')
+                navigateTo('/staff/staff')
             }, 2000)
         } catch (err: any) {
             return toast.error(err?.message || 'Unexpected error occurred')
