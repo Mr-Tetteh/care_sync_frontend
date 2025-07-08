@@ -57,9 +57,17 @@ export const usePatients = () => {
                     'Authorization': `Bearer ${authToken.value}`,
                 }
             })
-            if (error.value){
-                toast.error(error.value)
+            if (error.value) {
+                const messages = error.value.data.message;
+
+                if (Array.isArray(messages)) {
+                    messages.forEach((msg) => toast.error(msg)); // Show all error messages
+                } else {
+                    toast.error(messages || 'An unknown error occurred');
+                }
+                return;
             }
+
             toast.success('Patient Registered successfully')
             window.setTimeout( () =>{
                 window.location.href= '/patients/patients'
