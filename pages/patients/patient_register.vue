@@ -19,6 +19,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
+  role:  ['Receptionist'],
 })
 
 const {input, uploadPatient} = usePatients()

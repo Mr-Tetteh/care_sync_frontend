@@ -20,7 +20,7 @@ export const useAppointments = () => {
                 body: input.value
             })
             if (error.value) {
-                throw new error
+                toast.error(error.value.data?.message || 'An error occurred while creating the appointment')
             }
             toast.success('Appointment created successfully')
             setTimeout(() => {

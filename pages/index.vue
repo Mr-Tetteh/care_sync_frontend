@@ -23,13 +23,12 @@ const onSubmit = () => {
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main>
-      <SidebarTrigger/>
       <slot/>
-    </main>
-    <body class="bg-gray-50">
 
-    <!-- Hero Section -->
+    <div class="bg-gray-50 w-full">
+      <SidebarTrigger/>
+
+      <!-- Hero Section -->
     <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 hero-gradient">
       <div class="container mx-auto px-4">
         <div class="flex flex-col-reverse md:flex-row items-center">
@@ -444,7 +443,7 @@ const onSubmit = () => {
         </div>
       </div>
     </section>
-    </body>
+    </div>
   </SidebarProvider>
 
 </template>

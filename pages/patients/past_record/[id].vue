@@ -9,7 +9,7 @@ import {definePageMeta} from "#imports";
 
 definePageMeta({
 
-  title: 'Register Staff',
+  title: 'Patient Past Record',
   middleware: ['check-auth'],
 })
 

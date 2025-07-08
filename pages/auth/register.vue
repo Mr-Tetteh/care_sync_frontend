@@ -163,7 +163,7 @@ definePageMeta({
                   </div>
 
                   <!-- Date of Birth -->
-                  <div class="field-group">
+                  <div class="field-group md:col-span-2">
                     <div class="form-input-focus rounded-lg relative">
                       <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-indigo-500">
                         <i class="fas fa-calendar-alt"></i>

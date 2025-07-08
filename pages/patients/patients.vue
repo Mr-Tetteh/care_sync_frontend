@@ -53,11 +53,12 @@ const filteredPatients = computed(() => {
   <SidebarProvider>
     <AppSidebar/>
     <main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 w-full">
+      <SidebarTrigger class="p-2 hover:bg-slate-100 rounded-lg transition-colors"/>
+
       <!-- Sticky Header -->
       <div class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="flex items-center justify-between p-4 max-w-7xl mx-auto">
           <div class="flex items-center gap-4">
-            <SidebarTrigger class="p-2 hover:bg-slate-100 rounded-lg transition-colors"/>
             <div class="hidden sm:block">
               <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Patient Management

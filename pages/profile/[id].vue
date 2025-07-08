@@ -16,7 +16,7 @@ onMounted(async () => {
 
 definePageMeta({
 
-  title: 'Register Staff',
+  title: 'User Profile',
   middleware: ['check-auth'],
 })
 const onSubmit = async () => {

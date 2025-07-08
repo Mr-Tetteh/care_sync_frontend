@@ -11,7 +11,7 @@ import {definePageMeta} from "#imports";
 
 definePageMeta({
 
-  title: 'Register Staff',
+  title: 'Update Patient Record',
   middleware: ['check-auth'],
 })
 
