@@ -12,6 +12,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
+  role: ['Receptionist', 'Administrator'],
 })
 
 const {data: details} = await useAsyncData('details', async () => {
