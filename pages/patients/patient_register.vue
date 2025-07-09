@@ -218,7 +218,7 @@ const handleSubmit = () => {
                       <input type="text"
                              v-model="input.NHIS"
                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                             placeholder="Enter your email">
+                             placeholder="Enter your NHIS">
                     </div>
                   </div>
 
