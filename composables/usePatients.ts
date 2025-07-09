@@ -61,7 +61,7 @@ export const usePatients = () => {
                 const messages = error.value.data.message;
 
                 if (Array.isArray(messages)) {
-                    messages.forEach((msg) => toast.error(msg)); // Show all error messages
+                    messages.forEach((msg) => toast.error(msg));
                 } else {
                     toast.error(messages || 'An unknown error occurred');
                 }
@@ -69,11 +69,11 @@ export const usePatients = () => {
             }
 
             toast.success('Patient Registered successfully')
-            window.setTimeout( () =>{
-                window.location.href= '/patients/patients'
+            window.setTimeout(() => {
+                window.location.href = '/patients/patients'
 
             }, 1000)
-        }catch (error){
+        } catch (error) {
             toast.error(error)
         }
     }

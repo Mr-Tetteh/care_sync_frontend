@@ -34,7 +34,7 @@ definePageMeta({
 <!--                    {{user?.first_name[0]}}{{user?.other_names[0]}} {{user?.last_name[0]}}-->
                     {{user.first_name[0]}}{{user.last_name[0]}}
                   </div>
-                  <span class="font-medium">Daniel</span>
+                  <span class="font-medium">{{ user.first_name }} {{user.last_name}}</span>
                 </div>
                 <button class="flex items-center px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition-colors" @click="logout">
                   <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
