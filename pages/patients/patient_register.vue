@@ -19,7 +19,7 @@ definePageMeta({
 
   title: 'Register Staff',
   middleware: ['check-auth'],
-  role:  ['Receptionist'],
+  role: ['Receptionist'],
 })
 
 const {input, uploadPatient} = usePatients()
@@ -243,7 +243,7 @@ const handleSubmit = () => {
                       >
                     </div>
                     <div>
-                      <label class="block text-sm font-medium mb-2">Relation </label>
+                      <label class="block text-sm font-medium mb-2">Relation</label>
                       <input type="text"
                              v-model="input.guardian_1_relation"
                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -251,28 +251,21 @@ const handleSubmit = () => {
                     </div>
 
                     <div>
-                      <label class="block text-sm font-medium mb-2">Residence  </label>
+                      <label class="block text-sm font-medium mb-2">Residence</label>
                       <input type="text"
                              v-model="input.guardian_1_residence"
                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
                       >
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Contact </label>
+                    <div class="md:col-span-2">
+                      <label class="block text-sm font-medium mb-2">Contact</label>
                       <input type="tel"
                              v-model="input.guardian_1_contact"
                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
                       >
                     </div>
 
-                    <div class="span-cols-6">
-                      <label class="block text-sm font-medium mb-2">Relation </label>
-                      <input type="text"
-                             v-model="input.guardian_1_relation"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
                   </div>
                 </div>
 
@@ -301,13 +294,6 @@ const handleSubmit = () => {
                       >
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Contact </label>
-                      <input type="tel"
-                             v-model="input.guardian_2_contact"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
 
                     <div class="span-cols-6">
                       <label class="block text-sm font-medium mb-2">Residence</label>
@@ -316,6 +302,15 @@ const handleSubmit = () => {
                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
                       >
                     </div>
+
+                    <div class="md:col-span-2">
+                      <label class="block text-sm font-medium mb-2">Contact </label>
+                      <input type="tel"
+                             v-model="input.guardian_2_contact"
+                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      >
+                    </div>
+
                   </div>
                 </div>
 
