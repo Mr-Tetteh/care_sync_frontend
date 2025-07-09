@@ -18,7 +18,7 @@ export const useAuth = () => {
         email: '',
         phone: '',
         role: '',
-        password: 'welcome to care sync',
+        password: 'password',
     })
 
     const password = ref({

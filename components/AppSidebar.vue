@@ -28,11 +28,6 @@ const items = [
     url: "/dashboard",
     icon: ChartPieIcon,
   },
-  {
-    title: "Appointments",
-    url: "/patients/appointments",
-    icon: Inbox,
-  },
 ];
 </script>
 
@@ -67,6 +62,19 @@ const items = [
               </SidebarMenuButton>
             </SidebarMenuItem>
 
+            <SidebarMenuItem v-if="user &&(user.role === 'Administrator' || user.role === 'Receptionist')">
+              <SidebarMenuButton asChild>
+                <RouterLink to="/patients/appointments">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40L64 64C28.7 64 0 92.7 0 128l0 16 0 48L0
+                     448c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-256 0-48 0-16c0-35.3-28.7-64-64-64l-40 0
+                     0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40L152 64l0-40zM48 192l352 0 0 256c0 8.8-7.2 16-16 16L64
+                      464c-8.8 0-16-7.2-16-16l0-256z"/></svg>
+                  <span>Appointments</span>
+                </RouterLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
             <!-- Staff Dropdown -->
             <SidebarMenuItem v-if="user">
               <DropdownMenuRoot>
@@ -83,16 +91,16 @@ const items = [
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                     class="w-[--bits-dropdown-menu-anchor-width] bg-white rounded-lg shadow-lg border border-gray-200 py-1"
-                    side="right"
+                    side="left"
                     align="start">
-                  <DropdownMenuItem asChild>
-                    <RouterLink to="/staff/staff" class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
-                      Registered Staff
-                    </RouterLink>
-                  </DropdownMenuItem>
                   <DropdownMenuItem v-if="user.role === 'Administrator'" asChild>
                     <RouterLink to="/auth/register" class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
                       Register Staff
+                    </RouterLink>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <RouterLink to="/staff/staff" class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
+                      Registered Staff
                     </RouterLink>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -118,7 +126,8 @@ const items = [
                     side="right"
                     align="start">
                   <DropdownMenuItem v-if="user.role === 'Receptionist'" asChild>
-                    <RouterLink to="/patients/patient_register" class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
+                    <RouterLink to="/patients/patient_register"
+                                class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
                       Register Patient
                     </RouterLink>
                   </DropdownMenuItem>
@@ -132,7 +141,7 @@ const items = [
             </SidebarMenuItem>
 
             <!-- Pharmacy Dropdown -->
-            <SidebarMenuItem v-if="user && user.role === 'Pharmacist' && user.role === 'Administrator'"  >
+            <SidebarMenuItem v-if="user && (user.role === 'Pharmacist' || user.role === 'Administrator')">
               <DropdownMenuRoot>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton>
@@ -159,7 +168,8 @@ const items = [
                     </RouterLink>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <RouterLink to="/pharmacy/uploaded_drugs" class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
+                    <RouterLink to="/pharmacy/uploaded_drugs"
+                                class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
                       Uploaded Drugs
                     </RouterLink>
                   </DropdownMenuItem>
