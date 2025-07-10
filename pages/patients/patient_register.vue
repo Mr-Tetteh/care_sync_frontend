@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import {ref, computed} from 'vue'
-import {
-  Stepper,
-  StepperDescription,
-  StepperIndicator,
-  StepperItem,
-  StepperSeparator,
-  StepperTitle,
-  StepperTrigger,
-} from '@/components/ui/stepper'
 import {Button} from '@/components/ui/button'
 import {SidebarProvider, SidebarTrigger} from "~/components/ui/sidebar"
 import AppSidebar from "~/components/AppSidebar.vue"
@@ -22,340 +12,349 @@ definePageMeta({
   role: ['Receptionist'],
 })
 
-const {input, uploadPatient} = usePatients()
-const currentStep = ref(1)
-const totalSteps = 3
-
-const steps = [
-  {
-    id: 1,
-    title: 'Personal Information',
-    description: 'Enter your basic details'
-  },
-  {
-    id: 2,
-    title: 'First Guardian',
-    description: 'First Guardian Information'
-  },
-  {
-    id: 3,
-    title: 'Second Guardian',
-    description: 'Second Guardian Information'
-  },
-
-]
-
-const canGoNext = computed(() => currentStep.value < totalSteps)
-const canGoBack = computed(() => currentStep.value > 1)
-
-const nextStep = () => {
-  if (canGoNext.value) {
-    currentStep.value++
-  }
+const {input,is_loading, uploadPatient} = usePatients()
+const handleSubmit = async () => {
+  await uploadPatient();
 }
 
-const prevStep = () => {
-  if (canGoBack.value) {
-    currentStep.value--
-  }
-}
-
-const goToStep = (step: number) => {
-  if (step >= 1 && step <= totalSteps) {
-    currentStep.value = step
-  }
-}
-const getStepStatus = (stepNumber: number) => {
-  if (stepNumber < currentStep.value) return 'completed'
-  if (stepNumber === currentStep.value) return 'active'
-  return 'inactive'
-}
-
-const handleSubmit = () => {
-  uploadPatient()
-}
 </script>
 
 <template>
   <SidebarProvider>
     <AppSidebar/>
-    <main class="bg-gray-50 md:w-full p-10 md:justify-center">
-      <SidebarTrigger/>
-      <div class="min-h-screen p-10">
-        <div id="main">
-          <header class="mb-8 md:ml-52">
-            <h1 class="text-3xl font-bold text-gray-900">Setup Wizard</h1>
-            <p class="text-gray-600 mt-2">Complete the following steps to get started</p>
-          </header>
 
-          <div class="max-w-3xl  lg:ml-52">
-            <form @submit.prevent="handleSubmit">
+    <div id="app" class="w-full">
+      <div class="   bg-gradient-to-r from-orange-400 to-purple-400  mb-4 animate-fade-in">
+        <!-- Sidebar Trigger -->
+        <SidebarTrigger class="p-2 hover:bg-slate-100 rounded-lg transition-colors"/>
 
-              <Stepper v-model="currentStep" class="mb-8">
-                <StepperItem
-                    v-for="step in steps"
-                    :key="step.id"
-                    :step="step.id"
-                    class="cursor-pointer"
-                    @click="goToStep(step.id)"
-                >
-                  <StepperTrigger>
-                    <StepperIndicator
-                        :class="{
-                        'bg-primary text-primary-foreground': getStepStatus(step.id) === 'completed' || getStepStatus(step.id) === 'active',
-                        'bg-muted text-muted-foreground': getStepStatus(step.id) === 'inactive'
-                      }"
-                    >
-                      <span v-if="getStepStatus(step.id) === 'completed'">✓</span>
-                      <span v-else>{{ step.id }}</span>
-                    </StepperIndicator>
-                    <div class="text-left">
-                      <StepperTitle
-                          :class="{
-                          'text-primary': getStepStatus(step.id) === 'active',
-                          'text-muted-foreground': getStepStatus(step.id) === 'inactive'
-                        }"
-                      >
-                        {{ step.title }}
-                      </StepperTitle>
-                      <StepperDescription
-                          :class="{
-                          'text-primary/70': getStepStatus(step.id) === 'active',
-                          'text-muted-foreground': getStepStatus(step.id) !== 'active'
-                        }"
-                      >
-                        {{ step.description }}
-                      </StepperDescription>
+        <button class="sidebar-trigger">
+          <i class="fas fa-bars text-gray-700"></i>
+        </button>
+
+        <main class="min-h-screen p-4 md:p-10">
+          <div class="max-w-5xl mx-auto">
+            <!-- Header -->
+            <header class="text-center mb-10 animate-fade-in">
+              <div
+                  class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full mb-6">
+                <i class="fas fa-user-plus text-2xl text-white"></i>
+              </div>
+              <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Register Patient</h1>
+              <p class="text-white/80 text-lg">Complete the form to sign up a patient</p>
+            </header>
+
+            <!-- Main Form Card -->
+            <div class="glass-card rounded-2xl card-shadow p-8 md:p-12 animate-fade-in">
+              <form @submit.prevent="handleSubmit">
+                <!-- Patient Information Section -->
+                <div class="mb-12">
+                  <div class="section-header">
+                    <div class="flex items-center">
+                      <i class="fas fa-user text-2xl text-indigo-600 mr-3"></i>
+                      <h2 class="text-2xl font-semibold text-gray-800">Patient Information</h2>
                     </div>
-                  </StepperTrigger>
-                  <StepperSeparator v-if="step.id < totalSteps"/>
-                </StepperItem>
-              </Stepper>
+                    <span class="ml-3">Fields with <span class="text-red-400">(*)</span> are required </span>
 
-              <!-- Step Content -->
-              <div class="bg-white rounded-lg border p-8 mb-8">
-                <div v-if="currentStep === 1" class="space-y-6">
-                  <h2 class="text-2xl font-semibold">Personal Information</h2>
+                  </div>
+
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- First Name -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2 text-indigo-500"></i>First Name<span class="text-red-400">*</span>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">First Name</label>
+                      </label>
                       <input type="text"
                              v-model="input.first_name"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                              @input="input.first_name = input.first_name.replace(/[^a-zA-Z\s]/g, '')"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
                              placeholder="Enter patient first name">
                     </div>
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Last Name</label>
+
+                    <!-- Last Name -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2 text-indigo-500"></i>Last Name<span class="text-red-400">*</span>
+                      </label>
                       <input type="text"
                              v-model="input.last_name"
-
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                             @input="input.last_name = input.last_name.replace(/[^a-zA-Z\s]/g, '')"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
                              placeholder="Enter patient last name">
                     </div>
 
-
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Other Names</label>
+                    <!-- Other Names -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user-tag mr-2 text-indigo-500"></i>Other Names
+                      </label>
                       <input type="text"
                              v-model="input.other_names"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                             placeholder="Enter patient other names ">
+                             @input="input.other_names = input.other_names.replace(/[^a-zA-Z\s]/g, '')"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
+                             placeholder="Enter patient other names">
                     </div>
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Contact</label>
+
+                    <!-- Contact -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-phone mr-2 text-indigo-500"></i>Contact<span class="text-red-400">*</span>
+                      </label>
                       <input type="tel"
+                             inputmode="numeric"
+                             @input="input.phone = input.phone.replace(/\D/g, '')"
                              v-model="input.phone"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
                              placeholder="Enter patient contact">
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Age</label>
-                      <input type="number"
-                             v-model="input.age"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                             placeholder="Enter patient age ">
-                    </div>
-
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Date of Birth</label>
+                    <!-- Date of Birth -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>Date of Birth<span class="text-red-400">*</span>
+                      </label>
                       <input type="date"
                              v-model="input.date_of_birth"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
                              placeholder="Enter patient date of birth">
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Gender</label>
-                      <select
-                          v-model="input.gender"
-                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                      </select>
+                    <!-- Gender -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-venus-mars mr-2 text-indigo-500"></i>Gender<span class="text-red-400">*</span>
+                      </label>
+                      <div class="relative">
+                        <select v-model="input.gender"
+                                class="w-full px-4 py-3 select-focus rounded-xl bg-white/70 backdrop-blur-sm appearance-none">
+                          <option value="">Select Gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                      </div>
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Address</label>
+                    <!-- Address -->
+                    <div class="form-group md:col-span-2">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-map-marker-alt mr-2 text-indigo-500"></i>Address<span
+                          class="text-red-400">*</span>
+                      </label>
                       <input type="text"
                              v-model="input.address"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                             placeholder="Enter patient Address">
+                             @input="input.address = input.address.replace(/[^a-zA-Z\s]/g, '')"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
+                             placeholder="Enter patient address">
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Email</label>
+                    <!-- Email -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope mr-2 text-indigo-500"></i>Email
+                      </label>
                       <input type="email"
                              v-model="input.email"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
                              placeholder="Enter patient email">
                     </div>
 
-
-                    <div>
-                      <label class="block text-sm font-medium mb-2">NHIS</label>
+                    <!-- Ghana Card Number -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-id-card mr-2 text-indigo-500"></i>Ghana Card Number
+                      </label>
                       <input type="text"
-                             v-model="input.NHIS"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                             placeholder="Enter your NHIS">
+                             v-model="input.ghana_card_number"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
+                             placeholder="Enter Patient Ghana Card number">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Emergency Contact Section -->
+                <div class="mb-12">
+                  <div class="section-header">
+                    <div class="flex items-center">
+                      <i class="fas fa-exclamation-triangle text-2xl text-red-500 mr-3"></i>
+                      <h2 class="text-2xl font-semibold text-gray-800">Emergency Contact</h2>
                     </div>
                   </div>
 
-
-                </div>
-
-                <div v-else-if="currentStep === 2" class="space-y-6">
-                  <h2 class="text-2xl font-semibold">Guardian Info</h2>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label class="block text-sm font-medium mb-2">First Name</label>
+                    <!-- Emergency Personal Name -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user-shield mr-2 text-red-500"></i>Emergency Personal Name<span
+                          class="text-red-400">*</span>
+                      </label>
                       <input type="text"
-                             v-model="input.guardian_1_first_name"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Last Name</label>
-                      <input type="text"
-                             v-model="input.guardian_1_last_name"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Relation</label>
-                      <input type="text"
-                             v-model="input.guardian_1_relation"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
+                             v-model="input.emergency_personal_name"
+                             @input="input.emergency_personal_name = input.emergency_personal_name.replace(/[^a-zA-Z\s]/g, '')"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
+                             placeholder="Enter emergency contact name">
                     </div>
 
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Residence</label>
-                      <input type="text"
-                             v-model="input.guardian_1_residence"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-
-                    <div class="md:col-span-2">
-                      <label class="block text-sm font-medium mb-2">Contact</label>
+                    <!-- Emergency Contact -->
+                    <div class="form-group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-phone-alt mr-2 text-red-500"></i>Emergency Contact<span
+                          class="text-red-400">*</span>
+                      </label>
                       <input type="tel"
-                             v-model="input.guardian_1_contact"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
+                             inputmode="numeric"
+                             @input="input.emergency_personal_contact = input.emergency_personal_contact.replace(/\D/g, '')"
+                             v-model="input.emergency_personal_contact"
+                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
+                             placeholder="Enter emergency contact number">
                     </div>
-
                   </div>
                 </div>
 
-                <div v-else-if="currentStep === 3" class="space-y-6">
-                  <h2 class="text-2xl font-semibold">Second Guardian(optional)</h2>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label class="block text-sm font-medium mb-2">First Name</label>
-                      <input type="text"
-                             v-model="input.guardian_2_first_name"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Last Name</label>
-                      <input type="text"
-                             v-model="input.guardian_2_last_name"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-                    <div>
-                      <label class="block text-sm font-medium mb-2">Relation </label>
-                      <input type="text"
-                             v-model="input.guardian_2_relation"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-
-
-                    <div class="span-cols-6">
-                      <label class="block text-sm font-medium mb-2">Residence</label>
-                      <input type="text"
-                             v-model="input.guardian_2_residence"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-
-                    <div class="md:col-span-2">
-                      <label class="block text-sm font-medium mb-2">Contact </label>
-                      <input type="tel"
-                             v-model="input.guardian_2_contact"
-                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      >
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-              <!-- Navigation -->
-              <div class="flex justify-between">
-                <Button
-                    variant="outline"
-                    @click.prevent="prevStep"
-                    :disabled="!canGoBack"
-                    class="px-6"
-                >
-                  Previous
-                </Button>
-
-                <div class="flex gap-2">
-                  <Button
-                      v-if="currentStep < totalSteps"
-                      @click.prevent="nextStep"
-                      :disabled="!canGoNext"
-                      class="px-6"
+                <!-- Submit Button -->
+                <div class="text-center">
+                  <button type="submit"
+                          :disabled="is_loading"
+                          class="btn-primary px-8 py-4 text-white font-semibold rounded-xl text-lg inline-flex items-center"
+                          :class="is_loading? 'opacity-50 cursor-not-allowed' : ''"
                   >
-                    Next
-                  </Button>
-
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Register Patient
+                  </button>
                 </div>
-                <Button
-                    v-if="currentStep==3"
-                    class="px-6 bg-green-600 hover:bg-green-700"
-                    type="submit"
-                >
-                  Complete Setup
-                </Button>
-              </div>
-
-            </form>
-
-
-            <!-- Progress indicator -->
-            <div class="mt-6 text-center text-sm text-gray-500">
-              Step {{ currentStep }} of {{ totalSteps }}
+              </form>
             </div>
           </div>
-        </div>
+        </main>
       </div>
-    </main>
+    </div>
   </SidebarProvider>
 </template>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.card-shadow {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.input-focus {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid #e5e7eb;
+}
+
+.input-focus:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
+}
+
+.select-focus {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid #e5e7eb;
+}
+
+.select-focus:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+}
+
+.section-header {
+  position: relative;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+.floating-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  transition: color 0.3s ease;
+}
+
+.input-with-icon {
+  padding-left: 40px;
+}
+
+.input-focus:focus + .floating-icon {
+  color: #667eea;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar-trigger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sidebar-trigger:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 1);
+}
+</style>

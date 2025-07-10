@@ -2,6 +2,8 @@ import {useAuth} from "~/composables/UseAuth";
 import {toast} from "vue-sonner";
 
 export const usePatients = () => {
+    const is_loading = ref(false)
+
     const {authToken} = useAuth()
     const input = ref(
         {
@@ -14,17 +16,10 @@ export const usePatients = () => {
             gender: "",
             address: "",
             date_of_birth: "",
-            NHIS: "",
-            guardian_1_first_name: "",
-            guardian_1_last_name: "",
-            guardian_1_relation: "",
-            guardian_1_contact: "",
-            guardian_1_residence: "",
-            guardian_2_first_name: "",
-            guardian_2_last_name: "",
-            guardian_2_relation: "",
-            guardian_2_contact: "",
-            guardian_2_residence: ""
+            ghana_card_number: "GHA-",
+            emergency_personal_name: "",
+            emergency_personal_contact: "",
+            patient_id: ""
         }
     )
 
@@ -48,7 +43,14 @@ export const usePatients = () => {
     }
 
     const uploadPatient = async () => {
+        const characters = 'ABCDEFGHIJK456789LMNOPQRSTUVWXYZ0123';
+        let result = '';
+        for (let i = 0; i < 2; i++) {
+            result += (input.value.first_name[0] || '') + characters.charAt(Math.floor(Math.random() * characters.length)) + (input.value.last_name[0] || '');
+        }
+        is_loading.value = true
         try {
+            input.value.patient_id = result
             const {data, error} = await useFetch(useRuntimeConfig().public.api + '/patient', {
                 method: "POST",
                 body: input.value,
@@ -62,6 +64,7 @@ export const usePatients = () => {
 
                 if (Array.isArray(messages)) {
                     messages.forEach((msg) => toast.error(msg));
+                    is_loading.value = false
                 } else {
                     toast.error(messages || 'An unknown error occurred');
                 }
@@ -82,7 +85,8 @@ export const usePatients = () => {
     return {
         getPatients,
         uploadPatient,
-        input
+        input,
+        is_loading
     }
 
 }
