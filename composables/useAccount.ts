@@ -2,7 +2,7 @@ import {toast} from "vue-sonner";
 import {useAuth} from "~/composables/UseAuth";
 
 export const useAccount = () => {
-    const input = ref ({
+    const input = ref({
         first_name: '',
         last_name: '',
         other_names: '',
@@ -14,7 +14,7 @@ export const useAccount = () => {
 
     const params = useRoute().params
 
-
+    const {logout} = useAuth()
     const get_user_details = async (id) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/staff/${id}`, {
@@ -33,9 +33,32 @@ export const useAccount = () => {
         }
     }
 
+    const updateProfile = async (id) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
+                method: 'PATCH',
+                body: input.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                }
+            })
+            if (error){
+                return (error.value.message)
+            }
+            toast.success('Profile Updated Successfully')
+            setTimeout(() => {
+                logout();
+            }, 3000)
+        } catch (error) {
+            toast.error(error.value.data.message)
+        }
+    }
 
-    return{
+
+    return {
         input,
-        get_user_details
+        get_user_details,
+        updateProfile
     }
 }
