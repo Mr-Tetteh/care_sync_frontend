@@ -38,13 +38,10 @@ const filteredPatients = computed(() => {
 
   return details.value.filter(patient => {
     const searchTerm = searchQuery.value.toLowerCase();
-    const fullName = `${patient.first_name || ''} ${patient.other_names || ''} ${patient.last_name || ''}`.toLowerCase();
-    const email = (patient.email || '').toLowerCase();
-    const phone = (patient.phone || '').toLowerCase();
+    const patient_id = `${patient.patient_id || ''}`.toLowerCase();
 
-    return fullName.includes(searchTerm) ||
-        email.includes(searchTerm) ||
-        phone.includes(searchTerm);
+
+    return patient_id.includes(searchTerm)
   });
 });
 </script>
@@ -86,9 +83,10 @@ const filteredPatients = computed(() => {
               </div>
 
               <!-- Register Patient Button -->
-              <RouterLink
+              <NuxtLink
+                  v-if="user.role == 'Receptionist'"
                   class="inline-flex items-center gap-2 px-6 py-3 bg-white/20 hover:bg-white/30 text-white rounded-xl font-semibold transition-all duration-200 backdrop-blur-sm border border-white/30 hover:border-white/50 transform hover:scale-105"
-                  to="/patient_register"
+                  to="/patients/patient_register"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                      stroke="currentColor" class="w-5 h-5">
@@ -96,7 +94,7 @@ const filteredPatients = computed(() => {
                         d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
                 Register Patient
-              </RouterLink>
+              </NuxtLink>
             </div>
           </div>
 
@@ -113,7 +111,7 @@ const filteredPatients = computed(() => {
                   v-model="searchQuery"
                   type="text"
                   class="block w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Search by name, email, or phone..."
+                  placeholder="Search by patient ID"
               >
             </div>
           </div>
@@ -128,6 +126,12 @@ const filteredPatients = computed(() => {
                     Name
                   </th>
                   <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    Patient ID
+                  </th>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    Ghana Card Number
+                  </th>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Contact
                   </th>
                   <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Email
@@ -137,7 +141,8 @@ const filteredPatients = computed(() => {
                   <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date of
                     Birth
                   </th>
-                  <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider"  v-if="user.role === 'Nurse' || user.role === 'Doctor' || user.role === 'Pharmacist' || user.role === 'Lab_Technician'">
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider"
+                      v-if="user.role === 'Nurse' || user.role === 'Doctor' || user.role === 'Pharmacist' || user.role === 'Lab_Technician'">
                     Actions
                   </th>
                 </tr>
@@ -160,6 +165,12 @@ const filteredPatients = computed(() => {
                         </div>
                       </div>
                     </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-slate-900">{{ item.patient_id }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-slate-900">{{ item.ghana_card_number}}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-slate-900">{{ item.phone }}</div>
