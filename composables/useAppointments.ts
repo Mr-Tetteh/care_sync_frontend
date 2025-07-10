@@ -15,12 +15,23 @@ export const useAppointments = () => {
     const {authToken} = useAuth()
     const appointment = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/patients-appointment`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment`, {
                 method: 'POST',
                 body: input.value
             })
             if (error.value) {
-                toast.error(error.value.data?.message || 'An error occurred while creating the appointment')
+                const message = error.value.data.message;
+
+                if (Array.isArray(message)) {
+                    // Show each validation message separately
+                    message.forEach((msg: string) => toast.error(msg));
+                } else {
+                    // Fallback for other errors
+                    toast.error(message || 'Appointment creation failed');
+                }
+
+                return;
+
             }
             toast.success('Appointment created successfully')
             setTimeout(() => {
@@ -35,7 +46,7 @@ export const useAppointments = () => {
 
     const editAppointment = async (id) => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/patients-appointment/${id}`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,7 +56,7 @@ export const useAppointments = () => {
             if (error.value) {
                 throw new error
             }
-            input.value =  data.value
+            input.value = data.value
         } catch (error) {
             toast.error(error.data.message)
         }
@@ -53,7 +64,7 @@ export const useAppointments = () => {
 
     const updateAppointment = async (id) => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api+`/patients-appointment/${id}`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment/${id}`, {
                 method: 'PATCH',
                 body: input.value,
                 headers: {
@@ -75,7 +86,7 @@ export const useAppointments = () => {
 
     const readAppointment = async () => {
         try {
-            const {data, error} = await  useFetch(useRuntimeConfig().public.api+`/patients-appointment`, {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -84,7 +95,7 @@ export const useAppointments = () => {
                 }
             })
             return data
-        }catch (err){
+        } catch (err) {
             toast.error(err)
         }
 
