@@ -7,7 +7,7 @@ import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports";
 
 const {get_user_details, input, updateProfile} = useAccount();
-const {changePassword,password } = useAuth()
+const {finalChangePassword,password } = useAuth()
 const params = useRoute().params.id;
 
 onMounted(async () => {
@@ -24,7 +24,7 @@ const onSubmit = async () => {
 }
 
 const changePass = async () => {
-  await changePassword()
+  await finalChangePassword()
 }
 </script>
 

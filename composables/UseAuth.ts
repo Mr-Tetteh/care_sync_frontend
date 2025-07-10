@@ -1,6 +1,8 @@
 import {toast} from "vue-sonner";
 import {jwtDecode} from 'jwt-decode'
 
+import Swal from 'sweetalert2'
+
 export const useAuth = () => {
 
     const form = ref({
@@ -56,7 +58,6 @@ export const useAuth = () => {
 
                 return;
             }
-
             toast.success('User registered successfully')
             setTimeout(() => {
                 navigateTo('/staff/staff')
@@ -117,6 +118,28 @@ export const useAuth = () => {
         }
 
     }
+
+    const finalChangePassword = (id) => {
+        Swal.fire({
+            title: "Are you sure you want to change your password?",
+            text: "You will be logged out after changing your password!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Change password!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Password Updated!",
+                    text: "Your Password has been updated",
+                    icon: "success"
+                });
+                changePassword(id)
+            }
+        });
+    }
+
 
     const updateUser = async (id) => {
         try {
@@ -220,7 +243,7 @@ export const useAuth = () => {
                 return;
             }
             toast.success('A Reset password link has been sent to your email successfully');
-        }catch (error) {
+        } catch (error) {
             toast.error(error.data.message || 'An error occurred while sending the reset password email.')
         }
 
@@ -270,7 +293,8 @@ export const useAuth = () => {
         reset,
         forgetPassword,
         resetPassword,
-        resetAccountPassword
+        resetAccountPassword,
+        finalChangePassword
     }
 }
 

@@ -1,5 +1,6 @@
 import {toast} from "vue-sonner";
 import {useAuth} from "~/composables/UseAuth";
+import Swal from 'sweetalert2'
 
 export const useAccount = () => {
     const input = ref({
@@ -13,6 +14,7 @@ export const useAccount = () => {
     })
 
     const params = useRoute().params
+
 
     const {logout} = useAuth()
     const get_user_details = async (id) => {
@@ -33,7 +35,7 @@ export const useAccount = () => {
         }
     }
 
-    const updateProfile = async (id) => {
+    const finalUpdate = async (id) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
                 method: 'PATCH',
@@ -43,22 +45,42 @@ export const useAccount = () => {
                     'Authorization': `Bearer ${useAuth().authToken.value}`,
                 }
             })
-            if (error){
-                return (error.value.message)
+            if (error.value) {
+                toast.error(error.value.message);
+                return;
             }
-            toast.success('Profile Updated Successfully')
             setTimeout(() => {
                 logout();
-            }, 3000)
+            }, 20000)
         } catch (error) {
             toast.error(error.value.data.message)
         }
     }
-
+    const updateProfile = (id) => {
+        Swal.fire({
+            title: "Are you sure you want to update your profile?",
+            text: "You will be logged out after updating your profile",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Update"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Updated!",
+                    text: "Your Profile has been updated.",
+                    icon: "success"
+                });
+                finalUpdate(id)
+            }
+        });
+    }
 
     return {
         input,
         get_user_details,
-        updateProfile
+        updateProfile,
+        finalUpdate
     }
 }

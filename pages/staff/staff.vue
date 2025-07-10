@@ -11,7 +11,7 @@ definePageMeta({
   title: 'Register Staff',
   middleware: ['check-auth']
 })
-const {getStaff, deleteUser} = useStaff()
+const {getStaff, deleteUser, staff_delete} = useStaff()
 const {input, userById, updateUser, user} = useAuth()
 const searchQuery = ref('')
 
@@ -249,7 +249,7 @@ const filteredStaff = computed(() => {
 
                             </DialogContent>
                           </Dialog>
-                          <button v-if="user.role == 'Administrator'" @click="deleteUser(item.id)"
+                          <button v-if="user.role == 'Administrator'" @click="staff_delete(item.id)"
                                   class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="size-6">
