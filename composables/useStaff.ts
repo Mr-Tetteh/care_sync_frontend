@@ -1,5 +1,6 @@
 import {useAuth} from "~/composables/UseAuth";
 import {toast} from "vue-sonner";
+import Swal from 'sweetalert2'
 
 export const useStaff = () => {
 
@@ -29,8 +30,30 @@ export const useStaff = () => {
         }, 1000)
     }
 
+    const staff_delete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+                deleteUser(id)
+            }
+        });
+    }
+
     return {
         getStaff,
-        deleteUser
+        deleteUser,
+        staff_delete
     }
 }
