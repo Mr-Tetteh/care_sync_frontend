@@ -11,9 +11,11 @@ export const useAppointments = () => {
         status: ''
     })
     const appoointment = ref()
+    const is_loading = ref(false)
 
     const {authToken} = useAuth()
     const appointment = async () => {
+        is_loading.value = true
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment`, {
                 method: 'POST',
@@ -25,6 +27,7 @@ export const useAppointments = () => {
                 if (Array.isArray(message)) {
                     // Show each validation message separately
                     message.forEach((msg: string) => toast.error(msg));
+                    is_loading.value = false;
                 } else {
                     // Fallback for other errors
                     toast.error(message || 'Appointment creation failed');
@@ -107,6 +110,7 @@ export const useAppointments = () => {
         appointment,
         readAppointment,
         editAppointment,
-        updateAppointment
+        updateAppointment,
+        is_loading
     }
 }
