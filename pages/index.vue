@@ -13,14 +13,12 @@ import {
 } from '@/components/ui/dialog'
 import {useAppointments} from "~/composables/useAppointments";
 
-const {input, appointment} = useAppointments()
+const {input, appointment, is_loading} = useAppointments()
 
 const today = new Date().toISOString().split('T')[0];
 
-let is_loading = ref(false)
 const onSubmit = () => {
   appointment()
-  is_loading.value = true
 
 }
 </script>

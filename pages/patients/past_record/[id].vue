@@ -49,16 +49,20 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
 function formatDateWithOrdinal(dateString) {
   const date = new Date(dateString);
   const day = date.getDate();
-  const month = date.toLocaleString('en-US', { month: 'long' });
+  const month = date.toLocaleString('en-US', {month: 'long'});
   const year = date.getFullYear();
 
   const getOrdinal = (n) => {
     if (n > 3 && n < 21) return 'th'; // 4th to 20th
     switch (n % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
     }
   };
 
@@ -90,29 +94,215 @@ function formatDateWithOrdinal(dateString) {
                         </div>
 
                         <!-- Vitals Section -->
-                        <div class="section-container">
-                          <div class="section-header">
-                            <i class="bi bi-activity text-primary me-2"></i>
-                            <h5 class="mb-0">Nurse Notes</h5>
-                          </div>
-                          <div class="row g-3">
-                            <div class="col-md-12">
-                              <div class="vital-card">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                     stroke-width="1.5"
-                                     stroke="currentColor" class="size-6">
-                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
-                                </svg>
-                                <div>
-                                  <!-- Fixed: Display HTML content properly -->
-                                  <div v-html="record.nurse_notes"></div>
+                        <div class="bg-gray-50 min-h-screen">
+                          <div class="container mx-auto px-4 py-8 max-w-7xl">
+                            <!-- Vitals Session Container -->
+                            <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                              <!-- Session Header -->
+                              <div class="bg-gradient-to-r from-primary to-accent p-6 text-white">
+                                <div class="flex items-center justify-between">
+                                  <div class="flex items-center space-x-3">
+                                    <div class="bg-white/20 p-2 rounded-lg">
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                           viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+                                      </svg>
+                                    </div>
+                                    <div>
+                                      <h2 class="text-xl font-semibold">Vitals Session</h2>
+                                      <p class="text-white/80 text-sm">Real-time monitoring</p>
+                                    </div>
+                                  </div>
+                                  <div class="text-right">
+                                    <div class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                                      <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                                      Active
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- Vital Signs Grid -->
+                              <div class="p-6">
+                                <div class="flex items-center space-x-3 mb-6">
+                                  <div class="bg-primary/10 p-2 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none"
+                                         viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                    </svg>
+                                  </div>
+                                  <h3 class="text-lg font-semibold text-gray-900">Vital Signs</h3>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                  <!-- Temperature Card -->
+                                  <div
+                                      class="group bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 border border-red-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-red-500 p-3 rounded-full text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                        </svg>
+                                      </div>
+<!--                                      <div class="text-xs bg-red-200 text-red-800 px-2 py-1 rounded-full">Normal</div>-->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-red-700 font-medium mb-1">Temperature</p>
+                                      <p class="text-2xl font-bold text-red-900">{{record.temperature}}°C</p>
+                                    </div>
+                                  </div>
+
+                                  <!-- Pulse Rate Card -->
+                                  <div
+                                      class="group bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl p-6 border border-pink-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-pink-500 p-3 rounded-full text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                        </svg>
+                                      </div>
+<!--                                      <div class="text-xs bg-pink-200 text-pink-800 px-2 py-1 rounded-full">Normal</div>-->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-pink-700 font-medium mb-1">Pulse Rate</p>
+                                      <p class="text-2xl font-bold text-pink-900">{{ record.pulse_rate }} bpm</p>
+                                    </div>
+                                  </div>
+
+                                  <!-- Respiratory Rate Card -->
+                                  <div
+                                      class="group bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-blue-500 p-3 rounded-full text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                                        </svg>
+                                      </div>
+<!--                                      <div class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">Normal</div>-->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-blue-700 font-medium mb-1">Respiratory Rate</p>
+                                      <p class="text-2xl font-bold text-blue-900">{{ record.respiratory_rate }} breaths/min</p>
+                                    </div>
+                                  </div>
+
+                                  <!-- Blood Pressure Card -->
+                                  <div
+                                      class="group bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-purple-500 p-3 rounded-full text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                        </svg>
+                                      </div>
+<!--                                      <div class="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full">Normal</div>-->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-purple-700 font-medium mb-1">Blood Pressure</p>
+                                      <p class="text-2xl font-bold text-purple-900">{{record.blood_pressure}} mmHg</p>
+                                    </div>
+                                  </div>
+
+                                  <!-- Weight Card -->
+                                  <div
+                                      class="group bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-green-500 p-3 rounded-full text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                      </div>
+<!--                                      <div class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full">Stable</div>-->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-green-700 font-medium mb-1">Weight</p>
+                                      <p class="text-2xl font-bold text-green-900">{{record.weight}} Kg</p>
+                                    </div>
+                                  </div>
+
+
+                                  <div
+                                      class="group bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 border border-yellow-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                                  >
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-yellow-500 p-3 rounded-full text-white">
+                                        <!-- Pulse / Oxygen / Heartbeat Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M3 12h3l2-4 4 8 3-6h5"/>
+                                        </svg>
+                                      </div>
+                                      <!-- Optional Status Badge -->
+                                      <!-- <div class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">Normal</div> -->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-yellow-700 font-medium mb-1">SPO₂</p>
+                                      <p class="text-2xl font-bold text-yellow-900">{{ record.spo2 }} %</p>
+                                    </div>
+                                  </div>
+
+
+                                  <div
+                                      class="group bg-gradient-to-br from-cyan-50 to-yellow-100 rounded-xl p-6 border border-cyan-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                                  >
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-cyan-500 p-3 rounded-full text-white">
+                                        <!-- Blood drop / Glucose Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                             class="h-6 w-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 2C12 2 7 7.5 7 11a5 5 0 0010 0c0-3.5-5-9-5-9z" />
+                                        </svg>
+                                      </div>
+                                      <!-- Optional badge -->
+                                      <!-- <div class="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full">Normal</div> -->
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-cyan-700 font-medium mb-1">FBS</p>
+                                      <p class="text-2xl font-bold text-cyan-900">{{ record.fbs }} mg/dL</p>
+                                    </div>
+                                  </div>
+
+                                  <div
+                                      class="group bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-6 border border-rose-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                                  >
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-rose-500 p-3 rounded-full text-white">
+                                        <!-- Blood drop icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                             class="h-6 w-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 2C12 2 7 7.5 7 11a5 5 0 0010 0c0-3.5-5-9-5-9z" />
+                                        </svg>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-rose-700 font-medium mb-1">RBS</p>
+                                      <p class="text-2xl font-bold text-rose-900">{{ record.rbs }} mg/dL</p>
+                                    </div>
+                                  </div>
+
+
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-
                         <hr class="my-4"/>
 
                         <!-- Doctor's Assessment -->
@@ -210,6 +400,7 @@ function formatDateWithOrdinal(dateString) {
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .main_drop {
   margin-top: 10%;
 }
