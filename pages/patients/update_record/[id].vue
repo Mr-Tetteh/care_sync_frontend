@@ -18,16 +18,31 @@ definePageMeta({
 const params = useRoute().params
 const {authToken, user} = useAuth()
 const input = ref({
-  nurse_notes: '',
+  temperature: '',
+  pulse_rate: '',
+  respiratory_rate: '',
+  blood_pressure: '',
+  weight: '',
+  fbs: '',
+  rbs: '',
+  spo2: '',
   doctor_notes: '',
   laboratory_notes: '',
-  pharmacist_notes : '',
+  pharmacist_notes: '',
   user: ''
 })
 
 const patient_record_update = async () => {
   const requestBody = {
     nurse_notes: input.value.nurse_notes,
+    temperature: input.value.temperature,
+    pulse_rate:  input.value.pulse_rate,
+    respiratory_rate: input.value.respiratory_rate,
+    blood_pressure: input.value.blood_pressure,
+    weight: input.value.weight,
+    fbs: input.value.fbs,
+    rbs: input.value.rbs,
+    spo2: input.value.spo2,
     doctor_notes: input.value.doctor_notes,
     laboratory_notes: input.value.laboratory_notes,
     pharmacist_notes: input.value.pharmacist_notes
@@ -57,7 +72,7 @@ const patient_record_update = async () => {
 
 const get_patient_record = async (params) => {
   try {
-    const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params}`,{
+    const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -65,7 +80,7 @@ const get_patient_record = async (params) => {
       }
     })
     return data.value
-  }catch (error){
+  } catch (error) {
     toast.error('Error fetching patient record')
   }
 }
@@ -82,7 +97,7 @@ watch(past_record, (newData) => {
     input.value.doctor_notes = record.doctor_notes || '';
     input.value.laboratory_notes = record.laboratory_notes || '';
   }
-}, { immediate: true });
+}, {immediate: true});
 
 const onsubmit = () => {
   patient_record_update()
@@ -112,10 +127,54 @@ const onsubmit = () => {
             <!-- Display existing record data -->
             <div v-if="past_record && past_record.length > 0" class="mb-8 p-6 bg-white rounded-lg shadow-md">
               <h4 class="text-xl font-semibold mb-4 text-gray-800">Current Record Data</h4>
-
-              <div v-if="past_record[0].nurse_notes" class="mb-6">
+              <div  class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-blue-600">Nurse Notes:</h5>
-                <div class="prose max-w-none p-4 bg-blue-50 rounded-md" v-html="past_record[0].nurse_notes"></div>
+                <div class="bg-gray-50 p-6">
+                  <div class="max-w-md mx-auto bg-white rounded-lg shadow-sm border">
+                    <!-- Header -->
+                    <div class="px-6 py-4 border-b">
+                      <h2 class="text-lg font-semibold text-gray-900">Vital Signs</h2>
+                    </div>
+                    <!-- Simple List -->
+                    <div class="divide-y divide-gray-100">
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Temperature</span>
+                        <span class="font-medium text-gray-900">{{ past_record.temperature }}°C</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Pulse Rate</span>
+                        <span class="font-medium text-gray-900">{{ past_record.pulse_rate }} bpm</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Respiratory Rate</span>
+                        <span class="font-medium text-gray-900">{{ past_record.respiratory_rate }} breaths/min</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Blood Pressure</span>
+                        <span class="font-medium text-gray-900">{{ past_record.blood_pressure }} mmHg</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Weight</span>
+                        <span class="font-medium text-gray-900">{{ past_record.weight }} Kg</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">FBS</span>
+                        <span class="font-medium text-gray-900">{{ past_record.fbs }} mg/dL</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">RBS</span>
+                        <span class="font-medium text-gray-900">{{ past_record.rbs }} %</span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div v-if="past_record[0].doctor_notes" class="mb-6">
@@ -125,7 +184,8 @@ const onsubmit = () => {
 
               <div v-if="past_record[0].laboratory_notes" class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-purple-600">Laboratory Notes:</h5>
-                <div class="prose max-w-none p-4 bg-purple-50 rounded-md" v-html="past_record[0].laboratory_notes"></div>
+                <div class="prose max-w-none p-4 bg-purple-50 rounded-md"
+                     v-html="past_record[0].laboratory_notes"></div>
               </div>
             </div>
 
@@ -211,13 +271,16 @@ const onsubmit = () => {
 .prose {
   max-width: none;
 }
+
 .prose ul {
   list-style-type: disc;
   padding-left: 1.5rem;
 }
+
 .prose li {
   margin-bottom: 0.5rem;
 }
+
 .prose strong {
   font-weight: 600;
 }
