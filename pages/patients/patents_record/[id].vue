@@ -46,14 +46,19 @@ const patient_record = async () => {
       }
     })
     if (error.value) {
-      toast(error.value.message || 'An error occurred while creating the patient record')
+      const backendMessage = error.value?.data?.message;
+
+      const formattedMessage = Array.isArray(backendMessage)
+          ? backendMessage.join(' | ')
+          : backendMessage || error.value.message || 'An error occurred';
+      return toast.error(formattedMessage);
     } else {
       toast.success('Patient record created successfully')
     }
     setTimeout(() => {
       window.location.href = '/patients/patients'
     }, 1000)
-  } catch (error) {
+  } catch (error: any) {
     toast.error(error.message || 'An error occurred while creating the patient record');
   }
 }
