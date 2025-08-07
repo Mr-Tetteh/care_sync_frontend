@@ -16,7 +16,7 @@ export const useStaff = () => {
         return data
     }
 
-    const deleteUser = async (id) => {
+    const deleteUser = async (id: number) => {
         const {data, error} = await useFetch(`${useRuntimeConfig().public.api}/users/${id}`, {
             method: 'DELETE',
             headers: {
@@ -30,7 +30,7 @@ export const useStaff = () => {
         }, 1000)
     }
 
-    const staff_delete = (id) => {
+    const staff_delete = (id: number) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",

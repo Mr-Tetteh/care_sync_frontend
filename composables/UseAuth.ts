@@ -38,6 +38,7 @@ export const useAuth = () => {
         newPassword: '',
         confirmNewPassword: ''
     })
+
     const register = async () => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users`, {
@@ -68,11 +69,17 @@ export const useAuth = () => {
     }
 
 
+    const token = useCookie('session_token', {
+        sameSite: 'lax',
+        secure: false,
+    })
+
+
     const authToken = useCookie('session_token', {
         sameSite: 'strict',
         secure: false
     })
-    const userById = async (id) => {
+    const userById = async (id: number) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/staff/${id}`, {
                 method: 'GET',
@@ -82,11 +89,11 @@ export const useAuth = () => {
                 }
             })
             if (error.value) {
-                throw new Error(error.value.message)
+                toast.error(error.value.data?.message || 'An error occurred while fetching user details.');
             }
             // Make sure to return the data
             return data.value
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message)
             throw error
         }
@@ -113,13 +120,13 @@ export const useAuth = () => {
             }
             toast.success('Password changed successfully');
             logout()
-        } catch (err) {
+        } catch (err: any) {
             toast.error(err?.message || 'An error occurred while changing the password.');
         }
 
     }
 
-    const finalChangePassword = (id) => {
+    const finalChangePassword = (id: number) => {
         Swal.fire({
             title: "Are you sure you want to change your password?",
             text: "You will be logged out after changing your password!",
@@ -135,13 +142,13 @@ export const useAuth = () => {
                     text: "Your Password has been updated",
                     icon: "success"
                 });
-                changePassword(id)
+                changePassword()
             }
         });
     }
 
 
-    const updateUser = async (id) => {
+    const updateUser = async (id: number) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
                 method: 'PATCH',
@@ -162,35 +169,49 @@ export const useAuth = () => {
             setTimeout(() => {
                 window.location.reload();
             });
-        } catch (err) {
+        } catch (err: any) {
             console.error(err); // Log for debugging
             toast.error(err?.message || 'Unexpected error occurred.');
         }
     };
 
+    interface LoginResponse {
+        access_token: string;
+    }
 
     const login = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/auth/login`, {
-                method: 'POST',
-                body: form.value,
-                headers: {
-                    'Content-Type': 'application/json'
+            const { data, error } = await useFetch<LoginResponse>(
+                useRuntimeConfig().public.api + `/auth/login`,
+                {
+                    method: 'POST',
+                    body: form.value,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 }
-            })
+            )
+
             if (error.value) {
-                throw error.value
+                toast.error(error.value.message || 'Login failed')
+                return
             }
+
+            if (!data.value) {
+                toast.error('No data returned')
+                return
+            }
+
             authToken.value = data.value.access_token
             toast.success('Login successful')
             navigateTo('/dashboard')
-        } catch (error) {
-            toast.error(error.data.message)
+
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Unexpected error')
         }
     }
 
-    const logout = async => {
-
+    const logout = async () => {
         token.value = null
         navigateTo('/auth/login')
     }
@@ -221,16 +242,11 @@ export const useAuth = () => {
         }
         try {
             return jwtDecode<JwtPayload>(payloadToken.value)
-        } catch (err) {
+        } catch (err: any) {
             return null
         }
     })
 
-
-    const token = useCookie('session_token', {
-        sameSite: 'lax',
-        secure: false,
-    })
 
     const forgetPassword = async () => {
         try {
@@ -243,7 +259,7 @@ export const useAuth = () => {
                 return;
             }
             toast.success('A Reset password link has been sent to your email successfully');
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.data.message || 'An error occurred while sending the reset password email.')
         }
 
@@ -254,10 +270,11 @@ export const useAuth = () => {
             toast.error('New password and confirm password do not match');
             return;
         }
-        if (!resetPassword.value.token) {
+        if (!resetPassword.value.resetToken) {
             const route = useRoute()
             resetPassword.value.resetToken = route.query.token as string
         }
+
 
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/reset-password`, {
@@ -273,7 +290,7 @@ export const useAuth = () => {
             }
             toast.success('Password reset successfully');
             navigateTo('/auth/login')
-        } catch (err) {
+        } catch (err: any) {
             toast.error(err?.message || 'An error occurred while resetting the password.');
         }
     }

@@ -120,6 +120,7 @@ const onSubmit = () => {
                                         type="text"
                                         id="fullName"
                                         v-model="input.full_name"
+                                        @input="input.full_name = input.full_name.replace(/[^a-zA-Z\s]/g, '')"
                                         class="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400 transition-all duration-200 hover:border-gray-300 bg-white/80 backdrop-blur-sm"
                                         placeholder="Enter your full name"
                                     />
