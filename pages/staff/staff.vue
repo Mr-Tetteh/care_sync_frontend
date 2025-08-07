@@ -112,8 +112,24 @@ const filteredStaff = computed(() => {
                       <td class="py-4 px-4">{{ item.first_name }} {{ item.other_names }} {{ item.last_name }}</td>
                       <td class="py-4 px-4">{{ item.phone }}</td>
                       <td class="py-4 px-4">{{ item.email }}</td>
-                      <td class="py-4 px-4">{{ item.role }}</td>
-                      <td class="py-4 px-4">{{ item.gender }}</td>
+                      <td class="py-4 px-4">
+              <span
+                class="rounded-full px-3 py-1 text-xs font-semibold"
+                :class="{
+                  'bg-blue-600 text-white': item.role === 'Doctor',
+                  'bg-teal-500 text-white': item.role === 'Nurse',
+                  'bg-orange-500 text-white': item.role === 'Account',
+                  'bg-purple-500 text-white': item.role === 'Pharmacist',
+                  'bg-pink-500 text-white': item.role === 'Manager',
+                  'bg-gray-600 text-white': item.role === 'Lab Technician',
+                  'bg-yellow-400 text-black': item.role === 'Accountant',
+                  'bg-gray-800 text-white': item.role === 'Administrator',
+                  'bg-green-500 text-white': item.role === 'Receptionist'
+                }"
+              >
+                {{ item.role }}
+              </span>
+                      </td>                      <td class="py-4 px-4">{{ item.gender }}</td>
                       <td class="py-4 px-4">{{ item.date_of_birth }}</td>
                       <td class="py-4 px-4">
                         <div class="flex items-center space-x-3">

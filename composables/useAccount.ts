@@ -3,7 +3,17 @@ import {useAuth} from "~/composables/UseAuth";
 import Swal from 'sweetalert2'
 
 export const useAccount = () => {
-    const input = ref({
+
+     interface AccountInput{
+        first_name: '',
+        last_name: '',
+        other_names: '',
+        phone: '',
+        gender: '',
+        email: '',
+        date_of_birth: '',
+    }
+    const input = ref<AccountInput>({
         first_name: '',
         last_name: '',
         other_names: '',
@@ -17,7 +27,7 @@ export const useAccount = () => {
 
 
     const {logout} = useAuth()
-    const get_user_details = async (id) => {
+    const get_user_details = async (id: number) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/staff/${id}`, {
                 method: 'GET',
@@ -29,13 +39,13 @@ export const useAccount = () => {
             if (error.value) {
                 toast.error(error.value.message)
             }
-            input.value = data.value
-        } catch (error) {
+            input.value = data.value as AccountInput
+        } catch (error: any) {
             toast.error(error.message)
         }
     }
 
-    const finalUpdate = async (id) => {
+    const finalUpdate = async (id: number) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
                 method: 'PATCH',
@@ -52,11 +62,11 @@ export const useAccount = () => {
             setTimeout(() => {
                 logout();
             }, 20000)
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.value.data.message)
         }
     }
-    const updateProfile = (id) => {
+    const updateProfile = (id: number) => {
         Swal.fire({
             title: "Are you sure you want to update your profile?",
             text: "You will be logged out after updating your profile",

@@ -46,7 +46,7 @@ export const usePharmacy = () => {
                 toast.error(error.value)
             }
             return data
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.value)
         }
     }

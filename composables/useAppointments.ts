@@ -2,7 +2,16 @@ import {toast} from "vue-sonner";
 import {useAuth} from "~/composables/UseAuth";
 
 export const useAppointments = () => {
-    const input = ref({
+    interface AppointmentInput {
+        full_name: string;
+        phone_number: string;
+        appointment_time: string;
+        appointment_date: string;
+        reason: string;
+        status: string;
+    }
+
+    const input = ref<AppointmentInput>({
         full_name: '',
         phone_number: '',
         appointment_time: '',
@@ -10,7 +19,8 @@ export const useAppointments = () => {
         reason: '',
         status: ''
     })
-    const appoointment = ref()
+
+    const appointments = ref()
     const is_loading = ref(false)
 
     const {authToken} = useAuth()
@@ -40,14 +50,14 @@ export const useAppointments = () => {
             setTimeout(() => {
                 window.location.reload()
             }, 1000);
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.data.message)
         }
 
     }
 
 
-    const editAppointment = async (id) => {
+    const editAppointment = async (id: number) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment/${id}`, {
                 method: 'GET',
@@ -57,15 +67,17 @@ export const useAppointments = () => {
                 }
             })
             if (error.value) {
-                throw new error
+                toast.error(error)
             }
-            input.value = data.value
-        } catch (error) {
+            input.value = data.value as AppointmentInput
+        } catch (error: any) {
             toast.error(error.data.message)
         }
     }
 
-    const updateAppointment = async (id) => {
+    const updateAppointment = async (id: number) => {
+        is_loading.value = true
+
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-appointment/${id}`, {
                 method: 'PATCH',
@@ -76,13 +88,14 @@ export const useAppointments = () => {
                 }
             })
             if (error.value) {
-                throw new error
+                toast.error(error)
             }
             toast.success('Appointment deleted successfully')
             setTimeout(() => {
                 window.location.reload()
             }, 1000);
-        } catch (error) {
+        } catch (error: any) {
+            is_loading.value = false
             toast.error(error.data.message)
         }
     }
@@ -98,8 +111,8 @@ export const useAppointments = () => {
                 }
             })
             return data
-        } catch (err) {
-            toast.error(err)
+        } catch (error: any) {
+            toast.error(error)
         }
 
     }

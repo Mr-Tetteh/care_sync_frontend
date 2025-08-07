@@ -37,7 +37,7 @@ export const usePatients = () => {
                 toast('Sorry and error occurred')
             }
             return data
-        } catch (error) {
+        } catch (error: any) {
             alert(error.data.message)
         }
     }
@@ -76,7 +76,7 @@ export const usePatients = () => {
                 window.location.href = '/patients/patients'
 
             }, 1000)
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error)
         }
     }
