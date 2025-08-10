@@ -34,9 +34,8 @@ const input = ref({
 
 const patient_record_update = async () => {
   const requestBody = {
-    nurse_notes: input.value.nurse_notes,
     temperature: input.value.temperature,
-    pulse_rate:  input.value.pulse_rate,
+    pulse_rate: input.value.pulse_rate,
     respiratory_rate: input.value.respiratory_rate,
     blood_pressure: input.value.blood_pressure,
     weight: input.value.weight,
@@ -58,7 +57,7 @@ const patient_record_update = async () => {
       }
     })
     if (error.value) {
-      toast(error.value.message || 'An error occurred while creating the patient record')
+     return toast(error.value.message || 'An error occurred while creating the patient record')
     } else {
       toast.success('Patient record updated successfully')
     }
@@ -70,9 +69,10 @@ const patient_record_update = async () => {
   }
 }
 
-const get_patient_record = async (params) => {
+const id = params.id
+const get_patient_record = async (id: number) => {
   try {
-    const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params}`, {
+    const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const get_patient_record = async (params) => {
       }
     })
     return data.value
-  } catch (error) {
+  } catch (error: any) {
     toast.error('Error fetching patient record')
   }
 }
@@ -89,16 +89,24 @@ const {data: past_record} = await useAsyncData('past_record', async () => {
   return await get_patient_record(params.id);
 });
 
-// Watch for data changes and populate the form
 watch(past_record, (newData) => {
-  if (newData && newData.length > 0) {
-    const record = newData[0]; // Get the first record
-    input.value.nurse_notes = record.nurse_notes || '';
-    input.value.doctor_notes = record.doctor_notes || '';
-    input.value.laboratory_notes = record.laboratory_notes || '';
+  if (newData) {
+    const record = Array.isArray(newData) ? newData[0] : newData;
+    if (record) {
+      input.value.temperature = record.temperature || '';
+      input.value.pulse_rate = record.pulse_rate || '';
+      input.value.respiratory_rate = record.respiratory_rate || '';
+      input.value.blood_pressure = record.blood_pressure || '';
+      input.value.weight = record.weight || '';
+      input.value.spo2 = record.spo2 || '';
+      input.value.rbs = record.rbs || '';
+      input.value.fbs = record.fbs || '';
+      input.value.doctor_notes = record.doctor_notes || '';
+      input.value.laboratory_notes = record.laboratory_notes || '';
+      input.value.pharmacist_notes = record.pharmacist_notes || '';
+    }
   }
 }, {immediate: true});
-
 const onsubmit = () => {
   patient_record_update()
 }
@@ -125,9 +133,9 @@ const onsubmit = () => {
             </div>
 
             <!-- Display existing record data -->
-            <div v-if="past_record && past_record.length > 0" class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <div v-if="past_record" class="mb-8 p-6 bg-white rounded-lg shadow-md">
               <h4 class="text-xl font-semibold mb-4 text-gray-800">Current Record Data</h4>
-              <div  class="mb-6">
+              <div class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-blue-600">Nurse Notes:</h5>
                 <div class="bg-gray-50 p-6">
                   <div class="max-w-md mx-auto bg-white rounded-lg shadow-sm border">
@@ -177,15 +185,15 @@ const onsubmit = () => {
                 </div>
               </div>
 
-              <div v-if="past_record[0].doctor_notes" class="mb-6">
+              <div v-if="past_record.doctor_notes" class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-green-600">Doctor Notes:</h5>
-                <div class="prose max-w-none p-4 bg-green-50 rounded-md" v-html="past_record[0].doctor_notes"></div>
+                <div class="prose max-w-none p-4 bg-green-50 rounded-md" v-html="past_record.doctor_notes"></div>
               </div>
 
-              <div v-if="past_record[0].laboratory_notes" class="mb-6">
+              <div v-if="past_record.laboratory_notes" class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-purple-600">Laboratory Notes:</h5>
                 <div class="prose max-w-none p-4 bg-purple-50 rounded-md"
-                     v-html="past_record[0].laboratory_notes"></div>
+                     v-html="past_record.laboratory_notes"></div>
               </div>
             </div>
 
@@ -193,16 +201,192 @@ const onsubmit = () => {
               <!-- Nurse Session -->
               <div class="w-full max-w-4xl" v-if="user.role == 'Nurse'">
                 <p class="text-center text-2xl mb-4">Nurse Session</p>
-                <editor
-                    id="nurse-editor"
-                    v-model="input.nurse_notes"
-                    apiKey="ymk7tbhj4ul5sgm1y5zx7dc6g2qravp7l63cs23wxpvepxoh"
-                    :init="{
-                    plugins: 'advlist anchor autolink charmap code fullscreen help image insertdatetime link lists media preview searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                    height: 300
-                  }"
-                />
+                <div class="space-y-6">
+                  <h4 class="text-lg font-semibold text-gray-800 flex items-center border-b border-gray-200 pb-2">
+                    <i class="bi bi-heart-pulse text-red-500 mr-2"></i>
+                    Primary Vital Signs
+                  </h4>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Temperature -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-thermometer text-red-500 mr-2"></i>
+                        Temperature
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="36.5°C"
+                            v-model="input.temperature"
+                            :disabled="user.role !== 'Nurse'"
+                            @input="input.temperature = input.temperature.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-thermometer text-red-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Pulse Rate -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-heart-pulse text-pink-500 mr-2"></i>
+                        Pulse Rate
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="72 bpm"
+                            v-model="input.pulse_rate"
+                            @input="input.pulse_rate = input.pulse_rate.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-heart-pulse text-pink-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Respiratory Rate -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-lungs text-blue-500 mr-2"></i>
+                        Respiratory Rate
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="16 /min"
+                            v-model="input.respiratory_rate"
+                            @input="input.respiratory_rate = input.respiratory_rate.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-lungs text-blue-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Blood Pressure -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-activity text-purple-500 mr-2"></i>
+                        Blood Pressure
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="120/80 mmHg"
+                            @input="input.blood_pressure = input.blood_pressure.replace(/[^0-9/]/g, '').replace(/(\/.*)\/+/, '$1')"
+                            v-model="input.blood_pressure"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-activity text-purple-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-speedometer2 text-green-500 mr-2"></i>
+                        Weight
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="70 kg"
+                            @input="input.weight = input.weight.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                            v-model="input.weight"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-speedometer2 text-green-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- SPO2 -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-droplet text-cyan-500 mr-2"></i>
+                        SPO2
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="98%"
+                            @input="input.spo2 = input.spo2.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                            v-model="input.spo2"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-droplet text-cyan-500"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Blood Sugar Section -->
+                <div class="space-y-6">
+                  <h4 class="text-lg font-semibold text-gray-800 flex items-center border-b border-gray-200 pb-2">
+                    <i class="bi bi-graph-up text-orange-500 mr-2"></i>
+                    Blood Sugar Levels
+                  </h4>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- FBS -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-clipboard-data text-orange-500 mr-2"></i>
+                        FBS (Fasting Blood Sugar)
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="100 mg/dL"
+                            v-model="input.fbs"
+                            @input="input.fbs = input.fbs.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-clipboard-data text-orange-500"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- RBS -->
+                    <div class="group">
+                      <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="bi bi-clipboard-data text-yellow-500 mr-2"></i>
+                        RBS (Random Blood Sugar)
+                      </label>
+                      <div class="relative">
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pl-12 text-center bg-gray-50 group-hover:bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            placeholder="140 mg/dL"
+                            v-model="input.rbs"
+                            @input="input.rbs = input.rbs.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
+                            :disabled="user.role !== 'Nurse'"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <i class="bi bi-clipboard-data text-yellow-500"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Doctor Session -->
@@ -248,8 +432,6 @@ const onsubmit = () => {
                   }"
                 />
               </div>
-
-
               <!-- Submit Button -->
               <div>
                 <button

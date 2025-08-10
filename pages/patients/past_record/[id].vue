@@ -17,7 +17,7 @@ const {authToken} = useAuth()
 
 const params = useRoute().params.id
 
-const file = async (params) => {
+const file = async (params: number) => {
   try {
     const {data, error} = await useFetch(
         useRuntimeConfig().public.api + `/patients-records/patients/${params}`,
@@ -171,7 +171,7 @@ function formatDateWithOrdinal(dateString) {
                                     </div>
                                     <div>
                                       <p class="text-sm text-pink-700 font-medium mb-1">Pulse Rate</p>
-                                      <p class="text-2xl font-bold text-pink-900">{{ record.pulse_rate }} bpm</p>
+                                      <p class="text-2xl font-bold text-pink-900">{{ record.pulse_rate}} bpm</p>
                                     </div>
                                   </div>
 
@@ -255,7 +255,7 @@ function formatDateWithOrdinal(dateString) {
                                   </div>
 
 
-                                  <div
+                                  <div v-if="record.fbs"
                                       class="group bg-gradient-to-br from-cyan-50 to-yellow-100 rounded-xl p-6 border border-cyan-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
                                   >
                                     <div class="flex items-center justify-between mb-4">
@@ -271,13 +271,13 @@ function formatDateWithOrdinal(dateString) {
                                       <!-- Optional badge -->
                                       <!-- <div class="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full">Normal</div> -->
                                     </div>
-                                    <div>
+                                    <div v-if="record.fbs">
                                       <p class="text-sm text-cyan-700 font-medium mb-1">FBS</p>
                                       <p class="text-2xl font-bold text-cyan-900">{{ record.fbs }} mg/dL</p>
                                     </div>
                                   </div>
 
-                                  <div
+                                  <div v-if="record.rbs"
                                       class="group bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-6 border border-rose-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
                                   >
                                     <div class="flex items-center justify-between mb-4">
@@ -291,7 +291,7 @@ function formatDateWithOrdinal(dateString) {
                                         </svg>
                                       </div>
                                     </div>
-                                    <div>
+                                    <div >
                                       <p class="text-sm text-rose-700 font-medium mb-1">RBS</p>
                                       <p class="text-2xl font-bold text-rose-900">{{ record.rbs }} mg/dL</p>
                                     </div>
