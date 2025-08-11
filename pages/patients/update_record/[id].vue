@@ -26,10 +26,11 @@ const input = ref({
   fbs: '',
   rbs: '',
   spo2: '',
-  doctor_notes: '',
-  laboratory_notes: '',
-  pharmacist_notes: '',
-  user: ''
+  history: '',
+  examination_findings: '',
+  diagnosis: '',
+  investigations: '',
+  treatment: ''
 })
 
 const patient_record_update = async () => {
@@ -42,9 +43,12 @@ const patient_record_update = async () => {
     fbs: input.value.fbs,
     rbs: input.value.rbs,
     spo2: input.value.spo2,
-    doctor_notes: input.value.doctor_notes,
-    laboratory_notes: input.value.laboratory_notes,
-    pharmacist_notes: input.value.pharmacist_notes
+    history: input.value.history,
+    examination_findings: input.value.examination_findings,
+    diagnosis: input.value.diagnosis,
+    investigations: input.value.investigations,
+    treatment: input.value.treatment
+
   };
   try {
     const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params.id}`, {
@@ -57,7 +61,7 @@ const patient_record_update = async () => {
       }
     })
     if (error.value) {
-     return toast(error.value.message || 'An error occurred while creating the patient record')
+      return toast(error.value.message || 'An error occurred while creating the patient record')
     } else {
       toast.success('Patient record updated successfully')
     }
@@ -101,9 +105,13 @@ watch(past_record, (newData) => {
       input.value.spo2 = record.spo2 || '';
       input.value.rbs = record.rbs || '';
       input.value.fbs = record.fbs || '';
-      input.value.doctor_notes = record.doctor_notes || '';
-      input.value.laboratory_notes = record.laboratory_notes || '';
-      input.value.pharmacist_notes = record.pharmacist_notes || '';
+      input.value.history = record.history || '';
+      input.value.examination_findings = record.examination_findings || '';
+      input.value.diagnosis = record.diagnosis || '';
+      input.value.investigations = record.investigations || '';
+      input.value.treatment = record.treatment || '';
+
+
     }
   }
 }, {immediate: true});
@@ -133,7 +141,7 @@ const onsubmit = () => {
             </div>
 
             <!-- Display existing record data -->
-            <div v-if="past_record" class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <div v-if="past_record" class="mb-8 p-6 bg-white rounded-lg shadow-md row">
               <h4 class="text-xl font-semibold mb-4 text-gray-800">Current Record Data</h4>
               <div class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-blue-600">Nurse Notes:</h5>
@@ -184,6 +192,46 @@ const onsubmit = () => {
                   </div>
                 </div>
               </div>
+              <div class="mb-6">
+                <h5 class="text-lg font-medium mb-2 text-blue-600">Doctor's Notes:</h5>
+                <div class="bg-gray-50 p-6">
+                  <div class="max-w-md mx-auto bg-white rounded-lg shadow-sm border">
+                    <!-- Header -->
+                    <div class="px-6 py-4 border-b">
+                      <h2 class="text-lg font-semibold text-gray-900">Vital Signs</h2>
+                    </div>
+                    <!-- Simple List -->
+                    <div class="divide-y divide-gray-100">
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">History</span>
+                        <span class="font-medium text-gray-900">{{ past_record.history }}</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Examination Findings</span>
+                        <span class="font-medium text-gray-900">{{ past_record.examination_findings }} </span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Diagnosis</span>
+                        <span class="font-medium text-gray-900">{{ past_record.diagnosis }} </span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Investigations</span>
+                        <span class="font-medium text-gray-900">{{ past_record.investigations }}</span>
+                      </div>
+
+                      <div class="px-6 py-4 flex justify-between items-center">
+                        <span class="text-gray-700">Treatment</span>
+                        <span class="font-medium text-gray-900">{{ past_record.treatemnt }}</span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
 
               <div v-if="past_record.doctor_notes" class="mb-6">
                 <h5 class="text-lg font-medium mb-2 text-green-600">Doctor Notes:</h5>
@@ -196,6 +244,8 @@ const onsubmit = () => {
                      v-html="past_record.laboratory_notes"></div>
               </div>
             </div>
+
+
 
             <form class="flex flex-col items-center gap-8 mb-6" @submit.prevent="onsubmit()">
               <!-- Nurse Session -->
@@ -390,20 +440,142 @@ const onsubmit = () => {
               </div>
 
               <!-- Doctor Session -->
-              <div class="w-full max-w-4xl" v-if="user.role == 'Doctor'">
-                <p class="text-center text-2xl mb-4">Doctor's Session</p>
-                <editor
-                    id="doctor-editor"
-                    v-model="input.doctor_notes"
-                    apiKey="ymk7tbhj4ul5sgm1y5zx7dc6g2qravp7l63cs23wxpvepxoh"
-                    :init="{
-                    plugins: 'advlist anchor autolink charmap code fullscreen help image insertdatetime link lists media preview searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                    height: 300
-                  }"
-                />
-              </div>
+              <div class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
+                <div class="w-full max-w-5xl mx-auto">
+                  <!-- Header -->
+                  <div class="text-center mb-8">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">Doctor's Session</h1>
+                    <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto rounded-full"></div>
+                  </div>
 
+                  <!-- Main Card -->
+                  <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                    <!-- Section Header -->
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6">
+                      <div class="flex items-center justify-center">
+                        <i class="bi bi-person-workspace text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-semibold">Medical Assessment Form</h2>
+                      </div>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="p-8 bg-gradient-to-b from-gray-50 to-white">
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                        <!-- History of presenting complaints -->
+                        <div class="group">
+                          <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                            <i class="bi bi-clipboard2-pulse text-blue-500 mr-2"></i>
+                            History of Presenting Complaints
+                          </label>
+                          <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                                placeholder="Document the patient's chief complaints and history..."
+                                v-model="input.history"
+                                rows="8">
+                            </textarea>
+                            <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                              <i class="bi bi-clipboard2-pulse text-lg"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Examination findings -->
+                        <div class="group">
+                          <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                            <i class="bi bi-stethoscope text-green-500 mr-2"></i>
+                            Examination Findings
+                          </label>
+                          <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-green-300"
+                                placeholder="Record physical examination results..."
+                                v-model="input.examination_findings"
+                                rows="8">
+                            </textarea>
+                            <div class="absolute top-4 left-4 text-green-400 opacity-60">
+                              <i class="bi bi-stethoscope text-lg"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Diagnosis -->
+                        <div class="group">
+                          <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                            <i class="bi bi-journal-medical text-red-500 mr-2"></i>
+                            Diagnosis
+                          </label>
+                          <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-red-300"
+                                placeholder="Primary and differential diagnoses..."
+                                v-model="input.diagnosis"
+                                rows="8">
+                            </textarea>
+                            <div class="absolute top-4 left-4 text-red-400 opacity-60">
+                              <i class="bi bi-journal-medical text-lg"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Labs -->
+                        <div class="group">
+                          <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                            <i class="bi bi-graph-up text-purple-500 mr-2"></i>
+                            Investigations/Labs
+                          </label>
+                          <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-purple-300"
+                                placeholder="Laboratory results and diagnostic tests..."
+                                v-model="input.investigations"
+                                rows="8">
+                            </textarea>
+                            <div class="absolute top-4 left-4 text-purple-400 opacity-60">
+                              <i class="bi bi-graph-up text-lg"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Treatment Section (Full Width) -->
+                      <div class="mt-8 group">
+                        <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                          <i class="bi bi-capsule text-orange-500 mr-2"></i>
+                          Treatment Plan
+                        </label>
+                        <div class="relative">
+                        <textarea
+                            class="w-full h-32 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                   focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-300
+                                   resize-none shadow-sm hover:shadow-md group-hover:border-orange-300"
+                            placeholder="Prescribed medications, dosages, and treatment recommendations..."
+                            v-model="input.treatment"
+                            rows="5">
+                        </textarea>
+                          <div class="absolute top-4 left-4 text-orange-400 opacity-60">
+                            <i class="bi bi-capsule text-lg"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Footer -->
+                  <div class="text-center mt-8 text-gray-600">
+                    <p class="text-sm">Confidential Medical Document - Handle with Care</p>
+                  </div>
+                </div>
+              </div>
               <!-- Lab Session -->
               <div class="w-full max-w-4xl" v-if="user.role == 'Lab_Technician'">
                 <p class="text-center text-2xl mb-4">Lab Technician Session</p>
