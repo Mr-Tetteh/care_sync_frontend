@@ -57,7 +57,7 @@ const patient_record_update = async () => {
       }
     })
     if (error.value) {
-     return toast(error.value.message || 'An error occurred while creating the patient record')
+      return toast(error.value.message || 'An error occurred while creating the patient record')
     } else {
       toast.success('Patient record updated successfully')
     }
@@ -390,20 +390,153 @@ const onsubmit = () => {
               </div>
 
               <!-- Doctor Session -->
-              <div class="w-full max-w-4xl" v-if="user.role == 'Doctor'">
-                <p class="text-center text-2xl mb-4">Doctor's Session</p>
-                <editor
-                    id="doctor-editor"
-                    v-model="input.doctor_notes"
-                    apiKey="ymk7tbhj4ul5sgm1y5zx7dc6g2qravp7l63cs23wxpvepxoh"
-                    :init="{
-                    plugins: 'advlist anchor autolink charmap code fullscreen help image insertdatetime link lists media preview searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                    height: 300
-                  }"
-                />
-              </div>
+              <div class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
+              <div class="w-full max-w-5xl mx-auto">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                  <h1 class="text-4xl font-bold text-gray-800 mb-2">Doctor's Session</h1>
+                  <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 mx-auto rounded-full"></div>
+                </div>
 
+                <!-- Main Card -->
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                  <!-- Section Header -->
+                  <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6">
+                    <div class="flex items-center justify-center">
+                      <i class="bi bi-person-workspace text-2xl mr-3"></i>
+                      <h2 class="text-2xl font-semibold">Medical Assessment Form</h2>
+                    </div>
+                  </div>
+
+                  <!-- Form Content -->
+                  <div class="p-8 bg-gradient-to-b from-gray-50 to-white">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                      <!-- History of presenting complaints -->
+                      <div class="group">
+                        <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                          <i class="bi bi-clipboard2-pulse text-blue-500 mr-2"></i>
+                          History of Presenting Complaints
+                        </label>
+                        <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                                placeholder="Document the patient's chief complaints and history..."
+                                rows="8">
+                            </textarea>
+                          <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                            <i class="bi bi-clipboard2-pulse text-lg"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Examination findings -->
+                      <div class="group">
+                        <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                          <i class="bi bi-stethoscope text-green-500 mr-2"></i>
+                          Examination Findings
+                        </label>
+                        <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-green-300"
+                                placeholder="Record physical examination results..."
+                                rows="8">
+                            </textarea>
+                          <div class="absolute top-4 left-4 text-green-400 opacity-60">
+                            <i class="bi bi-stethoscope text-lg"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Diagnosis -->
+                      <div class="group">
+                        <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                          <i class="bi bi-journal-medical text-red-500 mr-2"></i>
+                          Diagnosis
+                        </label>
+                        <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-red-300"
+                                placeholder="Primary and differential diagnoses..."
+                                rows="8">
+                            </textarea>
+                          <div class="absolute top-4 left-4 text-red-400 opacity-60">
+                            <i class="bi bi-journal-medical text-lg"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Labs -->
+                      <div class="group">
+                        <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                          <i class="bi bi-graph-up text-purple-500 mr-2"></i>
+                          Investigations/Labs
+                        </label>
+                        <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-purple-300"
+                                placeholder="Laboratory results and diagnostic tests..."
+                                rows="8">
+                            </textarea>
+                          <div class="absolute top-4 left-4 text-purple-400 opacity-60">
+                            <i class="bi bi-graph-up text-lg"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Treatment Section (Full Width) -->
+                    <div class="mt-8 group">
+                      <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                        <i class="bi bi-capsule text-orange-500 mr-2"></i>
+                        Treatment Plan
+                      </label>
+                      <div class="relative">
+                        <textarea
+                            class="w-full h-32 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                   focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-300
+                                   resize-none shadow-sm hover:shadow-md group-hover:border-orange-300"
+                            placeholder="Prescribed medications, dosages, and treatment recommendations..."
+                            rows="5">
+                        </textarea>
+                        <div class="absolute top-4 left-4 text-orange-400 opacity-60">
+                          <i class="bi bi-capsule text-lg"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-center gap-4 mt-8">
+                      <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl
+                                   shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-blue-700 transform hover:scale-105
+                                   transition-all duration-200 flex items-center">
+                        <i class="bi bi-save mr-2"></i>
+                        Save Assessment
+                      </button>
+                      <button class="px-8 py-3 bg-gradient-to-r from-gray-400 to-gray-500 text-white font-semibold rounded-xl
+                                   shadow-lg hover:shadow-xl hover:from-gray-500 hover:to-gray-600 transform hover:scale-105
+                                   transition-all duration-200 flex items-center">
+                        <i class="bi bi-x-circle mr-2"></i>
+                        Clear Form
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center mt-8 text-gray-600">
+                  <p class="text-sm">Confidential Medical Document - Handle with Care</p>
+                </div>
+              </div>
+              </div>
               <!-- Lab Session -->
               <div class="w-full max-w-4xl" v-if="user.role == 'Lab_Technician'">
                 <p class="text-center text-2xl mb-4">Lab Technician Session</p>
