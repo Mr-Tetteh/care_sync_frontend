@@ -81,7 +81,7 @@ function formatDateWithOrdinal(dateString) {
           <div class="px-4 ">
             <div class="records-container main_drop">
 
-              <div class="card shadow-sm mb-4" v-for="(record, $index) in past_record" :key="record.id">
+              <div class="card shadow-sm" v-for="(record, $index) in past_record" :key="record.id">
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger>{{ formatDateWithOrdinal(record.created_at) }}</AccordionTrigger>
@@ -95,7 +95,7 @@ function formatDateWithOrdinal(dateString) {
 
                         <!-- Vitals Section -->
                         <div class="bg-gray-50 min-h-screen">
-                          <div class="container mx-auto px-4 py-8 max-w-7xl">
+                          <div class="container mx-auto">
                             <!-- Vitals Session Container -->
                             <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                               <!-- Session Header -->
@@ -148,11 +148,11 @@ function formatDateWithOrdinal(dateString) {
                                                 d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                         </svg>
                                       </div>
-<!--                                      <div class="text-xs bg-red-200 text-red-800 px-2 py-1 rounded-full">Normal</div>-->
+                                      <!--                                      <div class="text-xs bg-red-200 text-red-800 px-2 py-1 rounded-full">Normal</div>-->
                                     </div>
                                     <div>
                                       <p class="text-sm text-red-700 font-medium mb-1">Temperature</p>
-                                      <p class="text-2xl font-bold text-red-900">{{record.temperature}}°C</p>
+                                      <p class="text-2xl font-bold text-red-900">{{ record.temperature }}°C</p>
                                     </div>
                                   </div>
 
@@ -167,11 +167,11 @@ function formatDateWithOrdinal(dateString) {
                                                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                         </svg>
                                       </div>
-<!--                                      <div class="text-xs bg-pink-200 text-pink-800 px-2 py-1 rounded-full">Normal</div>-->
+                                      <!--                                      <div class="text-xs bg-pink-200 text-pink-800 px-2 py-1 rounded-full">Normal</div>-->
                                     </div>
                                     <div>
                                       <p class="text-sm text-pink-700 font-medium mb-1">Pulse Rate</p>
-                                      <p class="text-2xl font-bold text-pink-900">{{ record.pulse_rate}} bpm</p>
+                                      <p class="text-2xl font-bold text-pink-900">{{ record.pulse_rate }} bpm</p>
                                     </div>
                                   </div>
 
@@ -186,11 +186,12 @@ function formatDateWithOrdinal(dateString) {
                                                 d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
                                         </svg>
                                       </div>
-<!--                                      <div class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">Normal</div>-->
+                                      <!--                                      <div class="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">Normal</div>-->
                                     </div>
                                     <div>
                                       <p class="text-sm text-blue-700 font-medium mb-1">Respiratory Rate</p>
-                                      <p class="text-2xl font-bold text-blue-900">{{ record.respiratory_rate }} breaths/min</p>
+                                      <p class="text-2xl font-bold text-blue-900">{{ record.respiratory_rate }}
+                                        breaths/min</p>
                                     </div>
                                   </div>
 
@@ -205,11 +206,11 @@ function formatDateWithOrdinal(dateString) {
                                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                                         </svg>
                                       </div>
-<!--                                      <div class="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full">Normal</div>-->
+                                      <!--                                      <div class="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full">Normal</div>-->
                                     </div>
                                     <div>
                                       <p class="text-sm text-purple-700 font-medium mb-1">Blood Pressure</p>
-                                      <p class="text-2xl font-bold text-purple-900">{{record.blood_pressure}} mmHg</p>
+                                      <p class="text-2xl font-bold text-purple-900">{{ record.blood_pressure }} mmHg</p>
                                     </div>
                                   </div>
 
@@ -224,11 +225,11 @@ function formatDateWithOrdinal(dateString) {
                                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                         </svg>
                                       </div>
-<!--                                      <div class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full">Stable</div>-->
+                                      <!--                                      <div class="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full">Stable</div>-->
                                     </div>
                                     <div>
                                       <p class="text-sm text-green-700 font-medium mb-1">Weight</p>
-                                      <p class="text-2xl font-bold text-green-900">{{record.weight}} Kg</p>
+                                      <p class="text-2xl font-bold text-green-900">{{ record.weight }} Kg</p>
                                     </div>
                                   </div>
 
@@ -256,7 +257,7 @@ function formatDateWithOrdinal(dateString) {
 
 
                                   <div v-if="record.fbs"
-                                      class="group bg-gradient-to-br from-cyan-50 to-yellow-100 rounded-xl p-6 border border-cyan-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                                       class="group bg-gradient-to-br from-cyan-50 to-yellow-100 rounded-xl p-6 border border-cyan-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
                                   >
                                     <div class="flex items-center justify-between mb-4">
                                       <div class="bg-cyan-500 p-3 rounded-full text-white">
@@ -265,7 +266,7 @@ function formatDateWithOrdinal(dateString) {
                                              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                                              class="h-6 w-6">
                                           <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 2C12 2 7 7.5 7 11a5 5 0 0010 0c0-3.5-5-9-5-9z" />
+                                                d="M12 2C12 2 7 7.5 7 11a5 5 0 0010 0c0-3.5-5-9-5-9z"/>
                                         </svg>
                                       </div>
                                       <!-- Optional badge -->
@@ -278,7 +279,7 @@ function formatDateWithOrdinal(dateString) {
                                   </div>
 
                                   <div v-if="record.rbs"
-                                      class="group bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-6 border border-rose-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                                       class="group bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-6 border border-rose-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
                                   >
                                     <div class="flex items-center justify-between mb-4">
                                       <div class="bg-rose-500 p-3 rounded-full text-white">
@@ -287,11 +288,11 @@ function formatDateWithOrdinal(dateString) {
                                              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                                              class="h-6 w-6">
                                           <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 2C12 2 7 7.5 7 11a5 5 0 0010 0c0-3.5-5-9-5-9z" />
+                                                d="M12 2C12 2 7 7.5 7 11a5 5 0 0010 0c0-3.5-5-9-5-9z"/>
                                         </svg>
                                       </div>
                                     </div>
-                                    <div >
+                                    <div>
                                       <p class="text-sm text-rose-700 font-medium mb-1">RBS</p>
                                       <p class="text-2xl font-bold text-rose-900">{{ record.rbs }} mg/dL</p>
                                     </div>
@@ -306,18 +307,267 @@ function formatDateWithOrdinal(dateString) {
                         <hr class="my-4"/>
 
                         <!-- Doctor's Assessment -->
-                        <div class="section-container" v-if="record.doctor_notes">
-                          <div class="section-header gap-3">
-                            <i class="bi bi-file-medical text-primary me-2"></i>
-                            <h5 class="mb-0">Doctor's Assessment</h5>
-                          </div>
-                          <div class="row g-3">
-                            <div class="col-md-12">
-                              <div class="vital-card">
-                                <i class="bi bi-journal-medical text-primary"></i>
+                        <div class="bg-gray-50 p-8" v-if="record.history">
+                          <!-- Enhanced Doctor's Assessment Section -->
+                          <div class="max-w-6xl mx-auto">
+                            <div class="medical-section rounded-2xl p-8 shadow-xl animate-fade-in-up">
+                              <!-- Section Header -->
+                              <div class="flex items-center gap-4 mb-8">
+                                <div class="bg-white p-3 rounded-full shadow-lg">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                       stroke="currentColor" stroke-width="2" class="h-8 w-8 text-blue-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                  </svg>
+                                </div>
                                 <div>
-                                  <small class="text-muted mb-2">Doctor Notes</small>
-                                  <div v-html="record.doctor_notes"></div>
+                                  <h2 class="text-3xl font-bold text-white mb-1">Doctor's Assessment</h2>
+                                  <p class="text-blue-100">Comprehensive medical evaluation and treatment plan</p>
+                                </div>
+                              </div>
+
+                              <!-- Assessment Content -->
+                              <div class="gradient-border hover-lift">
+                                <div class="gradient-border-inner p-8">
+                                  <div class="flex items-start gap-4 mb-6">
+                                    <div
+                                        class="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2" class="h-6 w-6 text-white">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                      </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                      <h3 class="text-xl font-semibold text-gray-800 mb-2">Clinical Documentation</h3>
+                                      <p class="text-gray-600 text-sm">Detailed medical assessment and care plan</p>
+                                    </div>
+                                  </div>
+
+                                  <div class="space-y-6">
+                                    <!-- History Section -->
+                                    <div
+                                        class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-500 relative overflow-hidden">
+                                      <div class="absolute top-4 right-4 opacity-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-16 w-16 text-blue-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-3 mb-4">
+                                        <div class="bg-blue-100 p-2 rounded-lg">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-5 w-5 text-blue-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                          </svg>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                          <h4 class="font-semibold text-gray-800">Patient History</h4>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2"
+                                               class="h-4 w-4 text-blue-500 cursor-help">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                          </svg>
+                                        </div>
+                                      </div>
+                                      <div class="flex items-start gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-blue-400 mt-1 flex-shrink-0">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                        <div class="text-gray-700 leading-relaxed">
+                                          {{ record.history }}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="section-divider"></div>
+
+                                    <!-- Examination Findings -->
+                                    <div
+                                        class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border-l-4 border-green-500 relative overflow-hidden">
+                                      <div class="absolute top-4 right-4 opacity-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-16 w-16 text-green-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-3 mb-4">
+                                        <div class="bg-green-100 p-2 rounded-lg">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-5 w-5 text-green-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                          </svg>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                          <h4 class="font-semibold text-gray-800">Examination Findings</h4>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-green-500">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                                          </svg>
+                                        </div>
+                                      </div>
+                                      <div class="flex items-start gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-green-500 mt-1 flex-shrink-0">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <div class="text-gray-700 leading-relaxed">
+                                          {{ record.examination_findings }}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="section-divider"></div>
+
+                                    <!-- Diagnosis -->
+                                    <div
+                                        class="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border-l-4 border-purple-500 relative overflow-hidden">
+                                      <div class="absolute top-4 right-4 opacity-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-16 w-16 text-purple-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-3 mb-4">
+                                        <div class="bg-purple-100 p-2 rounded-lg">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-5 w-5 text-purple-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                                          </svg>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                          <h4 class="font-semibold text-gray-800">Diagnosis</h4>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-purple-500">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                          </svg>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-purple-400">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                                          </svg>
+                                        </div>
+                                      </div>
+                                      <div class="flex items-start gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-purple-500 mt-1 flex-shrink-0">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                        </svg>
+                                        <div class="text-gray-700 leading-relaxed font-medium">
+                                          {{ record.diagnosis }}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="section-divider"></div>
+
+                                    <!-- Investigations -->
+                                    <div
+                                        class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border-l-4 border-orange-500 relative overflow-hidden">
+                                      <div class="absolute top-4 right-4 opacity-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-16 w-16 text-orange-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-3 mb-4">
+                                        <div class="bg-orange-100 p-2 rounded-lg">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-5 w-5 text-orange-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                          </svg>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                          <h4 class="font-semibold text-gray-800">Investigations</h4>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-orange-500">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                          </svg>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-orange-400">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                          </svg>
+                                        </div>
+                                      </div>
+                                      <div class="flex items-start gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-orange-500 mt-1 flex-shrink-0">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                        </svg>
+                                        <div class="text-gray-700 leading-relaxed">
+                                          {{ record.investigations }}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="section-divider"></div>
+
+                                    <!-- Treatment Plan -->
+                                    <div
+                                        class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6 border-l-4 border-red-500 relative overflow-hidden">
+                                      <div class="absolute top-4 right-4 opacity-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-16 w-16 text-red-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-3 mb-4">
+                                        <div class="bg-red-100 p-2 rounded-lg">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-5 w-5 text-red-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                          </svg>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                          <h4 class="font-semibold text-gray-800">Treatment Plan</h4>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-red-500">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                          </svg>
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-4 w-4 text-red-400">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4V7a2 2 0 012-2h4a2 2 0 012 2v4M8 15h8v4a2 2 0 01-2 2H10a2 2 0 01-2-2v-4z"/>
+                                          </svg>
+                                        </div>
+                                      </div>
+                                      <div class="flex items-start gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-red-500 mt-1 flex-shrink-0">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <div class="text-gray-700 leading-relaxed">
+                                          {{ record.treatment }}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -325,7 +575,6 @@ function formatDateWithOrdinal(dateString) {
                         </div>
 
                         <hr class="my-4">
-
                         <!-- Laboratory Results -->
                         <div class="section-container" v-if="record.laboratory_notes">
                           <div class="section-header gap-3">
@@ -376,16 +625,6 @@ function formatDateWithOrdinal(dateString) {
                   </AccordionItem>
                 </Accordion>
               </div>
-
-              <!-- Empty State (shown when no records) -->
-              <div v-if="!past_record || past_record.length === 0" class="card shadow-sm no_record">
-                <div class="card-body text-center py-5">
-                  <i class="bi bi-clipboard-x text-muted fs-1"></i>
-                  <h5 class="mt-3">No Records Found</h5>
-                  <p class="text-muted">No medical records are available for this patient.</p>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
@@ -636,5 +875,56 @@ hr {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.gradient-border {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2px;
+  border-radius: 16px;
+}
+
+.gradient-border-inner {
+  background: white;
+  border-radius: 14px;
+}
+
+.medical-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.medical-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-divider {
+  background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+  height: 1px;
 }
 </style>
