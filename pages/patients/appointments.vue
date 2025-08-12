@@ -15,18 +15,25 @@ definePageMeta({
   role: ['Receptionist', 'Administrator'],
 })
 
-const {data: details} = await useAsyncData('details', async () => {
-  const res = await readAppointment();
-  return res.value
-});
-
-const edit = async (id) => {
+interface Appointment {
+  id: number
+  full_name: string
+  phone_number: string
+  appointment_date: string
+  appointment_time: string
+  reason: string
+  status: 'pending' | 'approved' | 'declined'
+}
+const { data: details } = await useAsyncData<Appointment[]>('details', async () => {
+  const res = await readAppointment()
+  return res.value || []
+})
+const edit = async (id: number): Promise<void> => {
   await editAppointment(id);
 };
 
-const onUpdate = async (id) => {
+const onUpdate = async (id: number): Promise<void> => {
   await updateAppointment(id);
-  // Optionally, you can reset the input or close the dialog after updating
 };
 
 </script>
@@ -85,7 +92,7 @@ const onUpdate = async (id) => {
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                    <tr v-for="item in details" :key="item.id" class="hover:bg-gray-50 transition-colors duration-200">
+                    <tr v-for="item in details || []" :key="item.id" class="hover:bg-gray-50 transition-colors duration-200">
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.full_name }}</td>
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.phone_number }}</td>
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.appointment_date }}</td>

@@ -17,7 +17,24 @@ definePageMeta({
 
 const params = useRoute().params
 const {authToken, user} = useAuth()
-const input = ref({
+
+interface PatientRecord {
+  temperature: string;
+  pulse_rate: string;
+  respiratory_rate: string;
+  blood_pressure: string;
+  weight: string;
+  fbs: string;
+  rbs: string;
+  spo2: string;
+  history: string;
+  examination_findings: string;
+  diagnosis: string;
+  investigations: string;
+  treatment: string;
+}
+
+const input = ref<PatientRecord>({
   temperature: '',
   pulse_rate: '',
   respiratory_rate: '',
@@ -48,7 +65,6 @@ const patient_record_update = async () => {
     diagnosis: input.value.diagnosis,
     investigations: input.value.investigations,
     treatment: input.value.treatment
-
   };
   try {
     const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params.id}`, {
@@ -68,7 +84,7 @@ const patient_record_update = async () => {
     setTimeout(() => {
       window.location.href = '/patients/patients'
     }, 1000)
-  } catch (error) {
+  } catch (error: any) {
     toast.error(error.message || 'An error occurred while updating the patient record');
   }
 }
@@ -130,7 +146,10 @@ const onsubmit = () => {
         <div id="main">
           <header class="mb-4">
             <a href="#" class="block xl:hidden">
-              <i class="text-2xl bi bi-justify"></i>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
             </a>
           </header>
 
@@ -246,14 +265,24 @@ const onsubmit = () => {
             </div>
 
 
-
-            <form class="flex flex-col items-center gap-8 mb-6" @submit.prevent="onsubmit()">
+            <form class="flex flex-col items-center gap-8 mb-6 bg-gradient-to-b from-gray-50 to-white" @submit.prevent="onsubmit()">
               <!-- Nurse Session -->
-              <div class="w-full max-w-4xl" v-if="user.role == 'Nurse'">
-                <p class="text-center text-2xl mb-4">Nurse Session</p>
+              <div v-if="user.role == 'Nurse'" class="w-full max-w-4xl">
+                <div class="flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500 mr-2" fill="none"
+                       viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                  <p class="text-2xl font-semibold text-gray-800">Nurse Session</p>
+                </div>
                 <div class="space-y-6">
                   <h4 class="text-lg font-semibold text-gray-800 flex items-center border-b border-gray-200 pb-2">
-                    <i class="bi bi-heart-pulse text-red-500 mr-2"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
                     Primary Vital Signs
                   </h4>
 
@@ -261,7 +290,11 @@ const onsubmit = () => {
                     <!-- Temperature -->
                     <div class="group">
                       <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="bi bi-thermometer text-red-500 mr-2"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/>
+                        </svg>
                         Temperature
                       </label>
                       <div class="relative">
@@ -271,10 +304,13 @@ const onsubmit = () => {
                             placeholder="36.5°C"
                             v-model="input.temperature"
                             :disabled="user.role !== 'Nurse'"
-                            @input="input.temperature = input.temperature.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')"
                         >
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="bi bi-thermometer text-red-500"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -282,7 +318,11 @@ const onsubmit = () => {
                     <!-- Pulse Rate -->
                     <div class="group">
                       <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="bi bi-heart-pulse text-pink-500 mr-2"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
                         Pulse Rate
                       </label>
                       <div class="relative">
@@ -295,7 +335,11 @@ const onsubmit = () => {
                             :disabled="user.role !== 'Nurse'"
                         >
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="bi bi-heart-pulse text-pink-500"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -303,7 +347,13 @@ const onsubmit = () => {
                     <!-- Respiratory Rate -->
                     <div class="group">
                       <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="bi bi-lungs text-blue-500 mr-2"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11.25V8.75a3.75 3.75 0 00-3.75-3.75h-1.5A1.5 1.5 0 0112.25 4v-.75a.75.75 0 00-1.5 0V4a1.5 1.5 0 01-1.5 1.5H8.75A3.75 3.75 0 005 8.75v2.5a.75.75 0 01-1.5 0v-2.5a5.25 5.25 0 015.25-5.25h1.5a3 3 0 013 3v.75a.75.75 0 001.5 0v-.75a1.5 1.5 0 011.5-1.5h1.5a5.25 5.25 0 015.25 5.25v2.5a.75.75 0 01-1.5 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.75 15.75a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v-1.5a.75.75 0 011.5 0v.75h4.5v-.75a.75.75 0 011.5 0v1.5z"/>
+                        </svg>
                         Respiratory Rate
                       </label>
                       <div class="relative">
@@ -316,7 +366,13 @@ const onsubmit = () => {
                             :disabled="user.role !== 'Nurse'"
                         >
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="bi bi-lungs text-blue-500"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 11.25V8.75a3.75 3.75 0 00-3.75-3.75h-1.5A1.5 1.5 0 0112.25 4v-.75a.75.75 0 00-1.5 0V4a1.5 1.5 0 01-1.5 1.5H8.75A3.75 3.75 0 005 8.75v2.5a.75.75 0 01-1.5 0v-2.5a5.25 5.25 0 015.25-5.25h1.5a3 3 0 013 3v.75a.75.75 0 001.5 0v-.75a1.5 1.5 0 011.5-1.5h1.5a5.25 5.25 0 015.25 5.25v2.5a.75.75 0 01-1.5 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15.75 15.75a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v-1.5a.75.75 0 011.5 0v.75h4.5v-.75a.75.75 0 011.5 0v1.5z"/>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -324,7 +380,11 @@ const onsubmit = () => {
                     <!-- Blood Pressure -->
                     <div class="group">
                       <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="bi bi-activity text-purple-500 mr-2"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
                         Blood Pressure
                       </label>
                       <div class="relative">
@@ -337,7 +397,11 @@ const onsubmit = () => {
                             :disabled="user.role !== 'Nurse'"
                         >
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="bi bi-activity text-purple-500"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -345,7 +409,11 @@ const onsubmit = () => {
                     <!-- Weight -->
                     <div class="group">
                       <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="bi bi-speedometer2 text-green-500 mr-2"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m0 6h12m-6 0a2 2 0 100-4 2 2 0 000 4m0 4v10m0-10a2 2 0 100-4 2 2 0 000 4z"/>
+                        </svg>
                         Weight
                       </label>
                       <div class="relative">
@@ -358,7 +426,11 @@ const onsubmit = () => {
                             :disabled="user.role !== 'Nurse'"
                         >
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="bi bi-speedometer2 text-green-500"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m0 6h12m-6 0a2 2 0 100-4 2 2 0 000 4m0 4v10m0-10a2 2 0 100-4 2 2 0 000 4z"/>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -366,7 +438,11 @@ const onsubmit = () => {
                     <!-- SPO2 -->
                     <div class="group">
                       <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="bi bi-droplet text-cyan-500 mr-2"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                        </svg>
                         SPO2
                       </label>
                       <div class="relative">
@@ -379,7 +455,11 @@ const onsubmit = () => {
                             :disabled="user.role !== 'Nurse'"
                         >
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <i class="bi bi-droplet text-cyan-500"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -440,7 +520,7 @@ const onsubmit = () => {
               </div>
 
               <!-- Doctor Session -->
-              <div class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
+              <div v-if="user.role == 'Doctor'" class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
                 <div class="w-full max-w-5xl mx-auto">
                   <!-- Header -->
                   <div class="text-center mb-8">
@@ -453,19 +533,26 @@ const onsubmit = () => {
                     <!-- Section Header -->
                     <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6">
                       <div class="flex items-center justify-center">
-                        <i class="bi bi-person-workspace text-2xl mr-3"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white mr-3" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
                         <h2 class="text-2xl font-semibold">Medical Assessment Form</h2>
                       </div>
                     </div>
 
                     <!-- Form Content -->
-                    <div class="p-8 bg-gradient-to-b from-gray-50 to-white">
+                    <div class="p-8">
                       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
                         <!-- History of presenting complaints -->
                         <div class="group">
                           <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                            <i class="bi bi-clipboard2-pulse text-blue-500 mr-2"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 mr-2"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 20l4-16m4 4l4 4-4 4m-4-4H4"/>
+                            </svg>
                             History of Presenting Complaints
                           </label>
                           <div class="relative">
@@ -475,6 +562,7 @@ const onsubmit = () => {
                                        resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
                                 placeholder="Document the patient's chief complaints and history..."
                                 v-model="input.history"
+                                :disabled="user.role !== 'Doctor'"
                                 rows="8">
                             </textarea>
                             <div class="absolute top-4 left-4 text-blue-400 opacity-60">
@@ -486,7 +574,11 @@ const onsubmit = () => {
                         <!-- Examination findings -->
                         <div class="group">
                           <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                            <i class="bi bi-stethoscope text-green-500 mr-2"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-2" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5M19 11a7 7 0 01-7 7m0 0c-1.707 0-3.192.833-4.293 2.143l-1.814-1.815a4.104 4.104 0 00-5.794 1.393m0 0A7 7 0 0119 11"/>
+                            </svg>
                             Examination Findings
                           </label>
                           <div class="relative">
@@ -499,15 +591,24 @@ const onsubmit = () => {
                                 rows="8">
                             </textarea>
                             <div class="absolute top-4 left-4 text-green-400 opacity-60">
-                              <i class="bi bi-stethoscope text-lg"></i>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                   stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M19 11H5M19 11a7 7 0 01-7 7m0 0c-1.707 0-3.192.833-4.293 2.143l-1.814-1.815a4.104 4.104 0 00-5.794 1.393m0 0A7 7 0 0119 11"/>
+                              </svg>
                             </div>
                           </div>
                         </div>
-
                         <!-- Diagnosis -->
                         <div class="group">
                           <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                            <i class="bi bi-journal-medical text-red-500 mr-2"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 mr-2"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                              <rect x="3" y="3" width="7" height="7"/>
+                              <rect x="14" y="3" width="7" height="7"/>
+                              <path d="M21 21H3a2 2 0 01-2-2V5a2 2 0 012-2h18a2 2 0 012 2v16a2 2 0 01-2 2z"/>
+                            </svg>
                             Diagnosis
                           </label>
                           <div class="relative">
@@ -520,7 +621,13 @@ const onsubmit = () => {
                                 rows="8">
                             </textarea>
                             <div class="absolute top-4 left-4 text-red-400 opacity-60">
-                              <i class="bi bi-journal-medical text-lg"></i>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
+                                   stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                   stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <path d="M21 21H3a2 2 0 01-2-2V5a2 2 0 012-2h18a2 2 0 012 2v16a2 2 0 01-2 2z"/>
+                              </svg>
                             </div>
                           </div>
                         </div>
@@ -528,7 +635,11 @@ const onsubmit = () => {
                         <!-- Labs -->
                         <div class="group">
                           <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                            <i class="bi bi-graph-up text-purple-500 mr-2"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500 mr-2" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
                             Investigations/Labs
                           </label>
                           <div class="relative">
@@ -541,7 +652,11 @@ const onsubmit = () => {
                                 rows="8">
                             </textarea>
                             <div class="absolute top-4 left-4 text-purple-400 opacity-60">
-                              <i class="bi bi-graph-up text-lg"></i>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                   stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                              </svg>
                             </div>
                           </div>
                         </div>
@@ -550,7 +665,11 @@ const onsubmit = () => {
                       <!-- Treatment Section (Full Width) -->
                       <div class="mt-8 group">
                         <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                          <i class="bi bi-capsule text-orange-500 mr-2"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500 mr-2" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 11H5M19 11a7 7 0 01-7 7m0 0c-1.707 0-3.192.833-4.293 2.143l-1.814-1.815a4.104 4.104 0 00-5.794 1.393m0 0A7 7 0 0119 11"/>
+                          </svg>
                           Treatment Plan
                         </label>
                         <div class="relative">
@@ -563,7 +682,11 @@ const onsubmit = () => {
                             rows="5">
                         </textarea>
                           <div class="absolute top-4 left-4 text-orange-400 opacity-60">
-                            <i class="bi bi-capsule text-lg"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5M19 11a7 7 0 01-7 7m0 0c-1.707 0-3.192.833-4.293 2.143l-1.814-1.815a4.104 4.104 0 00-5.794 1.393m0 0A7 7 0 0119 11"/>
+                            </svg>
                           </div>
                         </div>
                       </div>
@@ -578,7 +701,14 @@ const onsubmit = () => {
               </div>
               <!-- Lab Session -->
               <div class="w-full max-w-4xl" v-if="user.role == 'Lab_Technician'">
-                <p class="text-center text-2xl mb-4">Lab Technician Session</p>
+                <div class="flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500 mr-2" fill="none"
+                       viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                  </svg>
+                  <p class="text-2xl font-semibold text-gray-800">Lab Technician Session</p>
+                </div>
                 <editor
                     id="lab-editor"
                     v-model="input.laboratory_notes"
@@ -590,27 +720,115 @@ const onsubmit = () => {
                   }"
                 />
               </div>
-
               <div class="w-full max-w-4xl" v-if="user.role == 'Pharmacist'">
-                <p class="text-center text-2xl mb-4">Pharmacist Session</p>
-                <editor
-                    id="lab-editor"
-                    v-model="input.pharmacist_notes"
-                    apiKey="ymk7tbhj4ul5sgm1y5zx7dc6g2qravp7l63cs23wxpvepxoh"
-                    :init="{
-                    plugins: 'advlist anchor autolink charmap code fullscreen help image insertdatetime link lists media preview searchreplace table visualblocks wordcount',
-                    toolbar: 'undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                    height: 300
-                  }"
-                />
+                <div class="flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500 mr-2" fill="none"
+                       viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                  </svg>
+                  <p class="text-2xl font-semibold text-gray-800">Pharmacist Session</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="group">
+                    <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-500 mr-2" fill="none"
+                           viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11a2 2 0 012-2v6a2 2 0 01-2 2H1a2 2 0 01-2-2V9a2 2 0 012-2m14 0h-3"/>
+                      </svg>
+                      <p class="text-2xl font-semibold text-gray-800">Medication</p>
+                    </label>
+                    <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                                placeholder="Medication Note"
+                                v-model="input.medication_notes"
+                                rows="8">
+                            </textarea>
+                      <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-500 mr-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11a2 2 0 012-2v6a2 2 0 01-2 2H1a2 2 0 01-2-2V9a2 2 0 012-2m14 0h-3"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-500" fill="none"
+                           viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="group">
+                    <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h6a1 1 0 01-1 1v-1zM5 7h3.5a1 1 0 000-2H5a1 1 0 100 2z"/>
+                      </svg>
+                      Prescription
+                    </label>
+                    <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                                placeholder="Prescription Note"
+                                v-model="input.prescription_notes"
+                                rows="8">
+                            </textarea>
+                      <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h6a1 1 0 01-1 1v-1zM5 7h3.5a1 1 0 000-2H5a1 1 0 100 2z"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                      </svg>
+                      Additional Notes
+                    </label>
+                    <div class="relative">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                                placeholder="Additional Note"
+                                v-model="input.additional_notes"
+                                rows="8">
+                            </textarea>
+                      <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!-- Submit Button -->
               <div>
                 <button
                     type="submit"
-                    class="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md text-lg"
+                    class="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md text-lg flex items-center justify-center transition-colors duration-200"
                 >
-                  Update Record
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  Save Changes
                 </button>
               </div>
             </form>

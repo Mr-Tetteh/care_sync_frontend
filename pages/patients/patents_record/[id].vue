@@ -8,6 +8,8 @@ import {toast} from "vue-sonner";
 import {ref, onMounted} from 'vue'
 import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports";
+import {useRuntimeConfig, useRoute} from '#imports';
+
 
 definePageMeta({
 
@@ -17,7 +19,22 @@ definePageMeta({
 
 const params = useRoute().params
 const {authToken, user} = useAuth()
-const input = ref({
+
+interface PatientRecordInput {
+  temperature: string;
+  pulse_rate: string;
+  respiratory_rate: string;
+  blood_pressure: string;
+  weight: string;
+  fbs: string;
+  rbs: string;
+  spo2: string;
+  doctor_notes: string;
+  laboratory_notes: string;
+  patient: string | string[];
+}
+
+const input = ref<PatientRecordInput>({
   temperature: '',
   pulse_rate: '',
   respiratory_rate: '',
@@ -35,33 +52,39 @@ onMounted(() => {
   input.value.patient = params.id
 })
 
-const patient_record = async () => {
+const patient_record = async (): Promise<void> => {
   try {
-    const {data, error} = await useFetch(useRuntimeConfig().public.api + '/patients-records', {
-      method: 'POST',
-      body: input.value,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken.value}`,
-      }
-    })
+    const {data, error} = await useFetch<{ message: string }>(`${useRuntimeConfig().public.api}/patients-records`, {
+          method: 'POST',
+          body: input.value,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken.value}`,
+          }
+        }
+    );
+
     if (error.value) {
-      const backendMessage = error.value?.data?.message;
+      const errorData = error.value.data as { message: string | string[] } | null;
+      const backendMessage = errorData?.message;
 
       const formattedMessage = Array.isArray(backendMessage)
           ? backendMessage.join(' | ')
           : backendMessage || error.value.message || 'An error occurred';
+
       return toast.error(formattedMessage);
     } else {
-      toast.success('Patient record created successfully')
+      toast.success('Patient record created successfully');
     }
+
     setTimeout(() => {
-      window.location.href = '/patients/patients'
-    }, 1000)
+      navigateTo('/patients/patients');
+    }, 1000);
   } catch (error: any) {
-    toast.error(error.message || 'An error occurred while creating the patient record');
+    const errorMessage = error.response?._data?.message || error.message || 'An error occurred while creating the patient record';
+    toast.error(errorMessage);
   }
-}
+};
 
 const onsubmit = () => {
   patient_record()
