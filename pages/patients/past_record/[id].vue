@@ -17,10 +17,30 @@ const {authToken} = useAuth()
 
 const params = useRoute().params.id
 
-const file = async (params: number) => {
+interface PatientRecord {
+  id: number;
+  created_at: string;
+  temperature?: string | number;
+  pulse_rate?: string | number;
+  respiratory_rate?: string | number;
+  blood_pressure?: string;
+  weight?: string | number;
+  spo2?: string | number;
+  fbs?: string | number;
+  rbs?: string | number;
+  history?: string;
+  examination_findings?: string;
+  diagnosis?: string;
+  investigations?: string;
+  treatment?: string;
+  laboratory_notes?: string;
+  pharmacist_notes?: string;
+}
+
+const file = async (patientId: string | string[]): Promise<PatientRecord[]> => {
   try {
-    const {data, error} = await useFetch(
-        useRuntimeConfig().public.api + `/patients-records/patients/${params}`,
+    const { data, error } = await useFetch<PatientRecord[]>(
+        `${useRuntimeConfig().public.api}/patients-records/patients/${patientId}`,
         {
           method: 'GET',
           headers: {
@@ -29,6 +49,7 @@ const file = async (params: number) => {
           }
         }
     );
+
     if (error.value || !data.value) {
       toast.error('Failed to fetch records. Please try again later.');
       return [];
@@ -40,29 +61,26 @@ const file = async (params: number) => {
   }
 };
 
-// Fixed: Properly return the result from file function
-const {data: past_record} = await useAsyncData('past_record', async () => {
-  return await file(params); // Added return statement
-});
 
+const { data: past_record } = await useAsyncData<PatientRecord[]>(
+    'past_record',
+    () => file(params)
+);
 
-function formatDateWithOrdinal(dateString) {
+// Update the formatDateWithOrdinal function with proper typing
+function formatDateWithOrdinal(dateString: string): string {
   const date = new Date(dateString);
   const day = date.getDate();
-  const month = date.toLocaleString('en-US', {month: 'long'});
+  const month = date.toLocaleString('en-US', { month: 'long' });
   const year = date.getFullYear();
 
-  const getOrdinal = (n) => {
-    if (n > 3 && n < 21) return 'th'; // 4th to 20th
+  const getOrdinal = (n: number): string => {
+    if (n > 3 && n < 21) return 'th';
     switch (n % 10) {
-      case 1:
-        return 'st';
-      case 2:
-        return 'nd';
-      case 3:
-        return 'rd';
-      default:
-        return 'th';
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
     }
   };
 
@@ -79,7 +97,7 @@ function formatDateWithOrdinal(dateString) {
       <div class="min-h-screen ">
         <div id="main">
           <div class="px-4 ">
-            <div class="records-container main_drop">
+            <div class="records-container main_drop" v-if="past_record && past_record.length > 0">
 
               <div class="card shadow-sm" v-for="(record, $index) in past_record" :key="record.id">
                 <Accordion type="single" collapsible>
@@ -94,8 +112,8 @@ function formatDateWithOrdinal(dateString) {
                         </div>
 
                         <!-- Vitals Section -->
-                        <div class="bg-gray-50 min-h-screen">
-                          <div class="container mx-auto">
+                        <div class="bg-gray-50">
+                          <div class="container mx-auto py-4">
                             <!-- Vitals Session Container -->
                             <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                               <!-- Session Header -->
@@ -304,10 +322,10 @@ function formatDateWithOrdinal(dateString) {
                             </div>
                           </div>
                         </div>
-                        <hr class="my-4"/>
+                        <hr class="my-2"/>
 
                         <!-- Doctor's Assessment -->
-                        <div class="bg-gray-50 p-8" v-if="record.history">
+                        <div class="bg-gray-50 p-4" v-if="record.history">
                           <!-- Enhanced Doctor's Assessment Section -->
                           <div class="max-w-6xl mx-auto">
                             <div class="medical-section rounded-2xl p-8 shadow-xl animate-fade-in-up">
@@ -626,9 +644,21 @@ function formatDateWithOrdinal(dateString) {
                 </Accordion>
               </div>
             </div>
+            <div v-else class="flex items-center justify-center min-h-[50vh] w-full">
+              <div class="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <p class="text-gray-600 text-lg font-medium">No records found</p>
+                <p class="text-gray-500 text-sm">There are no past records available for this patient.</p>
+              </div>
+            </div>
           </div>
         </div>
+
+
       </div>
+
     </main>
   </SidebarProvider>
 </template>
