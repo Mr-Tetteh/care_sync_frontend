@@ -34,12 +34,14 @@ interface PatientRecord {
   investigations?: string;
   treatment?: string;
   laboratory_notes?: string;
-  pharmacist_notes?: string;
+  medication_notes?: string;
+  prescription_notes?: string;
+  pharmacist_additional_notes?: string;
 }
 
 const file = async (patientId: string | string[]): Promise<PatientRecord[]> => {
   try {
-    const { data, error } = await useFetch<PatientRecord[]>(
+    const {data, error} = await useFetch<PatientRecord[]>(
         `${useRuntimeConfig().public.api}/patients-records/patients/${patientId}`,
         {
           method: 'GET',
@@ -62,7 +64,7 @@ const file = async (patientId: string | string[]): Promise<PatientRecord[]> => {
 };
 
 
-const { data: past_record } = await useAsyncData<PatientRecord[]>(
+const {data: past_record} = await useAsyncData<PatientRecord[]>(
     'past_record',
     () => file(params)
 );
@@ -71,16 +73,20 @@ const { data: past_record } = await useAsyncData<PatientRecord[]>(
 function formatDateWithOrdinal(dateString: string): string {
   const date = new Date(dateString);
   const day = date.getDate();
-  const month = date.toLocaleString('en-US', { month: 'long' });
+  const month = date.toLocaleString('en-US', {month: 'long'});
   const year = date.getFullYear();
 
   const getOrdinal = (n: number): string => {
     if (n > 3 && n < 21) return 'th';
     switch (n % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
     }
   };
 
@@ -107,7 +113,9 @@ function formatDateWithOrdinal(dateString: string): string {
                       <div class="card-body">
                         <!-- Section Title -->
                         <div class="d-flex align-items-center mb-4 gap-3">
-                          <i class="bi bi-journal-medical text-primary fs-3 me-2"></i>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary me-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l9-4 9 4zM9 14h6" />
+                          </svg>
                           <h4 class="mb-0">Medical Record #{{ $index + 1 }} {{ new Date(record.created_at) }}</h4>
                         </div>
 
@@ -339,8 +347,8 @@ function formatDateWithOrdinal(dateString: string): string {
                                   </svg>
                                 </div>
                                 <div>
-                                  <h2 class="text-3xl font-bold text-white mb-1">Doctor's Assessment</h2>
-                                  <p class="text-blue-100">Comprehensive medical evaluation and treatment plan</p>
+                                  <h2 class="text-3xl font-bold text-black mb-1">Doctor's Assessment</h2>
+                                  <p class="text-blue-400">Comprehensive medical evaluation and treatment plan</p>
                                 </div>
                               </div>
 
@@ -612,25 +620,184 @@ function formatDateWithOrdinal(dateString: string): string {
                           </div>
                         </div>
 
-                        <!-- Laboratory Results -->
-                        <div class="section-container" v-if="record.pharmacist_notes">
-                          <div class="section-header gap-3">
-                            <i class="bi bi-flask text-primary me-2"></i>
-                            <h5 class="mb-0">Pharmacist Results</h5>
-                          </div>
-                          <div class="row g-3">
-                            <div class="col-md-12">
-                              <div class="vital-card">
-                                <i class="bi bi-clipboard2-data text-primary"></i>
-                                <div>
-                                  <small class="text-muted mb-2">Pharmacist Notes</small>
-                                  <div v-html="record.pharmacist_notes"></div>
+
+                        <!-- Enhanced Pharmacist's Assessment Section -->
+                        <div class="max-w-6xl mx-auto">
+                          <div class="medical-section rounded-2xl p-8 shadow-xl animate-fade-in-up">
+                            <!-- Section Header with Pharmacy Icon -->
+                            <div class="flex items-center gap-4 mb-8">
+                              <div class="bg-white p-3 rounded-full shadow-lg pulse-glow">
+                                <!-- Pharmacy/Pills Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor" stroke-width="2" class="h-8 w-8 text-emerald-600">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h4.125a1.125 1.125 0 001.125-1.125V11.25a4.5 4.5 0 00-4.5-4.5z"/>
+                                </svg>
+                              </div>
+                              <div>
+                                <h2 class="text-3xl font-bold text-black mb-1">Pharmacist's Assessment</h2>
+                                <p class="text-indigo-400">Comprehensive medication evaluation and pharmaceutical
+                                  care</p>
+                              </div>
+                            </div>
+
+                            <!-- Assessment Content -->
+                            <div class="gradient-border hover-lift">
+                              <div class="gradient-border-inner p-8">
+                                <div class="flex items-start gap-4 mb-6">
+                                  <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-3 rounded-xl shadow-lg">
+                                    <!-- Clipboard with Checkmark Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke="currentColor" stroke-width="2" class="h-6 w-6 text-white">
+                                      <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"/>
+                                    </svg>
+                                  </div>
+                                  <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Clinical Documentation</h3>
+                                    <p class="text-gray-600 text-sm">Detailed pharmaceutical assessment and care
+                                      plan</p>
+                                  </div>
+                                </div>
+
+                                <div class="space-y-6">
+                                  <!-- Medication Notes Section - Orange/Amber Theme -->
+                                  <div
+                                      class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border-l-4 border-orange-500 relative overflow-hidden">
+                                    <div class="absolute top-4 right-4 opacity-10">
+                                      <!-- Large Pill/Medication Icon -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2" class="h-16 w-16 text-orange-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c.251.023.501.05.75.082m-.75-.082a24.301 24.301 0 00-4.5 0m4.5 0a24.301 24.301 0 014.5 0M19 14.5l-4.091-4.091a2.25 2.25 0 00-1.591-.659H8.604m10.396 4.75s-1.5-1.5-4-1.5-5.5 1.5-5.5 1.5 1.5 1.5 4 1.5 4-1.5 4-1.5z"/>
+                                      </svg>
+                                    </div>
+                                    <div class="flex items-center gap-3 mb-4">
+                                      <div class="bg-orange-100 p-2 rounded-lg">
+                                        <!-- Capsule/Pill Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-5 w-5 text-orange-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c.251.023.501.05.75.082m-.75-.082a24.301 24.301 0 00-4.5 0m4.5 0a24.301 24.301 0 014.5 0M19 14.5l-4.091-4.091a2.25 2.25 0 00-1.591-.659H8.604"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-2">
+                                        <h4 class="font-semibold text-gray-800">Medication Analysis</h4>
+                                        <!-- Alert Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-orange-500 cursor-help">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+                                        </svg>
+                                      </div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2"
+                                           class="h-4 w-4 text-orange-500 mt-1 flex-shrink-0">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                      </svg>
+                                      <div class="text-gray-700 leading-relaxed">
+                                        {{ record.medication_notes }}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="section-divider"></div>
+
+                                  <!-- Prescription Notes Section - Teal/Cyan Theme -->
+                                  <div
+                                      class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-6 border-l-4 border-teal-500 relative overflow-hidden">
+                                    <div class="absolute top-4 right-4 opacity-10">
+                                      <!-- Large Prescription Icon -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2" class="h-16 w-16 text-teal-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h4.125c.621 0 1.125-.504 1.125-1.125V9.375c0-.621.504-1.125 1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+                                      </svg>
+                                    </div>
+                                    <div class="flex items-center gap-3 mb-4">
+                                      <div class="bg-teal-100 p-2 rounded-lg">
+                                        <!-- Prescription Pad Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-5 w-5 text-teal-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-2">
+                                        <h4 class="font-semibold text-gray-800">Prescription Guidelines</h4>
+                                        <!-- Medical Cross Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-4 w-4 text-teal-500">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 4.5v15m7.5-7.5h-15"/>
+                                        </svg>
+                                      </div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2"
+                                           class="h-4 w-4 text-teal-500 mt-1 flex-shrink-0">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                      </svg>
+                                      <div class="text-gray-700 leading-relaxed">
+                                        {{ record.prescription_notes }}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="section-divider"></div>
+
+                                  <!-- Additional Notes Section - Indigo/Blue Theme -->
+                                  <div
+                                      class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6 border-l-4 border-indigo-500 relative overflow-hidden">
+                                    <div class="absolute top-4 right-4 opacity-10">
+                                      <!-- Large Notes Icon -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2" class="h-16 w-16 text-indigo-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                                      </svg>
+                                    </div>
+                                    <div class="flex items-center gap-3 mb-4">
+                                      <div class="bg-indigo-100 p-2 rounded-lg">
+                                        <!-- Clinical Notes Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-5 w-5 text-indigo-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-2">
+                                        <h4 class="font-semibold text-gray-800">Clinical Notes</h4>
+                                        <!-- Star Rating Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-4 w-4 text-indigo-500">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
+                                        </svg>
+                                      </div>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           stroke="currentColor" stroke-width="2"
+                                           class="h-4 w-4 text-indigo-500 mt-1 flex-shrink-0">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                      </svg>
+                                      <div class="text-gray-700 leading-relaxed font-medium">
+                                        {{ record.pharmacist_additional_notes }}
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-
                         <div class="flex col-6 float-start">
                           <NuxtLink :to="`/patients/update_record/${record.id}`" class="btn btn-primary">
                             <i class="bi bi-plus-circle"></i>
@@ -646,8 +813,10 @@ function formatDateWithOrdinal(dateString: string): string {
             </div>
             <div v-else class="flex items-center justify-center min-h-[50vh] w-full">
               <div class="text-center p-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto mb-3" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                 </svg>
                 <p class="text-gray-600 text-lg font-medium">No records found</p>
                 <p class="text-gray-500 text-sm">There are no past records available for this patient.</p>
@@ -957,4 +1126,6 @@ hr {
   background: linear-gradient(to right, transparent, #e5e7eb, transparent);
   height: 1px;
 }
+
+
 </style>

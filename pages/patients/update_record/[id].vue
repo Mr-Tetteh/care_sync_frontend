@@ -142,6 +142,11 @@ watch(past_record, (newData) => {
       input.value.diagnosis = record.diagnosis || '';
       input.value.investigations = record.investigations || '';
       input.value.treatment = record.treatment || '';
+      input.value.medication_notes = record.medication_notes || '';
+      input.value.prescription_notes = record.prescription_notes || '';
+      input.value.pharmacist_additional_notes = record.pharmacist_additional_notes || '';
+      input.value.doctor_additional_notes = record.doctor_additional_notes || '';
+      input.value.nurse_additional_notes = record.nurse_additional_notes || '';
 
 
     }
@@ -172,116 +177,242 @@ const onsubmit = () => {
           <div class="px-4">
             <!-- Header Section -->
             <div class="flex justify-center items-center mb-6 p-5">
-              <h3 class="text-2xl font-semibold">Patient Record {{ params.id }}</h3>
+              <h3 class="text-2xl font-semibold">Patient Record</h3>
             </div>
 
             <!-- Display existing record data -->
-            <div v-if="past_record" class="mb-8 p-6 bg-white rounded-lg shadow-md row">
-              <h4 class="text-xl font-semibold mb-4 text-gray-800">Current Record Data</h4>
-              <div class="mb-6">
-                <h5 class="text-lg font-medium mb-2 text-blue-600">Nurse Notes:</h5>
-                <div class="bg-gray-50 p-6">
-                  <div class="max-w-md mx-auto bg-white rounded-lg shadow-sm border">
-                    <!-- Header -->
-                    <div class="px-6 py-4 border-b">
-                      <h2 class="text-lg font-semibold text-gray-900">Vital Signs</h2>
-                    </div>
-                    <!-- Simple List -->
-                    <div class="divide-y divide-gray-100">
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Temperature</span>
-                        <span class="font-medium text-gray-900">{{ past_record.temperature }}°C</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Pulse Rate</span>
-                        <span class="font-medium text-gray-900">{{ past_record.pulse_rate }} bpm</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Respiratory Rate</span>
-                        <span class="font-medium text-gray-900">{{ past_record.respiratory_rate }} breaths/min</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Blood Pressure</span>
-                        <span class="font-medium text-gray-900">{{ past_record.blood_pressure }} mmHg</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Weight</span>
-                        <span class="font-medium text-gray-900">{{ past_record.weight }} Kg</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">FBS</span>
-                        <span class="font-medium text-gray-900">{{ past_record.fbs }} mg/dL</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">RBS</span>
-                        <span class="font-medium text-gray-900">{{ past_record.rbs }} %</span>
-                      </div>
-
-                    </div>
+            <div class="bg-gray-50 min-h-screen">
+            <div id="app" class="container mx-auto px-4 py-8">
+              <!-- Header -->
+              <div class="gradient-bg rounded-2xl p-6 mb-8 text-white fade-in">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h1 class="text-3xl font-bold mb-2">Patient Medical Record</h1>
+                    <p class="text-blue-100">Comprehensive healthcare data overview</p>
                   </div>
-                </div>
-              </div>
-              <div class="mb-6">
-                <h5 class="text-lg font-medium mb-2 text-blue-600">Doctor's Notes:</h5>
-                <div class="bg-gray-50 p-6">
-                  <div class="max-w-md mx-auto bg-white rounded-lg shadow-sm border">
-                    <!-- Header -->
-                    <div class="px-6 py-4 border-b">
-                      <h2 class="text-lg font-semibold text-gray-900">Vital Signs</h2>
-                    </div>
-                    <!-- Simple List -->
-                    <div class="divide-y divide-gray-100">
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">History</span>
-                        <span class="font-medium text-gray-900">{{ past_record.history }}</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Examination Findings</span>
-                        <span class="font-medium text-gray-900">{{ past_record.examination_findings }} </span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Diagnosis</span>
-                        <span class="font-medium text-gray-900">{{ past_record.diagnosis }} </span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Investigations</span>
-                        <span class="font-medium text-gray-900">{{ past_record.investigations }}</span>
-                      </div>
-
-                      <div class="px-6 py-4 flex justify-between items-center">
-                        <span class="text-gray-700">Treatment</span>
-                        <span class="font-medium text-gray-900">{{ past_record.treatemnt }}</span>
-                      </div>
-
+                  <div class="hidden md:block">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                      <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" clip-rule="evenodd"/>
+                      </svg>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <!-- Main Content -->
+              <div v-if="past_record" class="fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
 
-              <div v-if="past_record.doctor_notes" class="mb-6">
-                <h5 class="text-lg font-medium mb-2 text-green-600">Doctor Notes:</h5>
-                <div class="prose max-w-none p-4 bg-green-50 rounded-md" v-html="past_record.doctor_notes"></div>
+                  <!-- Vital Signs Section -->
+                  <div v-if="past_record.temperature" class="vital-card bg-white rounded-2xl card-shadow overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
+                          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-xl font-bold text-white">Vital Signs</h3>
+                          <p class="text-blue-100 text-sm">Nurse Assessment</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+                      <div class="flex items-center justify-between py-3 px-4 bg-red-50 rounded-xl">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-red-400 rounded-full mr-3 pulse-animation"></div>
+                          <span class="text-gray-700 font-medium">Temperature</span>
+                        </div>
+                        <span class="font-bold text-red-600 text-lg">{{ past_record.temperature }}°C</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-pink-50 rounded-xl">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-pink-400 rounded-full mr-3 pulse-animation"></div>
+                          <span class="text-gray-700 font-medium">Pulse Rate</span>
+                        </div>
+                        <span class="font-bold text-pink-600 text-lg">{{ past_record.pulse_rate }} bpm</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-blue-50 rounded-xl">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-blue-400 rounded-full mr-3 pulse-animation"></div>
+                          <span class="text-gray-700 font-medium">Respiratory Rate</span>
+                        </div>
+                        <span class="font-bold text-blue-600 text-lg">{{ past_record.respiratory_rate }} /min</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-purple-50 rounded-xl">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-purple-400 rounded-full mr-3 pulse-animation"></div>
+                          <span class="text-gray-700 font-medium">Blood Pressure</span>
+                        </div>
+                        <span class="font-bold text-purple-600 text-lg">{{ past_record.blood_pressure }} mmHg</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-green-50 rounded-xl">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-green-400 rounded-full mr-3"></div>
+                          <span class="text-gray-700 font-medium">Weight</span>
+                        </div>
+                        <span class="font-bold text-green-600 text-lg">{{ past_record.weight }} Kg</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-yellow-50 rounded-xl">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-yellow-400 rounded-full mr-3"></div>
+                          <span class="text-gray-700 font-medium">FBS</span>
+                        </div>
+                        <span class="font-bold text-yellow-600 text-lg">{{ past_record.fbs }} mg/dL</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-orange-50 rounded-xl" v-if="past_record.rbs">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-orange-400 rounded-full mr-3"></div>
+                          <span class="text-gray-700 font-medium">RBS</span>
+                        </div>
+                        <span class="font-bold text-orange-600 text-lg">{{ past_record.rbs }} %</span>
+                      </div>
+
+                      <div class="flex items-center justify-between py-3 px-4 bg-stone-50 rounded-xl" v-if="past_record.nurse_additional_notes">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-stone-300 rounded-full mr-3"></div>
+                          <span class="text-gray-700 font-medium">Additional Notes</span>
+                        </div>
+                        <span class="font-bold text-yellow-600 text-lg">{{ past_record.nurse_additional_notes }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Doctor's Notes Section -->
+                  <div v-if="past_record.history" class="vital-card bg-white rounded-2xl card-shadow overflow-hidden">
+                    <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
+                          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-xl font-bold text-white">Doctor's Assessment</h3>
+                          <p class="text-emerald-100 text-sm">Clinical Examination</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                      <div class="bg-gray-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-emerald-400 rounded-full mr-2"></span>
+                          History
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.history }}</p>
+                      </div>
+
+                      <div class="bg-blue-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                          Examination Findings
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.examination_findings }}</p>
+                      </div>
+
+                      <div class="bg-red-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
+                          Diagnosis
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed font-medium">{{ past_record.diagnosis }}</p>
+                      </div>
+
+                      <div class="bg-purple-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                          Investigations
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.investigations }}</p>
+                      </div>
+
+                      <div class="bg-green-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                          Treatment
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.treatemnt }}</p>
+                      </div>
+                      <div class="flex items-center justify-between py-3 px-4 bg-stone-50 rounded-xl" v-if="past_record.doctor_additional_notes">
+                        <div class="flex items-center">
+                          <div class="w-3 h-3 bg-stone-300 rounded-full mr-3"></div>
+                          <span class="text-gray-700 font-medium">Additional Notes</span>
+                        </div>
+                        <span class="font-bold text-yellow-600 text-lg">{{ past_record.doctor_additional_notes }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Pharmacist's Notes Section -->
+                  <div v-if="past_record.medication_notes" class="vital-card bg-white rounded-2xl card-shadow overflow-hidden">
+                    <div class="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
+                          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-xl font-bold text-white">Pharmacy Review</h3>
+                          <p class="text-amber-100 text-sm">Medication Management</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                      <div class="bg-amber-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-amber-400 rounded-full mr-2"></span>
+                          Medication Notes
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.medication_notes }}</p>
+                      </div>
+
+                      <div class="bg-orange-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-orange-400 rounded-full mr-2"></span>
+                          Prescription Notes
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.prescription_notes }}</p>
+                      </div>
+
+                      <div class="bg-yellow-50 rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
+                          Additional Notes
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.pharmacist_additional_notes }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div v-if="past_record.laboratory_notes" class="mb-6">
-                <h5 class="text-lg font-medium mb-2 text-purple-600">Laboratory Notes:</h5>
-                <div class="prose max-w-none p-4 bg-purple-50 rounded-md"
-                     v-html="past_record.laboratory_notes"></div>
+              <!-- No Data State -->
+              <div v-else class="text-center py-16">
+                <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Medical Records Found</h3>
+                <p class="text-gray-500">Patient data will appear here when available.</p>
               </div>
+            </div>
             </div>
 
 
-            <form class="flex flex-col items-center gap-8 mb-6 bg-gradient-to-b from-gray-50 to-white"
+            <form class="flex flex-col items-center gap-8 mb-6 bg-gradient-to-r from-purple-400 to-pink-500 p-4 rounded-xl shadow-lg"
                   @submit.prevent="onsubmit()">
               <!-- Nurse Session -->
               <div v-if="user.role == 'Nurse'" class="w-full max-w-4xl">
@@ -533,12 +664,30 @@ const onsubmit = () => {
                       </div>
                     </div>
                   </div>
+                  <div class="relative mt-6">
+                    <label class="block text-center text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12h2m0 0h2m0-4h2m4 4h-2m0 4H9m2-4h.5"/>
+                      </svg>
+                      Additional Notes
+                    </label>
+                    <textarea
+                        class="w-full h-32 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                   focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-300
+                                   resize-none shadow-sm hover:shadow-md group-hover:border-orange-300"
+                        placeholder="Enter any additional notes..."
+                        v-model="input.nurse_additional_notes"
+                        rows="5">
+                        </textarea>
+                  </div>
                 </div>
               </div>
 
               <!-- Doctor Session -->
-              <div class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
-                <div class="w-full max-w-5xl mx-auto">
+              <div class=" w-full from-blue-50 to-indigo-100 p-4">
+                <div v-if="user.role == 'Doctor'" class="w-full max-w-5xl mx-auto bg-gradient-to-br">
                   <!-- Header -->
                   <div class="text-center mb-8">
                     <h1 class="text-4xl font-bold text-gray-800 mb-2">Doctor's Session</h1>
@@ -831,7 +980,7 @@ const onsubmit = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11a2 2 0 012-2v6a2 2 0 01-2 2H1a2 2 0 01-2-2V9a2 2 0 012-2m14 0h-3"/>
                       </svg>
-                      <p class="text-2xl font-semibold text-gray-800">Additional  Notes</p>
+                      <p class="text-2xl font-semibold text-gray-800">Additional Notes</p>
                     </label>
                     <div class="relative">
                             <textarea
@@ -897,5 +1046,34 @@ const onsubmit = () => {
 
 .prose strong {
   font-weight: 600;
+}
+
+
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.card-shadow {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.scrollable-y {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.pulse-animation {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.vital-card {
+  transition: all 0.3s ease;
+}
+.vital-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px -3px rgba(0, 0, 0, 0.15);
 }
 </style>
