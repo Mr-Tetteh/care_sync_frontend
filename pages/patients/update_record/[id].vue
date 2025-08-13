@@ -27,11 +27,16 @@ interface PatientRecord {
   fbs: string;
   rbs: string;
   spo2: string;
+  nurse_additional_notes: string;
   history: string;
   examination_findings: string;
   diagnosis: string;
   investigations: string;
   treatment: string;
+  doctor_additional_notes: string;
+  medication_notes: string;
+  prescription_notes: string;
+  pharmacist_additional_notes: string;
 }
 
 const input = ref<PatientRecord>({
@@ -43,11 +48,17 @@ const input = ref<PatientRecord>({
   fbs: '',
   rbs: '',
   spo2: '',
+  nurse_additional_notes: '',
   history: '',
   examination_findings: '',
   diagnosis: '',
   investigations: '',
-  treatment: ''
+  treatment: '',
+  doctor_additional_notes: '',
+  medication_notes: '',
+  prescription_notes: '',
+  pharmacist_additional_notes: '',
+
 })
 
 const patient_record_update = async () => {
@@ -60,11 +71,16 @@ const patient_record_update = async () => {
     fbs: input.value.fbs,
     rbs: input.value.rbs,
     spo2: input.value.spo2,
+    nurse_additional_notes: input.value.nurse_additional_notes,
     history: input.value.history,
     examination_findings: input.value.examination_findings,
     diagnosis: input.value.diagnosis,
     investigations: input.value.investigations,
-    treatment: input.value.treatment
+    treatment: input.value.treatment,
+    doctor_additional_notes: input.value.doctor_additional_notes,
+    prescription_notes: input.value.prescription_notes,
+    medication_notes: input.value.medication_notes,
+    pharmacist_additional_notes: input.value.pharmacist_additional_notes,
   };
   try {
     const {data, error} = await useFetch(useRuntimeConfig().public.api + `/patients-records/${params.id}`, {
@@ -265,7 +281,8 @@ const onsubmit = () => {
             </div>
 
 
-            <form class="flex flex-col items-center gap-8 mb-6 bg-gradient-to-b from-gray-50 to-white" @submit.prevent="onsubmit()">
+            <form class="flex flex-col items-center gap-8 mb-6 bg-gradient-to-b from-gray-50 to-white"
+                  @submit.prevent="onsubmit()">
               <!-- Nurse Session -->
               <div v-if="user.role == 'Nurse'" class="w-full max-w-4xl">
                 <div class="flex items-center justify-center mb-4">
@@ -520,7 +537,7 @@ const onsubmit = () => {
               </div>
 
               <!-- Doctor Session -->
-              <div v-if="user.role == 'Doctor'" class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
+              <div class="bg-gradient-to-br w-full from-blue-50 to-indigo-100 p-4">
                 <div class="w-full max-w-5xl mx-auto">
                   <!-- Header -->
                   <div class="text-center mb-8">
@@ -689,6 +706,26 @@ const onsubmit = () => {
                             </svg>
                           </div>
                         </div>
+
+                        <div class="relative mt-6">
+                          <label class="block text-center text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h2m0 0h2m0-4h2m4 4h-2m0 4H9m2-4h.5"/>
+                            </svg>
+                            Additional Notes
+                          </label>
+                          <textarea
+                              class="w-full h-32 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                   focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-300
+                                   resize-none shadow-sm hover:shadow-md group-hover:border-orange-300"
+                              placeholder="Enter any additional notes..."
+                              v-model="input.doctor_additional_notes"
+                              rows="5">
+                        </textarea>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -729,7 +766,64 @@ const onsubmit = () => {
                   </svg>
                   <p class="text-2xl font-semibold text-gray-800">Pharmacist Session</p>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="group">
+                      <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h6a1 1 0 01-1 1v-1zM5 7h3.5a1 1 0 000-2H5a1 1 0 100 2z"/>
+                        </svg>
+                        Prescription
+                      </label>
+                      <div class="relative">
+                        <textarea
+                            class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                   focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                   resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                            placeholder="Prescription Note"
+                            v-model="input.prescription_notes"
+                            rows="8">
+                        </textarea>
+                        <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                               stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h6a1 1 0 01-1 1v-1zM5 7h3.5a1 1 0 000-2H5a1 1 0 100 2z"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-2 w-full group">
+                      <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Medication Notes
+                      </label>
+                      <div class="relative w-full">
+                            <textarea
+                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
+                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
+                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
+                                placeholder="Medication Notes"
+                                v-model="input.medication_notes"
+                                rows="8">
+                            </textarea>
+                        <div class="absolute top-4 left-4 text-blue-400 opacity-60">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                               stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="group">
                     <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-500 mr-2" fill="none"
@@ -737,15 +831,15 @@ const onsubmit = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11a2 2 0 012-2v6a2 2 0 01-2 2H1a2 2 0 01-2-2V9a2 2 0 012-2m14 0h-3"/>
                       </svg>
-                      <p class="text-2xl font-semibold text-gray-800">Medication</p>
+                      <p class="text-2xl font-semibold text-gray-800">Additional  Notes</p>
                     </label>
                     <div class="relative">
                             <textarea
                                 class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
                                        focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
                                        resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
-                                placeholder="Medication Note"
-                                v-model="input.medication_notes"
+                                placeholder="Additional Note"
+                                v-model="input.pharmacist_additional_notes"
                                 rows="8">
                             </textarea>
                       <div class="absolute top-4 left-4 text-blue-400 opacity-60">
@@ -762,58 +856,6 @@ const onsubmit = () => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                       </svg>
-                    </div>
-                  </div>
-                  <div class="group">
-                    <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h6a1 1 0 01-1 1v-1zM5 7h3.5a1 1 0 000-2H5a1 1 0 100 2z"/>
-                      </svg>
-                      Prescription
-                    </label>
-                    <div class="relative">
-                            <textarea
-                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
-                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
-                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
-                                placeholder="Prescription Note"
-                                v-model="input.prescription_notes"
-                                rows="8">
-                            </textarea>
-                      <div class="absolute top-4 left-4 text-blue-400 opacity-60">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h6a1 1 0 01-1 1v-1zM5 7h3.5a1 1 0 000-2H5a1 1 0 100 2z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <label class="block text-center text-lg font-semibold text-gray-700 mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                      </svg>
-                      Additional Notes
-                    </label>
-                    <div class="relative">
-                            <textarea
-                                class="w-full h-40 p-4 border-2 border-gray-200 rounded-2xl bg-white text-center placeholder-gray-400
-                                       focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300
-                                       resize-none shadow-sm hover:shadow-md group-hover:border-blue-300"
-                                placeholder="Additional Note"
-                                v-model="input.additional_notes"
-                                rows="8">
-                            </textarea>
-                      <div class="absolute top-4 left-4 text-blue-400 opacity-60">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                      </div>
                     </div>
                   </div>
                 </div>
