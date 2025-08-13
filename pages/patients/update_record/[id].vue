@@ -341,14 +341,15 @@ const onsubmit = () => {
                           <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
                           Treatment
                         </h4>
-                        <p class="text-gray-700 leading-relaxed">{{ past_record.treatemnt }}</p>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.treatment }}</p>
                       </div>
-                      <div class="flex items-center justify-between py-3 px-4 bg-stone-50 rounded-xl" v-if="past_record.doctor_additional_notes">
-                        <div class="flex items-center">
-                          <div class="w-3 h-3 bg-stone-300 rounded-full mr-3"></div>
-                          <span class="text-gray-700 font-medium">Additional Notes</span>
-                        </div>
-                        <span class="font-bold text-yellow-600 text-lg">{{ past_record.doctor_additional_notes }}</span>
+
+                      <div class="bg-stone-50  rounded-xl p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                          <span class="w-2 h-2 bg-stone-400 rounded-full mr-2"></span>
+                          Additional Notes
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed">{{ past_record.doctor_additional_notes }}</p>
                       </div>
                     </div>
                   </div>

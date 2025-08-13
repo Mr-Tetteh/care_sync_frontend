@@ -28,6 +28,7 @@ interface PatientRecord {
   spo2?: string | number;
   fbs?: string | number;
   rbs?: string | number;
+  nurse_additional_notes?: string | number;
   history?: string;
   examination_findings?: string;
   diagnosis?: string;
@@ -37,6 +38,7 @@ interface PatientRecord {
   medication_notes?: string;
   prescription_notes?: string;
   pharmacist_additional_notes?: string;
+  doctor_additional_notes?: string;
 }
 
 const file = async (patientId: string | string[]): Promise<PatientRecord[]> => {
@@ -100,23 +102,55 @@ function formatDateWithOrdinal(dateString: string): string {
     <AppSidebar/>
     <main class="w-full bg-gray-100">
       <SidebarTrigger/>
-      <div class="min-h-screen ">
+      <div class="min-h-screen">
         <div id="main">
-          <div class="px-4 ">
+          <!-- Responsive padding -->
+          <div class="px-2 sm:px-4 md:px-6 lg:px-8 max-w-[1800px] mx-auto">
             <div class="records-container main_drop" v-if="past_record && past_record.length > 0">
 
-              <div class="card shadow-sm" v-for="(record, $index) in past_record" :key="record.id">
+              <div
+                  class="card bg-gradient-to-br from-emerald-50 to-green-50 shadow-lg p-4 sm:p-6 md:p-8 lg:p-10 mb-5 border border-emerald-200 rounded-2xl hover:shadow-xl transition-all duration-300 w-full"
+                  v-for="(record, $index) in past_record"
+                  :key="record.id"
+              >
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
-                    <AccordionTrigger>{{ formatDateWithOrdinal(record.created_at) }}</AccordionTrigger>
+                    <AccordionTrigger>
+                      <div class="flex items-center gap-2">
+                        <!-- Calendar Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2h-1V3m-10 2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        {{ formatDateWithOrdinal(record.created_at) }}
+                      </div>
+                    </AccordionTrigger>
+
                     <AccordionContent>
                       <div class="card-body">
                         <!-- Section Title -->
-                        <div class="d-flex align-items-center mb-4 gap-3">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary me-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l9-4 9 4zM9 14h6" />
+                        <div class="flex items-center mb-4 gap-3">
+                          <!-- Document Icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-700" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 20h9m-9-4h9m-9-4h9m-9-4h9m-9-4h9m-6 12H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v12a2 2 0 01-2 2h-4z"/>
                           </svg>
-                          <h4 class="mb-0">Medical Record #{{ $index + 1 }} {{ new Date(record.created_at) }}</h4>
+                          <h4 class="mb-0 font-semibold">
+                            Medical Record #{{ $index + 1 }}
+                          </h4>
+                        </div>
+
+                        <!-- Date & Time -->
+                        <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                          <!-- Clock Icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-500" fill="none"
+                               viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                          {{ new Date(record.created_at).toLocaleString() }}
                         </div>
 
                         <!-- Vitals Section -->
@@ -162,7 +196,7 @@ function formatDateWithOrdinal(dateString: string): string {
                                   <h3 class="text-lg font-semibold text-gray-900">Vital Signs</h3>
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                                   <!-- Temperature Card -->
                                   <div
                                       class="group bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 border border-red-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
@@ -223,7 +257,7 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                   <!-- Blood Pressure Card -->
                                   <div
-                                      class="group bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                      class="group bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 sm:p-5 md:p-6 border border-purple-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105">
                                     <div class="flex items-center justify-between mb-4">
                                       <div class="bg-purple-500 p-3 rounded-full text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -325,6 +359,25 @@ function formatDateWithOrdinal(dateString: string): string {
                                   </div>
 
 
+
+                                  <div class="group bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                    <div class="flex items-center justify-between mb-4">
+                                      <div class="bg-indigo-500 p-3 rounded-full text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                             class="h-6 w-6">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                        </svg>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <p class="text-sm text-indigo-700 font-medium mb-1">Additional Notes</p>
+                                      <p class="text-2xl font-bold text-indigo-900">{{record.nurse_additional_notes}}</p>
+                                    </div>
+                                  </div>
+
+
                                 </div>
                               </div>
                             </div>
@@ -333,13 +386,13 @@ function formatDateWithOrdinal(dateString: string): string {
                         <hr class="my-2"/>
 
                         <!-- Doctor's Assessment -->
-                        <div class="bg-gray-50 p-4" v-if="record.history">
+                        <div class="bg-gray-50 p-2 sm:p-4" v-if="record.history">
                           <!-- Enhanced Doctor's Assessment Section -->
-                          <div class="max-w-6xl mx-auto">
-                            <div class="medical-section rounded-2xl p-8 shadow-xl animate-fade-in-up">
+                          <div class="w-full">
+                            <div class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl animate-fade-in-up overflow-hidden">
                               <!-- Section Header -->
-                              <div class="flex items-center gap-4 mb-8">
-                                <div class="bg-white p-3 rounded-full shadow-lg">
+                              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                                <div class="bg-white p-2 sm:p-3 rounded-full shadow-lg w-fit">
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                        stroke="currentColor" stroke-width="2" class="h-8 w-8 text-blue-600">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -353,11 +406,11 @@ function formatDateWithOrdinal(dateString: string): string {
                               </div>
 
                               <!-- Assessment Content -->
-                              <div class="gradient-border hover-lift">
-                                <div class="gradient-border-inner p-8">
-                                  <div class="flex items-start gap-4 mb-6">
+                              <div class="border border-gray-200 rounded-xl hover:shadow-lg transition-shadow duration-300">
+                                <div class="bg-white p-4 sm:p-6 md:p-8 rounded-xl">
+                                  <div class="flex flex-col sm:flex-row items-start gap-4 mb-6">
                                     <div
-                                        class="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
+                                        class="bg-gradient-to-br from-blue-500 to-purple-600 p-2 sm:p-3 rounded-lg sm:rounded-xl shadow-lg flex-shrink-0">
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                            stroke="currentColor" stroke-width="2" class="h-6 w-6 text-white">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -370,11 +423,11 @@ function formatDateWithOrdinal(dateString: string): string {
                                     </div>
                                   </div>
 
-                                  <div class="space-y-6">
+                                  <div class="space-y-4 sm:space-y-6 w-full">
                                     <!-- History Section -->
                                     <div
-                                        class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-500 relative overflow-hidden">
-                                      <div class="absolute top-4 right-4 opacity-10">
+                                        class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 border-l-4 border-blue-500 relative overflow-hidden">
+                                      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor" stroke-width="2" class="h-16 w-16 text-blue-600">
                                           <path stroke-linecap="round" stroke-linejoin="round"
@@ -415,8 +468,8 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                     <!-- Examination Findings -->
                                     <div
-                                        class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border-l-4 border-green-500 relative overflow-hidden">
-                                      <div class="absolute top-4 right-4 opacity-10">
+                                        class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 sm:p-6 border-l-4 border-green-500 relative overflow-hidden">
+                                      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor" stroke-width="2" class="h-16 w-16 text-green-600">
                                           <path stroke-linecap="round" stroke-linejoin="round"
@@ -457,12 +510,12 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                     <!-- Diagnosis -->
                                     <div
-                                        class="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border-l-4 border-purple-500 relative overflow-hidden">
-                                      <div class="absolute top-4 right-4 opacity-10">
+                                        class="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-4 sm:p-6 border-l-4 border-purple-500 relative overflow-hidden">
+                                      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor" stroke-width="2" class="h-16 w-16 text-purple-600">
                                           <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
                                         </svg>
                                       </div>
                                       <div class="flex items-center gap-3 mb-4">
@@ -483,7 +536,7 @@ function formatDateWithOrdinal(dateString: string): string {
                                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                stroke="currentColor" stroke-width="2" class="h-4 w-4 text-purple-400">
                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                                                  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674z"/>
                                           </svg>
                                         </div>
                                       </div>
@@ -504,8 +557,8 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                     <!-- Investigations -->
                                     <div
-                                        class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border-l-4 border-orange-500 relative overflow-hidden">
-                                      <div class="absolute top-4 right-4 opacity-10">
+                                        class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 sm:p-6 border-l-4 border-orange-500 relative overflow-hidden">
+                                      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor" stroke-width="2" class="h-16 w-16 text-orange-600">
                                           <path stroke-linecap="round" stroke-linejoin="round"
@@ -551,8 +604,8 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                     <!-- Treatment Plan -->
                                     <div
-                                        class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6 border-l-4 border-red-500 relative overflow-hidden">
-                                      <div class="absolute top-4 right-4 opacity-10">
+                                        class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-4 sm:p-6 border-l-4 border-red-500 relative overflow-hidden">
+                                      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor" stroke-width="2" class="h-16 w-16 text-red-600">
                                           <path stroke-linecap="round" stroke-linejoin="round"
@@ -592,6 +645,40 @@ function formatDateWithOrdinal(dateString: string): string {
                                           {{ record.treatment }}
                                         </div>
                                       </div>
+
+
+                                    </div>
+
+                                    <div
+                                        class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 sm:p-6 border-l-4 border-yellow-500 relative overflow-hidden">
+                                      <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2" class="h-16 w-16 text-yellow-600">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                      </div>
+                                      <div class="flex items-center gap-3 mb-4">
+                                        <div class="bg-yellow-100 p-2 rounded-lg">
+                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke="currentColor" stroke-width="2" class="h-5 w-5 text-yellow-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                          </svg>
+                                        </div>
+                                        <h4 class="font-semibold text-gray-800">Additional Notes</h4>
+                                      </div>
+                                      <div class="flex items-start gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor" stroke-width="2"
+                                             class="h-4 w-4 text-yellow-500 mt-1 flex-shrink-0">
+                                          <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                                        </svg>
+                                        <div class="text-gray-700 leading-relaxed">
+                                          {{ record.doctor_additional_notes }}
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -622,7 +709,7 @@ function formatDateWithOrdinal(dateString: string): string {
 
 
                         <!-- Enhanced Pharmacist's Assessment Section -->
-                        <div class="max-w-6xl mx-auto">
+                        <div v-if="record.medication_notes" class="max-w-6xl mx-auto">
                           <div class="medical-section rounded-2xl p-8 shadow-xl animate-fade-in-up">
                             <!-- Section Header with Pharmacy Icon -->
                             <div class="flex items-center gap-4 mb-8">
@@ -663,8 +750,8 @@ function formatDateWithOrdinal(dateString: string): string {
                                 <div class="space-y-6">
                                   <!-- Medication Notes Section - Orange/Amber Theme -->
                                   <div
-                                      class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border-l-4 border-orange-500 relative overflow-hidden">
-                                    <div class="absolute top-4 right-4 opacity-10">
+                                      class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 sm:p-6 border-l-4 border-orange-500 relative overflow-hidden">
+                                    <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                       <!-- Large Pill/Medication Icon -->
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                            stroke="currentColor" stroke-width="2" class="h-16 w-16 text-orange-600">
@@ -708,8 +795,8 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                   <!-- Prescription Notes Section - Teal/Cyan Theme -->
                                   <div
-                                      class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-6 border-l-4 border-teal-500 relative overflow-hidden">
-                                    <div class="absolute top-4 right-4 opacity-10">
+                                      class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 sm:p-6 border-l-4 border-teal-500 relative overflow-hidden">
+                                    <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                       <!-- Large Prescription Icon -->
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                            stroke="currentColor" stroke-width="2" class="h-16 w-16 text-teal-600">
@@ -753,8 +840,8 @@ function formatDateWithOrdinal(dateString: string): string {
 
                                   <!-- Additional Notes Section - Indigo/Blue Theme -->
                                   <div
-                                      class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6 border-l-4 border-indigo-500 relative overflow-hidden">
-                                    <div class="absolute top-4 right-4 opacity-10">
+                                      class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-4 sm:p-6 border-l-4 border-indigo-500 relative overflow-hidden">
+                                    <div class="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-10">
                                       <!-- Large Notes Icon -->
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                            stroke="currentColor" stroke-width="2" class="h-16 w-16 text-indigo-600">
@@ -772,7 +859,7 @@ function formatDateWithOrdinal(dateString: string): string {
                                         </svg>
                                       </div>
                                       <div class="flex items-center gap-2">
-                                        <h4 class="font-semibold text-gray-800">Clinical Notes</h4>
+                                        <h4 class="font-semibold text-gray-800">Additional Notes</h4>
                                         <!-- Star Rating Icon -->
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor" stroke-width="2" class="h-4 w-4 text-indigo-500">
@@ -798,9 +885,10 @@ function formatDateWithOrdinal(dateString: string): string {
                             </div>
                           </div>
                         </div>
-                        <div class="flex col-6 float-start">
-                          <NuxtLink :to="`/patients/update_record/${record.id}`" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i>
+                        <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
+                          <NuxtLink :to="`/patients/update_record/${record.id}`" 
+                                  class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
+                            <i class="bi bi-plus-circle mr-2"></i>
                             Additional Records
                           </NuxtLink>
                         </div>
@@ -858,8 +946,20 @@ function formatDateWithOrdinal(dateString: string): string {
 }
 
 .card-body {
-  padding: 2rem;
+  padding: 1rem;
   background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+}
+
+@media (min-width: 640px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-body {
+    padding: 2rem;
+  }
 }
 
 /* Header Styling */
@@ -1066,6 +1166,30 @@ hr {
 
 .card:nth-child(3) {
   animation-delay: 0.2s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 639px) {
+  .vital-card {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .vital-card::before {
+    width: 100%;
+    height: 4px;
+    top: 0;
+    left: 0;
+  }
+  
+  .section-container {
+    padding: 1rem !important;
+  }
+  
+  .gradient-border-inner {
+    padding: 1.5rem !important;
+  }
 }
 
 /* Glassmorphism effect for sections */
