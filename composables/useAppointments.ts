@@ -46,18 +46,35 @@ export const useAppointments = () => {
                     // Fallback for other errors
                     toast.error(message || 'Appointment creation failed');
                 }
-
                 return;
-
+            }
+            const receptionistEmail = (await readReceptionist());
+            console.log(receptionistEmail)
+            if (receptionistEmail) {
+                await useFetch(useRuntimeConfig().public.api + `/mail/email`, {
+                    method: 'POST',
+                    body: {
+                        to: receptionistEmail,
+                        subject: 'New Appointment',
+                        message: `A new appointment has been scheduled.`
+                    }
+                });
             }
             toast.success('Appointment created successfully')
-            setTimeout(() => {
-                window.location.reload()
-            }, 1000);
+               setTimeout(() => {
+                   window.location.reload()
+               }, 1000);
         } catch (error: any) {
             toast.error(error.data.message)
         }
 
+    }
+
+    const readReceptionist = async () => {
+        const {data} = await useFetch(useRuntimeConfig().public.api + `/users/receptionist`, {
+            method: 'GET',
+        })
+        return data.value?.[0].email || null
     }
 
 
