@@ -16,6 +16,17 @@ export const useStaff = () => {
         return data
     }
 
+    const getDoc = async () => {
+        const {data, error} = await useFetch(`${useRuntimeConfig().public.api}/users/doctors`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken.value}`,
+            }
+        })
+        return data
+    }
+
     const deleteUser = async (id: number) => {
         const {data, error} = await useFetch(`${useRuntimeConfig().public.api}/users/${id}`, {
             method: 'DELETE',
@@ -54,6 +65,7 @@ export const useStaff = () => {
     return {
         getStaff,
         deleteUser,
-        staff_delete
+        staff_delete,
+        getDoc
     }
 }
