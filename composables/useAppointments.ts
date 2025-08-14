@@ -9,6 +9,7 @@ export const useAppointments = () => {
         appointment_date: string;
         reason: string;
         status: string;
+        selected_doctor_contact?: string;
     }
 
     const input = ref<AppointmentInput>({

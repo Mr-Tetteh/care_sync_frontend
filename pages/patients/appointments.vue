@@ -7,7 +7,7 @@ import {useAsyncData} from "#app";
 import {definePageMeta} from "#imports";
 
 const {readAppointment, input, editAppointment, updateAppointment, is_loading} = useAppointments()
-
+const {getDoc} = useStaff()
 definePageMeta({
 
   title: 'Register Staff',
@@ -24,8 +24,21 @@ interface Appointment {
   reason: string
   status: 'pending' | 'approved' | 'declined'
 }
-const { data: details } = await useAsyncData<Appointment[]>('details', async () => {
+
+const {data: details} = await useAsyncData<Appointment[]>('details', async () => {
   const res = await readAppointment()
+  return res.value || []
+})
+
+interface Doctors {
+  id: number
+  first_name: string
+  last_name: string
+  other_names: string
+}
+
+const {data: doctors} = await useAsyncData<Doctors[]>('doctors', async () => {
+  const res = await getDoc()
   return res.value || []
 })
 const edit = async (id: number): Promise<void> => {
@@ -81,18 +94,35 @@ const onUpdate = async (id: number): Promise<void> => {
                   <table class="w-full table-auto">
                     <thead>
                     <tr class="bg-gray-50 border-b border-gray-200">
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Contact</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Appointment Date</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Appointment Time</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Reason</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Approved By</th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Contact
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Appointment Date
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Appointment Time
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Reason
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Approved By
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                    <tr v-for="item in details || []" :key="item.id" class="hover:bg-gray-50 transition-colors duration-200">
+                    <tr v-for="item in details || []" :key="item.id"
+                        class="hover:bg-gray-50 transition-colors duration-200">
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.full_name }}</td>
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.phone_number }}</td>
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.appointment_date }}</td>
@@ -112,9 +142,12 @@ const onUpdate = async (id: number): Promise<void> => {
                       <td class="py-4 px-4">
                         <div class="flex items-center space-x-3">
                           <Dialog>
-                            <DialogTrigger @click="edit(item.id)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 gap-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                            <DialogTrigger @click="edit(item.id)"
+                                           class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 rounded-md shadow-sm transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 gap-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                   stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
                               </svg>
                               Set Status
                             </DialogTrigger>
@@ -195,6 +228,7 @@ const onUpdate = async (id: number): Promise<void> => {
                                         </div>
                                       </div>
 
+
                                       <div>
                                         <label for="appointmentTime" class="block text-sm font-medium text-gray-700">
                                           Status</label>
@@ -207,6 +241,20 @@ const onUpdate = async (id: number): Promise<void> => {
                                             <option value="declined">Decline</option>
                                           </select>
 
+                                        </div>
+                                      </div>
+
+
+                                      <div v-if="input.status === 'approved'">
+                                        <label for="appointmentTime" class="block text-sm font-medium text-gray-700">
+                                          Doctor</label>
+                                        <div class="mt-1 relative rounded-md shadow-sm">
+                                          <select v-model="input.selected_doctor_contact"
+                                                  class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                                          >
+                                            <option value="" disabled selected>Select Doctor</option>
+                                            <option :value="doctor.phone" v-for="doctor in doctors" :key="doctor.id">{{doctor.first_name}} {{doctor.other_names}} {{doctor.last_name}}</option>
+                                          </select>
                                         </div>
                                       </div>
 
