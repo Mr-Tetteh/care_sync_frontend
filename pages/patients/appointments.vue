@@ -113,9 +113,6 @@ const onUpdate = async (id: number): Promise<void> => {
                         Status
                       </th>
                       <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Approved By
-                      </th>
-                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -138,7 +135,6 @@ const onUpdate = async (id: number): Promise<void> => {
               {{ item.status }}
             </span>
                       </td>
-                      <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">Daniel</td>
                       <td class="py-4 px-4">
                         <div class="flex items-center space-x-3">
                           <Dialog>

@@ -2,6 +2,9 @@ import {toast} from "vue-sonner";
 import {useAuth} from "~/composables/UseAuth";
 
 export const useAppointments = () => {
+
+    const {authToken, user} = useAuth()
+
     interface AppointmentInput {
         full_name: string;
         phone_number: string;
@@ -18,13 +21,13 @@ export const useAppointments = () => {
         appointment_time: '',
         appointment_date: '',
         reason: '',
-        status: ''
+        status: '',
+        selected_doctor_contact: '',
     })
 
     const appointments = ref()
     const is_loading = ref(false)
 
-    const {authToken} = useAuth()
     const appointment = async () => {
         is_loading.value = true
         try {
