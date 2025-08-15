@@ -192,13 +192,20 @@ export const useAuth = () => {
                 }
             )
 
-            if (error.value) {
-                toast.error(error.value.message || 'Login failed')
-                return
-            }
 
-            if (!data.value) {
-                toast.error('No data returned')
+            if (error.value) {
+                let errMsg = 'Login failed'
+
+                // If error.value has a data.message array
+                if (error.value?.data?.message) {
+                    if (Array.isArray(error.value.data.message)) {
+                        errMsg = error.value.data.message.join('\n')
+                    } else {
+                        errMsg = error.value.data.message
+                    }
+                }
+
+                toast.error(errMsg)
                 return
             }
 
@@ -274,7 +281,6 @@ export const useAuth = () => {
             const route = useRoute()
             resetPassword.value.resetToken = route.query.token as string
         }
-
 
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/reset-password`, {
