@@ -70,8 +70,12 @@ export const useAppointments = () => {
 
     }
 
+    interface Receptionist {
+        email: string
+        // add other properties from your API if needed
+    }
     const readReceptionist = async () => {
-        const {data} = await useFetch(useRuntimeConfig().public.api + `/users/receptionist`, {
+        const {data} = await useFetch<Receptionist[]>(useRuntimeConfig().public.api + `/users/receptionist`, {
             method: 'GET',
         })
         return data.value?.[0].email || null

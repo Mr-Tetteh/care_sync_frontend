@@ -181,7 +181,7 @@ export const useAuth = () => {
 
     const login = async () => {
         try {
-            const { data, error } = await useFetch<LoginResponse>(
+            const {data, error} = await useFetch<LoginResponse>(
                 useRuntimeConfig().public.api + `/auth/login`,
                 {
                     method: 'POST',
@@ -206,6 +206,11 @@ export const useAuth = () => {
                 }
 
                 toast.error(errMsg)
+                return
+            }
+
+            if (!data.value) {
+                toast.error('No data returned')
                 return
             }
 
