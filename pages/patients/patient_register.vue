@@ -12,6 +12,18 @@ definePageMeta({
   role: ['Receptionist'],
 })
 
+const today = new Date().toISOString().split('T')[0];
+const forceGhaPrefix = () => {
+  // remove everything except numbers and dash
+  let val = input.value.ghana_card_number.replace(/[^0-9-]/g, '')
+
+  // remove accidental leading dash if typed without prefix
+  val = val.replace(/^-+/, '')
+
+  // always ensure prefix
+  input.value.ghana_card_number = 'GHA-' + val
+}
+
 const {input,is_loading, uploadPatient} = usePatients()
 const handleSubmit = async () => {
   await uploadPatient();
@@ -115,6 +127,7 @@ const handleSubmit = async () => {
                         <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>Date of Birth<span class="text-red-400">*</span>
                       </label>
                       <input type="date"
+                             :max="today"
                              v-model="input.date_of_birth"
                              class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
                              placeholder="Enter patient date of birth">
@@ -165,10 +178,13 @@ const handleSubmit = async () => {
                       <label class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-id-card mr-2 text-indigo-500"></i>Ghana Card Number
                       </label>
-                      <input type="text"
-                             v-model="input.ghana_card_number"
-                             class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
-                             placeholder="Enter Patient Ghana Card number">
+                      <input
+                          type="text"
+                          v-model="input.ghana_card_number"
+                          @input="forceGhaPrefix"
+                          class="w-full px-4 py-3 input-focus rounded-xl bg-white/70 backdrop-blur-sm"
+                      />
+
                     </div>
                   </div>
                 </div>
