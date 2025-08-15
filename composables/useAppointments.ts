@@ -111,7 +111,7 @@ export const useAppointments = () => {
             if (error.value) {
                 toast.error(error)
             }
-            toast.success('Appointment deleted successfully')
+            toast.success('Appointment updated successfully')
             setTimeout(() => {
                 window.location.reload()
             }, 1000);
