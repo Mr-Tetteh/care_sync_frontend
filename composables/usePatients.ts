@@ -23,6 +23,11 @@ export const usePatients = () => {
         }
     )
 
+    const lab = (ref({
+        lab_name: '',
+        lab_report: '',
+    }))
+
 
     const getPatients = async () => {
         try {
@@ -41,6 +46,36 @@ export const usePatients = () => {
             alert(error.data.message)
         }
     }
+
+    /*   const handleUpload = (event) => {
+           lab.value.lab_report = event.target.files[0]
+       }*/
+    const upload_lab_report = async (id: number) => {
+        const formData = new FormData()
+        formData.append('lab_name', lab.value.lab_name)
+        formData.append('lab_report', lab.value.lab_report) // file
+
+        try {
+            const response = await fetch(useRuntimeConfig().public.api + `/labs/${id}`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${authToken.value}`,
+                },
+            })
+
+            if (!response.ok) {
+                throw new Error(`Upload failed with status ${response.status}`)
+            }
+            const data = await response.json()
+            toast.success("Lab report uploaded successfully!")
+            return data
+        } catch (error: any) {
+            toast.error(error?.message || "Upload failed")
+        }
+    }
+
+
 
     const uploadPatient = async () => {
         const characters = 'ABCDEFGHIJK456789LMNOPQRSTUVWXYZ0123';
@@ -86,7 +121,9 @@ export const usePatients = () => {
         getPatients,
         uploadPatient,
         input,
-        is_loading
+        is_loading,
+        lab,
+        upload_lab_report,
     }
 
 }
