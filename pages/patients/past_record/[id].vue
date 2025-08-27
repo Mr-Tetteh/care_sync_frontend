@@ -13,7 +13,7 @@ definePageMeta({
   middleware: ['check-auth'],
 })
 
-const {authToken} = useAuth()
+const {authToken, user} = useAuth()
 
 const params = useRoute().params.id
 
@@ -118,7 +118,8 @@ function formatDateWithOrdinal(dateString: string): string {
                     <AccordionTrigger>
                       <div class="flex items-center gap-2">
                         <!-- Calendar Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none"
+                             viewBox="0 0 24 24"
                              stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 7V3m8 4V3m-9 8h10m-12 8h14a2 2 0 002-2V7a2 2 0 00-2-2h-1V3m-10 2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -359,8 +360,8 @@ function formatDateWithOrdinal(dateString: string): string {
                                   </div>
 
 
-
-                                  <div class="group bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                                  <div
+                                      class="group bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
                                     <div class="flex items-center justify-between mb-4">
                                       <div class="bg-indigo-500 p-3 rounded-full text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -373,7 +374,8 @@ function formatDateWithOrdinal(dateString: string): string {
                                     </div>
                                     <div>
                                       <p class="text-sm text-indigo-700 font-medium mb-1">Additional Notes</p>
-                                      <p class="text-2xl font-bold text-indigo-900">{{record.nurse_additional_notes}}</p>
+                                      <p class="text-2xl font-bold text-indigo-900">
+                                        {{ record.nurse_additional_notes }}</p>
                                     </div>
                                   </div>
 
@@ -389,7 +391,8 @@ function formatDateWithOrdinal(dateString: string): string {
                         <div class="bg-gray-50 p-2 sm:p-4" v-if="record.history">
                           <!-- Enhanced Doctor's Assessment Section -->
                           <div class="w-full">
-                            <div class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl animate-fade-in-up overflow-hidden">
+                            <div
+                                class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl animate-fade-in-up overflow-hidden">
                               <!-- Section Header -->
                               <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
                                 <div class="bg-white p-2 sm:p-3 rounded-full shadow-lg w-fit">
@@ -406,7 +409,8 @@ function formatDateWithOrdinal(dateString: string): string {
                               </div>
 
                               <!-- Assessment Content -->
-                              <div class="border border-gray-200 rounded-xl hover:shadow-lg transition-shadow duration-300">
+                              <div
+                                  class="border border-gray-200 rounded-xl hover:shadow-lg transition-shadow duration-300">
                                 <div class="bg-white p-4 sm:p-6 md:p-8 rounded-xl">
                                   <div class="flex flex-col sm:flex-row items-start gap-4 mb-6">
                                     <div
@@ -886,10 +890,18 @@ function formatDateWithOrdinal(dateString: string): string {
                           </div>
                         </div>
                         <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
-                          <NuxtLink :to="`/patients/update_record/${record.id}`" 
-                                  class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
+                          <NuxtLink :to="`/patients/update_record/${record.id}`" v-if="user?.role !== 'Lab Technician'"
+                                    class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
                             <i class="bi bi-plus-circle mr-2"></i>
                             Additional Records
+                          </NuxtLink>
+                        </div>
+
+                        <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
+                          <NuxtLink :to="`/patients/update_record/lab_report/${record.id}`" v-if="user?.role === 'Lab Technician'"
+                                    class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
+                            <i class="bi bi-plus-circle mr-2"></i>
+                            Add Lab Report
                           </NuxtLink>
                         </div>
 
@@ -1175,18 +1187,18 @@ hr {
     gap: 1rem;
     padding: 1.25rem;
   }
-  
+
   .vital-card::before {
     width: 100%;
     height: 4px;
     top: 0;
     left: 0;
   }
-  
+
   .section-container {
     padding: 1rem !important;
   }
-  
+
   .gradient-border-inner {
     padding: 1.5rem !important;
   }
