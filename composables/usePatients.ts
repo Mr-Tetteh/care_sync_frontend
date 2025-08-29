@@ -46,10 +46,23 @@ export const usePatients = () => {
             alert(error.data.message)
         }
     }
-
-    /*   const handleUpload = (event) => {
-           lab.value.lab_report = event.target.files[0]
-       }*/
+    const get_lab_report = async (id: number) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/labs/patent_record/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast('Sorry and error occurred')
+            }
+            return data
+        } catch (error: any) {
+            alert(error.data.message)
+        }
+    }
     const upload_lab_report = async (id: number) => {
         const formData = new FormData()
         formData.append('lab_name', lab.value.lab_name)
@@ -124,6 +137,7 @@ export const usePatients = () => {
         is_loading,
         lab,
         upload_lab_report,
+        get_lab_report
     }
 
 }
