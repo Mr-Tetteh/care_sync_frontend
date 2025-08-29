@@ -13,6 +13,7 @@ export const useAppointments = () => {
         reason: string;
         status: string;
         selected_doctor_contact?: string;
+        department: string
     }
 
     const input = ref<AppointmentInput>({
@@ -23,6 +24,7 @@ export const useAppointments = () => {
         reason: '',
         status: '',
         selected_doctor_contact: '',
+        department: ''
     })
 
     const appointments = ref()

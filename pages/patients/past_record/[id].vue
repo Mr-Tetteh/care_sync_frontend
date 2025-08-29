@@ -44,15 +44,14 @@ interface PatientRecord {
   prescription_notes?: string;
   pharmacist_additional_notes?: string;
   doctor_additional_notes?: string;
-  lab_reports?: any[]; // Add this to store lab reports for each record (though fetched separately)
 }
 
 // Interface for a single lab report item
 interface LabReportItem {
   id: number;
-  lab_name: string; // Changed from report_name to lab_name as per your API response
-  lab_report: string; // Changed from report_url to lab_report as per your API response, e.g., "uploads/..."
-  uploaded_at?: string; // Added as it might be useful, though not in your sample response
+  lab_name: string;
+  lab_report: string;
+  uploaded_at?: string
 }
 
 // Function to fetch patient records from the API
@@ -143,11 +142,7 @@ watch(openAccordionItem, (newValue) => {
 // Ref to store the ID of the lab report that should be embedded (to control iframe visibility)
 const selectedLabReportToEmbed = ref<number | null>(null);
 
-// Base URL for serving uploaded files.
-// IMPORTANT: Adjust this to your actual server configuration where 'uploads/' is served statically.
-// If your Nuxt app is served from the same domain as the uploads, you might not need the full domain.
-// Example: if `useRuntimeConfig().public.api` is `http://localhost:8080/api`, and `uploads` is served from `http://localhost:8080/`
-const BASE_UPLOAD_URL = 'http://localhost:8080/';
+const BASE_UPLOAD_URL = useRuntimeConfig().public.api
 
 // Function to construct the full URL for an uploaded file
 function getFullUploadUrl(relativePath: string): string {
@@ -864,7 +859,22 @@ function formatDateWithOrdinal(dateString: string | undefined): string {
                           </li>
                         </ul>
                       </div>
+                      <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
+                        <NuxtLink :to="`/patients/update_record/${record.id}`" v-if="user?.role !== 'Lab Technician'"
+                                  class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
+                          <i class="bi bi-plus-circle mr-2"></i>
+                          Additional Records
+                        </NuxtLink>
+                      </div>
 
+                      <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
+                        <NuxtLink :to="`/patients/update_record/lab_report/${record.id}`"
+                                  v-if="user?.role === 'Lab Technician'"
+                                  class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
+                          <i class="bi bi-plus-circle mr-2"></i>
+                          Add Lab Report
+                        </NuxtLink>
+                      </div>
                     </div>
                   </AccordionContent>
                 </AccordionItem>

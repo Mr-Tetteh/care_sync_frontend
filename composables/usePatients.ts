@@ -82,6 +82,7 @@ export const usePatients = () => {
             }
             const data = await response.json()
             toast.success("Lab report uploaded successfully!")
+            window.location.href = `/patients/patients`
             return data
         } catch (error: any) {
             toast.error(error?.message || "Upload failed")

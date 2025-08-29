@@ -102,6 +102,7 @@ const filteredStaff = computed(() => {
                       <th class="py-3 px-4 text-left">Contact</th>
                       <th class="py-3 px-4 text-left">Email</th>
                       <th class="py-3 px-4 text-left">Role</th>
+                      <th class="py-3 px-4 text-left">Specialization</th>
                       <th class="py-3 px-4 text-left">Gender</th>
                       <th class="py-3 px-4 text-left">Date of Birth</th>
                       <th class="py-3 px-4 text-left" v-if="user.role == 'Administrator'">Actions</th>
@@ -114,8 +115,8 @@ const filteredStaff = computed(() => {
                       <td class="py-4 px-4">{{ item.email }}</td>
                       <td class="py-4 px-4">
               <span
-                class="rounded-full px-3 py-1 text-xs font-semibold"
-                :class="{
+                  class="rounded-full px-3 py-1 text-xs font-semibold"
+                  :class="{
                   'bg-blue-600 text-white': item.role === 'Doctor',
                   'bg-teal-500 text-white': item.role === 'Nurse',
                   'bg-orange-500 text-white': item.role === 'Account',
@@ -129,7 +130,11 @@ const filteredStaff = computed(() => {
               >
                 {{ item.role }}
               </span>
-                      </td>                      <td class="py-4 px-4">{{ item.gender }}</td>
+                      </td>
+                      <td class="py-4 px-4" v-if="item.doctors_specialization"> {{ item.doctors_specialization }}</td>
+                      <td class="py-4 px-4" v-else>N/A</td>
+
+                      <td class="py-4 px-4">{{ item.gender }}</td>
                       <td class="py-4 px-4">{{ item.date_of_birth }}</td>
                       <td class="py-4 px-4">
                         <div class="flex items-center space-x-3">
@@ -249,6 +254,68 @@ const filteredStaff = computed(() => {
                                         </div>
                                       </div>
 
+                                      <div v-if="input.role === `Doctor`">
+                                        <label for="appointmentTime" class="block text-sm font-medium text-gray-700">
+                                          Specialization</label>
+                                        <div class="mt-1 relative rounded-md shadow-sm">
+                                          <select v-model="input.doctors_specialization"
+                                                  class="block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                                          >
+                                            <option value="" disabled selected>Select Specialization</option>
+                                            <option value="Allergist">Allergist</option>
+                                            <option value="Anesthesiologist">Anesthesiologist</option>
+                                            <option value="Cardiologist">Cardiologist</option>
+                                            <option value="Chiropractor">Chiropractor</option>
+                                            <option value="Dentist">Dentist</option>
+                                            <option value="Dermatologist">Dermatologist</option>
+                                            <option value="Emergency Medicine">Emergency Medicine</option>
+                                            <option value="Endocrinologist">Endocrinologist</option>
+                                            <option value="Family Medicine">Family Medicine</option>
+                                            <option value="Gastroenterologist">Gastroenterologist</option>
+                                            <option value="General Practitioner">General Practitioner</option>
+                                            <option value="Geneticist">Geneticist</option>
+                                            <option value="Geriatrician">Geriatrician</option>
+                                            <option value="Gynecologist">Gynecologist</option>
+                                            <option value="Hematologist">Hematologist</option>
+                                            <option value="Infectious Disease Specialist">Infectious Disease
+                                              Specialist
+                                            </option>
+                                            <option value="Internist">Internist</option>
+                                            <option value="Nephrologist">Nephrologist</option>
+                                            <option value="Neurologist">Neurologist</option>
+                                            <option value="Neurosurgeon">Neurosurgeon</option>
+                                            <option value="Obstetrician">Obstetrician</option>
+                                            <option value="Occupational Therapist">Occupational Therapist</option>
+                                            <option value="Oncologist">Oncologist</option>
+                                            <option value="Ophthalmologist">Ophthalmologist</option>
+                                            <option value="Oral Surgeon">Oral Surgeon</option>
+                                            <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                                            <option value="Otolaryngologist">Otolaryngologist (ENT)</option>
+                                            <option value="Pain Management Specialist">Pain Management Specialist
+                                            </option>
+                                            <option value="Pathologist">Pathologist</option>
+                                            <option value="Pediatrician">Pediatrician</option>
+                                            <option value="Physical Therapist">Physical Therapist</option>
+                                            <option value="Physiatrist">Physiatrist</option>
+                                            <option value="Plastic Surgeon">Plastic Surgeon</option>
+                                            <option value="Podiatrist">Podiatrist</option>
+                                            <option value="Psychiatrist">Psychiatrist</option>
+                                            <option value="Pulmonologist">Pulmonologist</option>
+                                            <option value="Radiation Oncologist">Radiation Oncologist</option>
+                                            <option value="Radiologist">Radiologist</option>
+                                            <option value="Rheumatologist">Rheumatologist</option>
+                                            <option value="Sports Medicine Specialist">Sports Medicine Specialist
+                                            </option>
+                                            <option value="Surgeon">Surgeon</option>
+                                            <option value="Thoracic Surgeon">Thoracic Surgeon</option>
+                                            <option value="Urologist">Urologist</option>
+                                            <option value="Vascular Surgeon">Vascular Surgeon</option>
+
+                                          </select>
+
+                                        </div>
+                                      </div>
+
                                       <div class="pt-2">
                                         <button
                                             type="submit"
@@ -282,14 +349,18 @@ const filteredStaff = computed(() => {
                 </div>
                 <div v-if="!filteredStaff?.length" class="text-center py-16">
                   <div class="max-w-md mx-auto">
-                    <svg class="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <svg class="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
                     <h3 class="text-lg font-semibold text-slate-700 mb-2">
                       {{ searchQuery ? 'No patients found' : 'No patients registered' }}
                     </h3>
                     <p class="text-slate-500 text-sm">
-                      {{ searchQuery ? 'Try adjusting your search criteria.' : 'Get started by registering your first patient.' }}
+                      {{
+                        searchQuery ? 'Try adjusting your search criteria.' : 'Get started by registering your first patient.'
+                      }}
                     </p>
                     <div v-if="searchQuery" class="mt-4">
                       <button

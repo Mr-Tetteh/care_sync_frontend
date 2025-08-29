@@ -162,8 +162,69 @@ definePageMeta({
                     </div>
                   </div>
 
+                  <div class="field-group " v-if="input.role === 'Doctor'">
+                    <div class="form-input-focus rounded-lg relative">
+                      <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-indigo-500">
+                        <i class="fas fa-calendar-alt"></i>
+                      </div>
+                      <select
+                          id="role"
+                          class="input-field select-field block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg bg-white focus:outline-none"
+                          v-model="input.doctors_specialization"
+                      >
+                        <option value="" disabled selected>Select Specialization</option>
+                        <option value="Allergist">Allergist</option>
+                        <option value="Anesthesiologist">Anesthesiologist</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Chiropractor">Chiropractor</option>
+                        <option value="Dentist">Dentist</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Emergency Medicine">Emergency Medicine</option>
+                        <option value="Endocrinologist">Endocrinologist</option>
+                        <option value="Family Medicine">Family Medicine</option>
+                        <option value="Gastroenterologist">Gastroenterologist</option>
+                        <option value="General Practitioner">General Practitioner</option>
+                        <option value="Geneticist">Geneticist</option>
+                        <option value="Geriatrician">Geriatrician</option>
+                        <option value="Gynecologist">Gynecologist</option>
+                        <option value="Hematologist">Hematologist</option>
+                        <option value="Infectious Disease Specialist">Infectious Disease Specialist</option>
+                        <option value="Internist">Internist</option>
+                        <option value="Nephrologist">Nephrologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                        <option value="Neurosurgeon">Neurosurgeon</option>
+                        <option value="Obstetrician">Obstetrician</option>
+                        <option value="Occupational Therapist">Occupational Therapist</option>
+                        <option value="Oncologist">Oncologist</option>
+                        <option value="Ophthalmologist">Ophthalmologist</option>
+                        <option value="Oral Surgeon">Oral Surgeon</option>
+                        <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                        <option value="Otolaryngologist">Otolaryngologist (ENT)</option>
+                        <option value="Pain Management Specialist">Pain Management Specialist</option>
+                        <option value="Pathologist">Pathologist</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Physical Therapist">Physical Therapist</option>
+                        <option value="Physiatrist">Physiatrist</option>
+                        <option value="Plastic Surgeon">Plastic Surgeon</option>
+                        <option value="Podiatrist">Podiatrist</option>
+                        <option value="Psychiatrist">Psychiatrist</option>
+                        <option value="Pulmonologist">Pulmonologist</option>
+                        <option value="Radiation Oncologist">Radiation Oncologist</option>
+                        <option value="Radiologist">Radiologist</option>
+                        <option value="Rheumatologist">Rheumatologist</option>
+                        <option value="Sports Medicine Specialist">Sports Medicine Specialist</option>
+                        <option value="Surgeon">Surgeon</option>
+                        <option value="Thoracic Surgeon">Thoracic Surgeon</option>
+                        <option value="Urologist">Urologist</option>
+                        <option value="Vascular Surgeon">Vascular Surgeon</option>
+                      </select>
+                      <label for="gender" class="floating-label">Doctor's Specialization</label>
+                    </div>
+                  </div>
+
+
                   <!-- Date of Birth -->
-                  <div class="field-group md:col-span-2">
+                  <div class="field-group ">
                     <div class="form-input-focus rounded-lg relative">
                       <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-indigo-500">
                         <i class="fas fa-calendar-alt"></i>

@@ -157,52 +157,92 @@ const onSubmit = () => {
                                 </div>
 
                                 <!-- Date and Time in a grid -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  <!-- Appointment Date -->
-                                  <div class="group">
-                                    <label for="appointmentDate" class="block text-sm font-semibold text-gray-700 mb-2">Appointment
-                                      Date</label>
-                                    <div class="relative">
-                                      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg
-                                            class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg>
-                                      </div>
-                                      <input
-                                          type="date"
-                                          id="appointmentDate"
-                                          v-model="input.appointment_date"
-                                          :min="today"
-                                          class="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all duration-200 hover:border-gray-300 bg-white/80 backdrop-blur-sm"
-                                      />
+                                <!-- Appointment Date -->
+                                <div class="group">
+                                  <label for="appointmentDate" class="block text-sm font-semibold text-gray-700 mb-2">Appointment
+                                    Date</label>
+                                  <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                      <svg
+                                          class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+                                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                      </svg>
                                     </div>
-                                  </div>
-
-                                  <!-- Appointment Time -->
-                                  <div class="group">
-                                    <label for="appointmentTime" class="block text-sm font-semibold text-gray-700 mb-2">Appointment
-                                      Time</label>
-                                    <div class="relative">
-                                      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg
-                                            class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                      </div>
-                                      <input
-                                          type="time"
-                                          id="appointmentTime"
-                                          v-model="input.appointment_time"
-                                          class="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all duration-200 hover:border-gray-300 bg-white/80 backdrop-blur-sm"
-                                      />
-                                    </div>
+                                    <input
+                                        type="date"
+                                        id="appointmentDate"
+                                        v-model="input.appointment_date"
+                                        :min="today"
+                                        class="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all duration-200 hover:border-gray-300 bg-white/80 backdrop-blur-sm"
+                                    />
                                   </div>
                                 </div>
+
+                                <!-- Appointment Time -->
+                                <div class="group">
+                                  <label for="appointmentTime" class="block text-sm font-semibold text-gray-700 mb-2">Appointment
+                                    Time</label>
+                                  <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                      <svg
+                                          class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+                                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                      </svg>
+                                    </div>
+                                    <input
+                                        type="time"
+                                        id="appointmentTime"
+                                        v-model="input.appointment_time"
+                                        class="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all duration-200 hover:border-gray-300 bg-white/80 backdrop-blur-sm"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="group">
+                                  <label for="appointmentTime" class="block text-sm font-semibold text-gray-700 mb-2">Select Department
+                                    </label>
+                                  <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                      <svg
+                                          class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+                                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                      </svg>
+                                    </div>
+                                    <select
+                                        id="appointmentDepartment"
+                                        v-model="input.department"
+                                        class="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl
+         focus:ring-2 focus:ring-blue-500 focus:border-transparent
+         text-gray-900 transition-all duration-200 hover:border-gray-300
+         bg-white/80 backdrop-blur-sm"
+                                    >
+                                      <option value="">Select Department</option>
+                                      <option value="general_medicine">General Medicine</option>
+                                      <option value="pediatrics">Pediatrics</option>
+                                      <option value="obstetrics_gynecology">Obstetrics & Gynecology</option>
+                                      <option value="cardiology">Cardiology</option>
+                                      <option value="orthopedics">Orthopedics</option>
+                                      <option value="dermatology">Dermatology</option>
+                                      <option value="neurology">Neurology</option>
+                                      <option value="ent">ENT (Ear, Nose & Throat)</option>
+                                      <option value="ophthalmology">Ophthalmology (Eye)</option>
+                                      <option value="dentistry">Dentistry</option>
+                                      <option value="psychiatry">Psychiatry</option>
+                                      <option value="urology">Urology</option>
+                                      <option value="surgery">General Surgery</option>
+                                      <option value="radiology">Radiology</option>
+                                      <option value="physiotherapy">Physiotherapy</option>
+                                    </select>
+
+                                  </div>
+                                </div>
+
 
                                 <!-- Reason with enhanced textarea -->
                                 <div class="group">

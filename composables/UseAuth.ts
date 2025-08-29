@@ -20,6 +20,7 @@ export const useAuth = () => {
         email: '',
         phone: '',
         role: '',
+        doctors_specialization: '',
         password: 'password',
     })
 
