@@ -107,6 +107,9 @@ const onUpdate = async (id: number): Promise<void> => {
                         Appointment Time
                       </th>
                       <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Department
+                      </th>
+                      <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Reason
                       </th>
                       <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -124,6 +127,8 @@ const onUpdate = async (id: number): Promise<void> => {
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.phone_number }}</td>
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.appointment_date }}</td>
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.appointment_time }}</td>
+                      <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.department }}</td>
+
                       <td class="py-4 px-4 text-sm text-gray-900 whitespace-nowrap">{{ item.reason }}</td>
                       <td class="py-4 px-4">
             <span :class="{
@@ -212,6 +217,20 @@ const onUpdate = async (id: number): Promise<void> => {
                                       </div>
 
                                       <div>
+                                        <label for="appointmentTime" class="block text-sm font-medium text-gray-700">Department
+                                        </label>
+                                        <div class="mt-1 relative rounded-md shadow-sm">
+                                          <input
+                                              type="text"
+                                              id="appointmentTime"
+                                              v-model="input.department"
+                                              class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                                              disabled
+                                          />
+                                        </div>
+                                      </div>
+
+                                      <div>
                                         <label for="appointmentTime" class="block text-sm font-medium text-gray-700">Reason
                                         </label>
                                         <div class="mt-1 relative rounded-md shadow-sm">
@@ -249,7 +268,10 @@ const onUpdate = async (id: number): Promise<void> => {
                                                   class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                                           >
                                             <option value="" disabled selected>Select Doctor</option>
-                                            <option :value="doctor.phone" v-for="doctor in doctors" :key="doctor.id">{{doctor.first_name}} {{doctor.other_names}} {{doctor.last_name}}</option>
+                                            <option :value="doctor.phone" v-for="doctor in doctors" :key="doctor.id">
+                                              {{ doctor.first_name }} {{ doctor.other_names }} {{ doctor.last_name }}
+                                              ({{ doctor.doctors_specialization }})
+                                            </option>
                                           </select>
                                         </div>
                                       </div>
