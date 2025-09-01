@@ -12,6 +12,7 @@ export const useAccount = () => {
         gender: '',
         email: '',
         date_of_birth: '',
+         active_doctor: ''
     }
     const input = ref<AccountInput>({
         first_name: '',
@@ -21,6 +22,7 @@ export const useAccount = () => {
         gender: '',
         email: '',
         date_of_birth: '',
+        active_doctor: ''
     })
 
     const params = useRoute().params

@@ -70,7 +70,6 @@ definePageMeta({
               </div>
             </div>
           </header>
-
           <!-- Stats Cards -->
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
             <!-- Care Patients Card -->
