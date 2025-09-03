@@ -102,6 +102,7 @@ const filteredStaff = computed(() => {
                       <th class="py-3 px-4 text-left">Contact</th>
                       <th class="py-3 px-4 text-left">Email</th>
                       <th class="py-3 px-4 text-left">Role</th>
+                      <th class="py-3 px-4 text-left">Activation Status</th>
                       <th class="py-3 px-4 text-left">Specialization</th>
                       <th class="py-3 px-4 text-left">Gender</th>
                       <th class="py-3 px-4 text-left">Date of Birth</th>
@@ -131,6 +132,9 @@ const filteredStaff = computed(() => {
                 {{ item.role }}
               </span>
                       </td>
+                      <td class="py-3 px-4 text-green-700 font-semibold bg-green-200 rounded-lg hover:bg-green-300 transition-colors duration-200" v-if="item.active_doctor === true">Active</td>
+                      <td class="py-3 px-4 text-red-700 font-semibold bg-red-200 rounded-lg hover:bg-red-300 transition-colors duration-200" v-else>Inactive</td>
+
                       <td class="py-4 px-4" v-if="item.doctors_specialization"> {{ item.doctors_specialization }}</td>
                       <td class="py-4 px-4" v-else>N/A</td>
 
