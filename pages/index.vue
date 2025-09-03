@@ -203,8 +203,9 @@ const onSubmit = () => {
                                 </div>
 
                                 <div class="group">
-                                  <label for="appointmentTime" class="block text-sm font-semibold text-gray-700 mb-2">Select Department
-                                    </label>
+                                  <label for="appointmentTime" class="block text-sm font-semibold text-gray-700 mb-2">Select
+                                    Department
+                                  </label>
                                   <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                       <svg
@@ -340,21 +341,19 @@ const onSubmit = () => {
               institutions</p>
           </div>
           <div class="flex flex-wrap justify-center gap-8 md:gap-16">
-            <div class="w-1/3 md:w-auto flex justify-center items-center">
-              <img src="../public/images/Gynecology consultation-bro.svg" alt="Hospital Logo"
-                   class="h-8 md:h-10 opacity-70">
+            <div class="md:w-auto flex justify-center items-center">
+              <img src="../public/images/271588470_226378542998704_2292916569652645295_n.png" alt="Health Ministry"
+                   class="h-20 md:h-24 opacity-100">
             </div>
-            <div class="w-1/3 md:w-auto flex justify-center items-center">
-              <img src="" alt="Hospital Logo" class="h-8 md:h-10 opacity-70">
+            <div class=" md:w-auto flex justify-center items-center">
+              <img
+                  src="../public/images/nhis-ghana-logo.jpg"
+                  alt="Hospital Logo" class="h-20 md:h-24 opacity-100">
             </div>
-            <div class="w-1/3 md:w-auto flex justify-center items-center">
-              <img src="" alt="Hospital Logo" class="h-8 md:h-10 opacity-70">
-            </div>
-            <div class="w-1/3 md:w-auto flex justify-center items-center">
-              <img src="" alt="Hospital Logo" class="h-8 md:h-10 opacity-70">
-            </div>
-            <div class="w-1/3 md:w-auto flex justify-center items-center">
-              <img src="" alt="Hospital Logo" class="h-8 md:h-10 opacity-70">
+            <div class=" md:w-auto flex justify-center items-center">
+              <img
+                  src="../public/images/VPUWSGZD_400x400-removebg-preview-q7kcsklhzmxg15vhabnxptg0st6w0c23i9jd8ng720.png"
+                  alt="Hospital Logo" class="h-20 md:h-24 opacity-100">
             </div>
           </div>
         </div>
@@ -365,12 +364,14 @@ const onSubmit = () => {
         <div class="container mx-auto px-4">
           <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose CareSync?</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">From seamless patient record management to secure online
-              payments and detailed analytics, we empower healthcare institutions to focus on what matters most —
-              delivering exceptional care.</p>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+              CareSync is an all-in-one hospital management system that streamlines patient care, staff operations,
+              pharmacy management, and appointment scheduling — so you can focus on delivering exceptional healthcare.
+            </p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Patient & Staff Records -->
             <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div class="bg-blue-100 text-primary p-3 rounded-lg inline-block mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
@@ -379,12 +380,13 @@ const onSubmit = () => {
                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
               </div>
-              <h3 class="text-xl font-semibold mb-2">Streamlined Records</h3>
-              <p class="text-gray-600">Effortlessly manage patient and staff records with our intuitive platform
-                designed
-                for healthcare professionals.</p>
+              <h3 class="text-xl font-semibold mb-2">Comprehensive Records</h3>
+              <p class="text-gray-600">
+                Manage patient details, staff information, and hospital data effortlessly with our centralized platform.
+              </p>
             </div>
 
+            <!-- Pharmacy & Drugs -->
             <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div class="bg-blue-100 text-primary p-3 rounded-lg inline-block mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
@@ -393,12 +395,13 @@ const onSubmit = () => {
                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                 </svg>
               </div>
-              <h3 class="text-xl font-semibold mb-2">Advanced Analytics</h3>
-              <p class="text-gray-600">Gain insights into operations with comprehensive reporting and analytics tools
-                that
-                drive informed decision-making.</p>
+              <h3 class="text-xl font-semibold mb-2">Pharmacy & Drug Management</h3>
+              <p class="text-gray-600">
+                Keep track of prescriptions, manage drug inventory, and streamline pharmacy operations with ease.
+              </p>
             </div>
 
+            <!-- Appointments -->
             <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div class="bg-blue-100 text-primary p-3 rounded-lg inline-block mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
@@ -407,88 +410,16 @@ const onSubmit = () => {
                         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                 </svg>
               </div>
-              <h3 class="text-xl font-semibold mb-2">Secure Transactions</h3>
-              <p class="text-gray-600">Facilitate safe and seamless online payments for patients and hospitals alike
-                with
-                our encrypted payment system.</p>
+              <h3 class="text-xl font-semibold mb-2">Smart Appointments</h3>
+              <p class="text-gray-600">
+                Simplify patient bookings with a user-friendly appointment system that reduces waiting time and enhances
+                care.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- About Section -->
-      <section id="about" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-          <div class="flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-8 md:mb-0">
-              <img src="../public/images/Medicine-pana.svg" alt="Healthcare professionals"
-                   class="rounded-lg shadow-xl w-full max-w-lg mx-auto">
-            </div>
-
-            <div class="md:w-1/2 md:pl-12">
-              <h2 class="text-3xl md:text-4xl font-bold mb-6">About CareSync</h2>
-              <p class="text-lg text-gray-600 mb-6">Our mission is to revolutionize healthcare management by providing
-                hospitals with a reliable and user-friendly platform. Through flexible subscription options—monthly,
-                yearly, or semi-annual—our service simplifies patient and staff management while ensuring secure and
-                efficient operations.</p>
-
-              <div class="space-y-6">
-                <div class="flex">
-                  <div class="flex-shrink-0">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <h3 class="text-xl font-semibold">Comprehensive Patient Management</h3>
-                    <p class="mt-2 text-gray-600">Track patient records, medical history, and appointments seamlessly
-                      within a centralized system.</p>
-                  </div>
-                </div>
-
-                <div class="flex">
-                  <div class="flex-shrink-0">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <h3 class="text-xl font-semibold">Empowered Staff Accounts</h3>
-                    <p class="mt-2 text-gray-600">Enable doctors, nurses, pharmacists, and accountants to perform their
-                      roles effectively with personalized access.</p>
-                  </div>
-                </div>
-
-                <div class="flex">
-                  <div class="flex-shrink-0">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-4">
-                    <h3 class="text-xl font-semibold">Convenient Payment Integration</h3>
-                    <p class="mt-2 text-gray-600">Provide patients with a hassle-free way to make payments directly on
-                      the
-                      app, ensuring transparency and efficiency.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <!-- Stats Section -->
       <section class="py-16 bg-primary text-white">
@@ -548,76 +479,98 @@ const onSubmit = () => {
       <!-- Services Section -->
       <section id="services" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
+          <!-- Heading -->
           <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Empowering hospitals to efficiently manage patient and
-              staff details with our comprehensive subscription plans.</p>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+              CareSync provides a complete hospital management ecosystem — from patient care to staff efficiency,
+              pharmacy oversight, and secure data handling. Our services are designed to help healthcare providers focus
+              less on paperwork and more on saving lives.
+            </p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div class="h-48 overflow-hidden">
-                <img src="" alt="Hospital Subscription Plans" class="w-full h-full object-cover">
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold mb-3">Hospital Subscription Plans</h3>
-                <p class="text-gray-600 mb-4">Flexible monthly, yearly, and 6-month plans for hospitals to access our
-                  platform and streamline their operations.</p>
+          <!-- Services Grid -->
+          <div class="bg-gray-50 p-8">
+            <div class="max-w-7xl mx-auto">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Service 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                  <div class="h-48 gradient-bg-1 flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-black opacity-10"></div>
+                    <div class="relative z-10 text-center">
+                      <i class="fas fa-hospital text-white text-6xl icon-bounce"></i>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <div class="flex items-center mb-3">
+                      <div class="w-3 h-3 bg-purple-500 rounded-full mr-3"></div>
+                      <h3 class="text-xl font-bold text-gray-800">Hospital Subscription Plans</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                      Flexible monthly, yearly, and semi-annual subscriptions for hospitals of any size — scale effortlessly.
+                    </p>
+                    <div class="flex items-center text-purple-600 font-semibold">
+                      <i class="fas fa-arrow-right mr-2"></i> Learn More
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                  <div class="h-48 gradient-bg-2 flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-black opacity-10"></div>
+                    <div class="relative z-10 text-center">
+                      <i class="fas fa-users-cog text-white text-6xl icon-bounce"></i>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <div class="flex items-center mb-3">
+                      <div class="w-3 h-3 bg-pink-500 rounded-full mr-3"></div>
+                      <h3 class="text-xl font-bold text-gray-800">Staff Account Management</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                      Role-based accounts for doctors, nurses, pharmacists, and admins — personalized access for efficiency.
+                    </p>
+                    <div class="flex items-center text-pink-600 font-semibold">
+                      <i class="fas fa-arrow-right mr-2"></i> Learn More
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
+                  <div class="h-48 gradient-bg-3 flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-black opacity-10"></div>
+                    <div class="relative z-10 text-center">
+                      <i class="fas fa-clipboard-list text-white text-6xl icon-bounce"></i>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <div class="flex items-center mb-3">
+                      <div class="w-3 h-3 bg-cyan-500 rounded-full mr-3"></div>
+                      <h3 class="text-xl font-bold text-gray-800">Patient Record Management</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                      Centralize patient registration, medical history, appointments, and prescriptions in one secure system.
+                    </p>
+                    <div class="flex items-center text-cyan-600 font-semibold">
+                      <i class="fas fa-arrow-right mr-2"></i> Learn More
+                    </div>
+                  </div>
+                </div>
 
               </div>
             </div>
+          </div>
 
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div class="h-48 overflow-hidden">
-                <img src="" alt="Staff Account Management" class="w-full h-full object-cover">
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold mb-3">Staff Account Management</h3>
-                <p class="text-gray-600 mb-4">Provide individual accounts for nurses, doctors, pharmacists, and
-                  accountants, enabling role-specific functionalities.</p>
-
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div class="h-48 overflow-hidden">
-                <img src="" alt="Patient Record Management" class="w-full h-full object-cover">
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold mb-3">Patient Record Management</h3>
-                <p class="text-gray-600 mb-4">Efficiently manage patient details, including medical history,
-                  appointments,
-                  and prescriptions, all in one place.</p>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div class="h-48 overflow-hidden">
-                <img src="" alt="Online Payments" class="w-full h-full object-cover">
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold mb-3">Online Payments</h3>
-                <p class="text-gray-600 mb-4">Enable patients to make payments directly through the app, with secure and
-                  hassle-free transaction processing.</p>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div class="h-48 overflow-hidden">
-                <img src="" alt="Analytics and Reports" class="w-full h-full object-cover">
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold mb-3">Analytics and Reports</h3>
-                <p class="text-gray-600 mb-4">Generate detailed reports and analytics for patient visits, payments, and
-                  staff activities to drive better decisions.</p>
-              </div>
-            </div>
-
-            <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div class="h-48 overflow-hidden">
-                <img src="" alt="Secure Data Management" class="w-full h-full object-cover">
-              </div>
-            </div>
+          <!-- View More -->
+          <div class="text-center mt-12">
+            <RouterLink
+                to="/ourService"
+                class="bg-blue-500 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-600 transition">
+              View More Services
+            </RouterLink>
           </div>
         </div>
       </section>
@@ -626,5 +579,20 @@ const onSubmit = () => {
 
 </template>
 <style scoped>
+.gradient-bg-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.gradient-bg-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.gradient-bg-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.gradient-bg-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.gradient-bg-5 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+.gradient-bg-6 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
 
+.card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.card-hover:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+
+.icon-bounce { animation: bounce 2s infinite; }
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% { transform: translate3d(0, 0, 0); }
+  40%, 43% { transform: translate3d(0, -8px, 0); }
+  70% { transform: translate3d(0, -4px, 0); }
+}
 </style>

@@ -35,16 +35,27 @@ const filteredDetails = computed(() => {
   })).filter(category => category.drugs.length > 0);
 });
 
-const addToCart = (drug, event) => {
+const addToCart = (drug: any, event: Event) => {
+  const target = event.target as HTMLElement;
+  const quantityInput = target.closest('form')?.querySelector('input[type="number"]') as HTMLInputElement;
 
-  const quantityInput = event.target.querySelector('.quantity-input');
-  const drug_quantity = parseInt(quantityInput.value);
+  if (!quantityInput) {
+    console.error('Quantity input not found');
+    return;
+  }
+
+  const drug_quantity = parseInt(quantityInput.value, 10);
+
+  if (isNaN(drug_quantity) || drug_quantity <= 0) {
+    console.error('Invalid quantity');
+    return;
+  }
 
   const cartItem = {
     id: drug.id,
     DrugName: drug.drug_name,
     DrugPrice: drug.drug_price,
-    DrugQuantity: drug_quantity
+    DrugQuantity: drug_quantity,
   };
 
   cart.value.push(cartItem);
