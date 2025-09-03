@@ -68,6 +68,50 @@ export const useAccount = () => {
             toast.error(error.value.data.message)
         }
     }
+
+    const finalActivateUser = async (id: number) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/users/${id}`, {
+                method: 'PATCH',
+                body: input.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast.error(error.value.message);
+                return;
+            }
+            setTimeout(() => {
+               window.location.href=`/dashboard`
+                // window.location.reload()
+            }, 2000)
+        } catch (error: any) {
+            toast.error(error.value.data.message)
+        }
+    }
+
+    const activateUser = (id: number) => {
+        Swal.fire({
+            title: "Are you sure you want to update your activation status?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Update"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Updated!",
+                    text: "Your Status has been updated.",
+                    icon: "success"
+                });
+                finalActivateUser(id)
+            }
+        });
+    }
+
     const updateProfile = (id: number) => {
         Swal.fire({
             title: "Are you sure you want to update your profile?",
@@ -93,6 +137,7 @@ export const useAccount = () => {
         input,
         get_user_details,
         updateProfile,
-        finalUpdate
+        finalUpdate,
+        activateUser
     }
 }

@@ -6,7 +6,7 @@ import {useAccount} from "~/composables/useAccount";
 import {useAuth} from "~/composables/UseAuth";
 import {definePageMeta} from "#imports";
 
-const {get_user_details, input, updateProfile} = useAccount();
+const {get_user_details, input, updateProfile, activateUser} = useAccount();
 const {finalChangePassword, password} = useAuth()
 const params = useRoute().params.id;
 
@@ -21,6 +21,10 @@ definePageMeta({
 })
 const onSubmit = async () => {
   updateProfile(params)
+}
+
+const activateUserStatus =  async () => {
+  activateUser(params)
 }
 
 const changePass = async () => {
@@ -53,7 +57,7 @@ const changePass = async () => {
 
         <!-- Form Section For Session -->
         <div class="p-8">
-          <form class="space-y-8" @submit.prevent="onSubmit">
+          <form class="space-y-8" @submit.prevent="activateUserStatus">
             <!-- Personal Details Section -->
             <div>
               <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
@@ -78,8 +82,8 @@ const changePass = async () => {
                         class="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all duration-200 bg-gray-50 focus:bg-white group-hover:border-gray-400 appearance-none"
                     >
                       <option value="" disabled>Select Activation Status</option>
-                      <option value="1">Active</option>
-                      <option value="0">Inactive</option>
+                      <option :value="true">Active</option>
+                      <option :value="false">Inactive</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                       <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
