@@ -172,6 +172,11 @@ const items = [
                                 class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
                       Uploaded Drugs
                     </RouterLink>
+
+                    <RouterLink to="/pharmacy/update_drugs"
+                                class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
+                      Update Drugs
+                    </RouterLink>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenuRoot>

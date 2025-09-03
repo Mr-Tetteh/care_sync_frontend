@@ -4,7 +4,16 @@ import {toast} from "vue-sonner";
 export const usePharmacy = () => {
     const {authToken} = useAuth()
 
-    const input = ref({
+    interface DrugInput {
+        drug_name: string;
+        drug_price: string;
+        drug_category: string;
+        drug_quantity: string;
+        drug_description: string;
+        additional_note?: string;
+    }
+
+    const input = ref<Partial<DrugInput>>({
         drug_name: '',
         drug_price: '',
         drug_category: '',
@@ -33,6 +42,59 @@ export const usePharmacy = () => {
         window.location.href = "/pharmacy/uploaded_drugs"
     };
 
+    const edit_drug = async (id: number) => {
+        try {
+            const {data, error} = await useFetch(
+                useRuntimeConfig().public.api + `/pharmacy/${id}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken.value}`,
+                    }
+                }
+            )
+
+            if (error.value) {
+                toast.error(error.value)
+            }
+
+            if (Array.isArray(data.value) && data.value.length > 0) {
+                input.value = data.value[0] as DrugInput
+            } else {
+                input.value = data.value as DrugInput
+            }
+
+        } catch (error: any) {
+            toast.error(error.message || "An error occurred")
+        }
+    }
+
+    const update_drug = async (id: number) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/pharmacy/${id}`, {
+                method: 'PATCH',
+                body: input.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast.error(error.value.message)
+                return
+            }
+           setTimeout(() => {
+               toast.success('You have successfully updated the drug');
+                window.location.href = "/pharmacy/uploaded_drugs"
+           }, 1000)
+        } catch
+            (error: any) {
+            toast.error(error.value)
+        }
+    }
+
+
     const retrieve_drugs = async () => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/pharmacy`, {
@@ -55,6 +117,8 @@ export const usePharmacy = () => {
         input,
         upload_drug,
         drugs,
-        retrieve_drugs
+        retrieve_drugs,
+        edit_drug,
+        update_drug
     }
 }
