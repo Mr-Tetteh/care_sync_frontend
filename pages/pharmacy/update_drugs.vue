@@ -35,27 +35,16 @@ const filteredDetails = computed(() => {
   })).filter(category => category.drugs.length > 0);
 });
 
-const addToCart = (drug: any, event: Event) => {
-  const target = event.target as HTMLElement;
-  const quantityInput = target.closest('form')?.querySelector('input[type="number"]') as HTMLInputElement;
+const addToCart = (drug, event) => {
 
-  if (!quantityInput) {
-    console.error('Quantity input not found');
-    return;
-  }
-
-  const drug_quantity = parseInt(quantityInput.value, 10);
-
-  if (isNaN(drug_quantity) || drug_quantity <= 0) {
-    console.error('Invalid quantity');
-    return;
-  }
+  const quantityInput = event.target.querySelector('.quantity-input');
+  const drug_quantity = parseInt(quantityInput.value);
 
   const cartItem = {
     id: drug.id,
     DrugName: drug.drug_name,
     DrugPrice: drug.drug_price,
-    DrugQuantity: drug_quantity,
+    DrugQuantity: drug_quantity
   };
 
   cart.value.push(cartItem);
@@ -175,31 +164,7 @@ const addToCart = (drug: any, event: Event) => {
                       </div>
 
                       <div class="mt-4 flex items-center justify-between">
-                        <!-- Action Button -->
-                        <form @submit.prevent="(event) => addToCart(drug, event)">
-                          <div class="input-group p-5 space-x-5">
-                            <input
-                                type="number"
-                                min="1"
-                                :max="drug.drug_quantity"
-                                value="1"
-                                class=" w-24 py-2  px-3 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
-                                :disabled="drug.quantity <= 0"
-                            />
-                            <button
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500
-                                to-indigo-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-indigo-700
-                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all
-                                 duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
-                                :disabled="drug.drug_quantity === 0">
-                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                              </svg>
-                              Add to Cart
-                            </button>
-                          </div>
-                        </form>
+                       <RouterLink class="p-2 bg-blue-400 rounded text-white hover:bg-blue-700 transition-colors" :to="`edit_drug/${drug.id}`">Edit Drug</RouterLink>
                       </div>
 
 

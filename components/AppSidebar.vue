@@ -50,6 +50,38 @@ const items = [
                   <span>Home</span>
                 </RouterLink>
               </SidebarMenuButton>
+
+              <SidebarMenuButton asChild>
+
+                <RouterLink to="/about">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                       stroke="currentColor" class="size-6 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>About</span>
+                </RouterLink>
+              </SidebarMenuButton>
+
+              <SidebarMenuButton asChild>
+                <RouterLink to="/ourService">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                       stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  </svg>
+                  <span>Our Services</span>
+                </RouterLink>
+              </SidebarMenuButton>
+              <SidebarMenuButton asChild>
+                <RouterLink to="/contact">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                       stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                  </svg>
+                  <span>Contact</span>
+                </RouterLink>
+              </SidebarMenuButton>
             </SidebarMenuItem>
 
             <!-- Dynamic Menu Items -->
@@ -69,7 +101,8 @@ const items = [
                     <path d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40L64 64C28.7 64 0 92.7 0 128l0 16 0 48L0
                      448c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-256 0-48 0-16c0-35.3-28.7-64-64-64l-40 0
                      0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40L152 64l0-40zM48 192l352 0 0 256c0 8.8-7.2 16-16 16L64
-                      464c-8.8 0-16-7.2-16-16l0-256z"/></svg>
+                      464c-8.8 0-16-7.2-16-16l0-256z"/>
+                  </svg>
                   <span>Appointments</span>
                 </RouterLink>
               </SidebarMenuButton>
@@ -171,6 +204,11 @@ const items = [
                     <RouterLink to="/pharmacy/uploaded_drugs"
                                 class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
                       Uploaded Drugs
+                    </RouterLink>
+
+                    <RouterLink to="/pharmacy/update_drugs"
+                                class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
+                      Update Drugs
                     </RouterLink>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
