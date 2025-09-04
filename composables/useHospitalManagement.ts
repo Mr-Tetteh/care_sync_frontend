@@ -2,7 +2,12 @@ import {useAuth} from "~/composables/UseAuth";
 import {toast} from "vue-sonner";
 
 export const useHospitalManagement = () => {
-    const service = ref({
+    interface ServiceInput {
+        name: string;
+        price: string;
+        NHIS: string;
+    }
+    const service = ref<ServiceInput>({
         name: '',
         price: '',
         NHIS: ''
@@ -20,6 +25,26 @@ export const useHospitalManagement = () => {
         NHIS: ''
     })
     const isEdit = ref(false)
+
+    const fetchServices = async () => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + '/hospital-service', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast.error(error.value.message)
+                return
+            }
+            return data.value
+        } catch (err: any) {
+            toast.error('Error fetching services', err)
+        }
+    }
+
     const postService = async () => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + '/hospital-service', {
@@ -40,6 +65,50 @@ export const useHospitalManagement = () => {
         } catch (err) {
             console.error('Error creating service:', err)
             throw err
+        }
+    }
+
+    const updateService = async (id: number) => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/hospital-service/${id}`, {
+                method: 'PATCH',
+                body: service.value,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast.error(error.value.message)
+                return
+            }
+            toast.success('Service Management updated successfully')
+            window.location.reload()
+        } catch (err: any) {
+            toast.error('Error fetching Labs', err)
+        }
+    }
+    const EditService = async (id: number) => {
+        try {
+            isEdit.value = true
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + `/hospital-service/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                }
+            })
+            if (error.value) {
+                toast.error(error.value.message)
+                return
+            }
+            if (Array.isArray(data.value) && data.value.length > 0) {
+                service.value = data.value[0] as ServiceInput
+            } else {
+                service.value = data.value as ServiceInput
+            }
+        } catch (err: any) {
+            toast.error('Error fetching Labs', err)
         }
     }
 
@@ -66,24 +135,6 @@ export const useHospitalManagement = () => {
         }
     }
 
-    const fetchServices = async () => {
-        try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api + '/hospital-service', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${useAuth().authToken.value}`,
-                }
-            })
-            if (error.value) {
-                toast.error(error.value.message)
-                return
-            }
-            return data.value
-        } catch (err: any) {
-            toast.error('Error fetching services', err)
-        }
-    }
 
     const fetchLabs = async () => {
         try {
@@ -148,6 +199,9 @@ export const useHospitalManagement = () => {
             toast.error('Error fetching Labs', err)
         }
     }
+
+
+
     const deleteService = async (id: number) => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + `/hospital-service/${id}`, {
@@ -201,6 +255,8 @@ export const useHospitalManagement = () => {
         deleteLabManagement,
         updateLabs,
         EditLab,
+        EditService,
+        updateService,
         isEdit
     }
 }

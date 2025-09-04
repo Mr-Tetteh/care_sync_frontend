@@ -59,6 +59,7 @@ const updateLab = async (labId: number) => {
                   <input type="number" id="fee" name="fee"
                          class="w-full px-4 py-3 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors shadow-sm"
                          v-model="lab.price"
+                         step="0.01"
                          placeholder="Enter fee amount">
                 </div>
                 <div class="mb-6">
