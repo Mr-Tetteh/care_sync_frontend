@@ -157,6 +157,7 @@ definePageMeta({
                         <option value="Pharmacist">Pharmacist</option>
                         <option value="Lab Technician">Lab Technician</option>
                         <option value="Receptionist">Receptionist</option>
+                        <option value="Accountant">Accountant</option>
                       </select>
                       <label for="gender" class="floating-label">Role</label>
                     </div>
