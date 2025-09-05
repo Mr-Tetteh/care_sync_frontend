@@ -234,7 +234,7 @@ const items = [
                     class="w-[--bits-dropdown-menu-anchor-width] bg-white rounded-lg shadow-lg border border-gray-200 py-1"
                     side="left"
                     align="start">
-                  <DropdownMenuItem v-if="user.role === 'Administrator'" asChild>
+                  <DropdownMenuItem v-if="user.role === 'Accountant'" asChild>
                     <RouterLink to="/payments/payment"
                                 class="flex items-center py-2 px-4 hover:bg-gray-100 w-full">
                       Make Payments
