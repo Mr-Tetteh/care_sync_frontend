@@ -5,11 +5,17 @@ const {
   consultationTrue,
   consultationFalse,
   consultationPaymentsTrue,
-  consultationPaymentsFalse, Payments
+  consultationPaymentsFalse, Payments,
+  LabsTrue,
+  LabsFalse,
+  labsTrue,
+  labsFalse
 } = usePayments()
 
 await consultationPaymentsTrue()
 await consultationPaymentsFalse()
+await LabsTrue()
+await LabsFalse()
 </script>
 
 <template>
@@ -74,6 +80,30 @@ await consultationPaymentsFalse()
                     <option disabled selected class="text-gray-500">Select an option...</option>
                     <option :value="true" class="bg-white">✅ Yes, I have insurance</option>
                     <option :value="false" class="bg-white">❌ No, I don't have insurance</option>
+                  </select>
+                </div>
+
+                <div class="space-y-3" v-if="Payments.insurance_cover === true && Payments.reason_for_payment === 'Labs'">
+                  <label class="block text-lg font-semibold text-emerald-800 mb-3">
+                    <i class="bi bi-shield-check text-emerald-600 mr-2"></i>
+                    Labs
+                  </label>
+                  <select v-model="Payments.lab" multiple
+                          class="w-full px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl focus:ring-4 focus:ring-emerald-300 focus:border-emerald-500 transition-all duration-300 text-lg font-medium text-emerald-800 shadow-sm">
+                    <option disabled selected class="text-gray-500">Select an option...</option>
+                    <option v-for="lab in labsTrue" :key="lab.id" :value="lab.id" class="bg-white">{{ lab.name }} - GHS {{ lab.price }}</option>
+                  </select>
+                </div>
+
+                <div class="space-y-3" v-if="Payments.insurance_cover === false && Payments.reason_for_payment === 'Labs'">
+                  <label class="block text-lg font-semibold text-emerald-800 mb-3">
+                    <i class="bi bi-shield-check text-emerald-600 mr-2"></i>
+                    Labs
+                  </label>
+                  <select v-model="Payments.lab" multiple
+                          class="w-full px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl focus:ring-4 focus:ring-emerald-300 focus:border-emerald-500 transition-all duration-300 text-lg font-medium text-emerald-800 shadow-sm">
+                    <option disabled selected class="text-gray-500">Select an option...</option>
+                    <option v-for="lab in labsFalse" :key="lab.id" :value="lab.id" class="bg-white">{{ lab.name }} - GHS {{ lab.price }}</option>
                   </select>
                 </div>
 

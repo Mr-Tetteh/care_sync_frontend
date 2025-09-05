@@ -860,7 +860,7 @@ function formatDateWithOrdinal(dateString: string | undefined): string {
                         </ul>
                       </div>
                       <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
-                        <NuxtLink :to="`/patients/update_record/${record.id}`" v-if="user?.role !== 'Lab Technician'"
+                        <NuxtLink :to="`/patients/update_record/${record.id}`" v-if="user?.role !== 'Lab Technician' && user?.role !== 'Accountant'"
                                   class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
                           <i class="bi bi-plus-circle mr-2"></i>
                           Additional Records
@@ -873,6 +873,15 @@ function formatDateWithOrdinal(dateString: string | undefined): string {
                                   class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
                           <i class="bi bi-plus-circle mr-2"></i>
                           Add Lab Report
+                        </NuxtLink>
+                      </div>
+
+                      <div class="flex w-full sm:w-auto mt-4 sm:mt-0 justify-center sm:justify-start">
+                        <NuxtLink to="/payments/payment"
+                                  v-if="user?.role === 'Accountant'"
+                                  class="btn btn-primary w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base">
+                          <i class="bi bi-plus-circle mr-2"></i>
+                          Make Payment
                         </NuxtLink>
                       </div>
                     </div>
