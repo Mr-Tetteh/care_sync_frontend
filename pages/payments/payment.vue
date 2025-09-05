@@ -1,21 +1,63 @@
 <script setup lang="ts">
+import {ref, computed} from "vue"
 import {usePayments} from "~/composables/usePayments"
 
 const {
   consultationTrue,
   consultationFalse,
   consultationPaymentsTrue,
-  consultationPaymentsFalse, Payments,
+  consultationPaymentsFalse,
+  Payments,
   LabsTrue,
   LabsFalse,
   labsTrue,
-  labsFalse
+  labsFalse,
+  FetchDrugs,
+  drugs,
 } = usePayments()
 
+// Fetch required data
 await consultationPaymentsTrue()
 await consultationPaymentsFalse()
 await LabsTrue()
 await LabsFalse()
+await FetchDrugs()
+
+// --- DROPDOWNS ---
+const showDrugDropdown = ref(false)
+const showLabsTrueDropdown = ref(false)
+const showLabsFalseDropdown = ref(false)
+
+// --- SELECTED IDS ---
+const selectedDrugIds = ref<number[]>([])
+const selectedLabsTrueIds = ref<number[]>([])
+const selectedLabsFalseIds = ref<number[]>([])
+
+// --- REMOVE FUNCTIONS ---
+function removeDrug(id: number) {
+  selectedDrugIds.value = selectedDrugIds.value.filter(d => d !== id)
+}
+
+function removeLabTrue(id: number) {
+  selectedLabsTrueIds.value = selectedLabsTrueIds.value.filter(d => d !== id)
+}
+
+function removeLabFalse(id: number) {
+  selectedLabsFalseIds.value = selectedLabsFalseIds.value.filter(d => d !== id)
+}
+
+// --- COMPUTEDS ---
+const selectedDrugs = computed(() =>
+    drugs.value.filter(d => selectedDrugIds.value.includes(d.id))
+)
+
+const selectedLabsTrue = computed(() =>
+    labsTrue.value.filter(l => selectedLabsTrueIds.value.includes(l.id))
+)
+
+const selectedLabsFalse = computed(() =>
+    labsFalse.value.filter(l => selectedLabsFalseIds.value.includes(l.id))
+)
 </script>
 
 <template>
@@ -52,7 +94,7 @@ await LabsFalse()
                 </div>
               </div>
 
-              <form action="" class="space-y-8">
+              <form @submit.prevent="" class="space-y-8">
 
                 <!-- Payment Reason Section -->
                 <div class="space-y-3">
@@ -77,35 +119,124 @@ await LabsFalse()
                   </label>
                   <select v-model="Payments.insurance_cover"
                           class="w-full px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl focus:ring-4 focus:ring-emerald-300 focus:border-emerald-500 transition-all duration-300 text-lg font-medium text-emerald-800 shadow-sm">
-                    <option disabled selected class="text-gray-500">Select an option...</option>
+                    <option disabled value="" class="text-gray-500">Select an option...</option>
                     <option :value="true" class="bg-white">✅ Yes, I have insurance</option>
                     <option :value="false" class="bg-white">❌ No, I don't have insurance</option>
                   </select>
                 </div>
 
-                <div class="space-y-3" v-if="Payments.insurance_cover === true && Payments.reason_for_payment === 'Labs'">
+
+                <div class="space-y-3"
+                     v-if="Payments.insurance_cover === true && Payments.reason_for_payment === 'Labs'">
                   <label class="block text-lg font-semibold text-emerald-800 mb-3">
                     <i class="bi bi-shield-check text-emerald-600 mr-2"></i>
-                    Labs
+                    Labs (With Insurance)
                   </label>
-                  <select v-model="Payments.lab" multiple
-                          class="w-full px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl focus:ring-4 focus:ring-emerald-300 focus:border-emerald-500 transition-all duration-300 text-lg font-medium text-emerald-800 shadow-sm">
-                    <option disabled selected class="text-gray-500">Select an option...</option>
-                    <option v-for="lab in labsTrue" :key="lab.id" :value="lab.id" class="bg-white">{{ lab.name }} - GHS {{ lab.price }}</option>
-                  </select>
+
+                  <!-- Selected list -->
+                  <div
+                      class="w-full px-5 py-3 bg-gradient-to-r from-emerald-50 to-teal-50
+             border-2 border-emerald-200 rounded-xl shadow-sm flex flex-wrap gap-2 min-h-[50px] cursor-pointer"
+                      @click="showLabsTrueDropdown = !showLabsTrueDropdown">
+                    <span v-if="selectedLabsTrueIds.length === 0" class="text-gray-400">Select Lab...</span>
+                    <span v-for="lab in selectedLabsTrue" :key="lab.id"
+                          class="bg-emerald-200 text-emerald-800 text-sm px-3 py-1 rounded-lg flex items-center gap-1">
+                        {{ lab.name }}
+                        <button type="button" class="ml-1 text-red-500 hover:text-red-700"
+                                @click.stop="removeLabTrue(lab.id)">✕</button>
+                      </span>
+                  </div>
+
+                  <!-- Dropdown -->
+                  <div v-if="showLabsTrueDropdown"
+                       class="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto bg-white border border-emerald-200 rounded-xl shadow-lg">
+                    <label v-for="lab in labsTrue" :key="lab.id"
+                           class="flex items-center px-4 py-2 hover:bg-emerald-50 cursor-pointer">
+                      <input type="checkbox"
+                             :value="lab.id"
+                             v-model="selectedLabsTrueIds"
+                             class="mr-3 w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
+                      <span class="text-emerald-800 font-medium">
+                          {{ lab.name }} - GHS {{ lab.price }}
+                        </span>
+                    </label>
+                  </div>
                 </div>
 
-                <div class="space-y-3" v-if="Payments.insurance_cover === false && Payments.reason_for_payment === 'Labs'">
+                <div class="space-y-3"
+                     v-if="Payments.insurance_cover === false && Payments.reason_for_payment === 'Labs'">
+                  <label class="block text-lg font-semibold text-emerald-800 mb-3">
+                    <i class="bi bi-shield-x text-emerald-600 mr-2"></i>
+                    Labs (Without Insurance)
+                  </label>
+
+                  <!-- Selected list -->
+                  <div
+                      class="w-full px-5 py-3 bg-gradient-to-r from-emerald-50 to-teal-50
+             border-2 border-emerald-200 rounded-xl shadow-sm flex flex-wrap gap-2 min-h-[50px] cursor-pointer"
+                      @click="showLabsFalseDropdown = !showLabsFalseDropdown">
+                    <span v-if="selectedLabsFalseIds.length === 0" class="text-gray-400">Select Lab...</span>
+                    <span v-for="lab in selectedLabsFalse" :key="lab.id"
+                          class="bg-emerald-200 text-emerald-800 text-sm px-3 py-1 rounded-lg flex items-center gap-1">
+      {{ lab.name }}
+      <button type="button" class="ml-1 text-red-500 hover:text-red-700"
+              @click.stop="removeLabFalse(lab.id)">✕</button>
+    </span>
+                  </div>
+
+                  <!-- Dropdown -->
+                  <div v-if="showLabsFalseDropdown"
+                       class="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto bg-white border border-emerald-200 rounded-xl shadow-lg">
+                    <label v-for="lab in labsFalse" :key="lab.id"
+                           class="flex items-center px-4 py-2 hover:bg-emerald-50 cursor-pointer">
+                      <input type="checkbox"
+                             :value="lab.id"
+                             v-model="selectedLabsFalseIds"
+                             class="mr-3 w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
+                      <span class="text-emerald-800 font-medium">
+        {{ lab.name }} - GHS {{ lab.price }}
+      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="space-y-3" v-if="Payments.reason_for_payment === 'Drugs'">
                   <label class="block text-lg font-semibold text-emerald-800 mb-3">
                     <i class="bi bi-shield-check text-emerald-600 mr-2"></i>
-                    Labs
+                    Select drugs
                   </label>
-                  <select v-model="Payments.lab" multiple
-                          class="w-full px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl focus:ring-4 focus:ring-emerald-300 focus:border-emerald-500 transition-all duration-300 text-lg font-medium text-emerald-800 shadow-sm">
-                    <option disabled selected class="text-gray-500">Select an option...</option>
-                    <option v-for="lab in labsFalse" :key="lab.id" :value="lab.id" class="bg-white">{{ lab.name }} - GHS {{ lab.price }}</option>
-                  </select>
+
+                  <!-- Selected list -->
+                  <!-- Selected list -->
+                  <div
+                      class="w-full px-5 py-3 bg-gradient-to-r from-emerald-50 to-teal-50
+           border-2 border-emerald-200 rounded-xl shadow-sm flex flex-wrap gap-2 min-h-[50px] cursor-pointer"
+                      @click="showDrugDropdown = !showDrugDropdown">
+                    <span v-if="selectedDrugIds.length === 0" class="text-gray-400">Select drugs...</span>
+                    <span v-for="drug in selectedDrugs" :key="drug.id"
+                              class="bg-emerald-200 text-emerald-800 text-sm px-3 py-1 rounded-lg flex items-center gap-1">
+                      {{ drug.drug_name }}
+                      <button type="button" class="ml-1 text-red-500 hover:text-red-700"
+                              @click.stop="removeDrug(drug.id)">✕</button>
+                    </span>
+                  </div>
+
+                  <!-- Dropdown -->
+                  <div v-if="showDrugDropdown"
+                       class="absolute z-10 mt-2 w-full max-h-60 overflow-y-auto bg-white border border-emerald-200 rounded-xl shadow-lg">
+                    <label v-for="drug in drugs" :key="drug.id"
+                           class="flex items-center px-4 py-2 hover:bg-emerald-50 cursor-pointer">
+                      <input type="checkbox"
+                             :value="drug.id"
+                             v-model="selectedDrugIds"
+                             class="mr-3 w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
+                        <span class="text-emerald-800 font-medium">
+                        {{ drug.drug_name }} - GHS {{ drug.drug_price }}
+                      </span>
+                    </label>
+                  </div>
                 </div>
+
 
                 <!-- Fee Information Cards -->
                 <div v-if="Payments.insurance_cover === true && Payments.reason_for_payment === 'Consultation'"
@@ -135,22 +266,50 @@ await LabsFalse()
                 </div>
 
                 <!-- Total Amount Display -->
+                <!-- Total Amount Display -->
                 <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl p-6 text-center shadow-xl">
                   <h3 class="text-white text-xl font-bold mb-2">
                     <i class="bi bi-calculator text-white mr-2"></i>
                     Total Amount
                   </h3>
+
+                  <!-- Consultation Total -->
                   <div v-if="Payments.reason_for_payment === 'Consultation'" class="text-4xl font-bold text-white">
                     <span v-if="Payments.insurance_cover === true" class="flex items-center justify-center">
                       <i class="bi bi-currency-dollar mr-1"></i>
                       {{ consultationTrue?.price || '0.00' }}
                     </span>
-                    <span v-else-if="Payments.insurance_cover === false" class="flex items-center justify-center">
+                                    <span v-else-if="Payments.insurance_cover === false" class="flex items-center justify-center">
                       <i class="bi bi-currency-dollar mr-1"></i>
                       {{ consultationFalse?.price || '0.00' }}
                     </span>
                   </div>
+
+                  <!-- Drugs Total -->
+                  <input type="text"
+                         v-if="Payments.reason_for_payment === 'Drugs'"
+                         :value="selectedDrugs.reduce((total, drug) => total + parseFloat(drug.drug_price), 0).toFixed(2)"
+                         readonly
+                         disabled
+                         class="text-4xl font-bold text-white flex items-center justify-center"/>
+
+                  <!-- Labs With Insurance -->
+                  <input type="text"
+                         v-if="Payments.insurance_cover === true && Payments.reason_for_payment === 'Labs'"
+                         :value="selectedLabsTrue.reduce((total, lab) => total + parseFloat(lab.price), 0).toFixed(2)"
+                         readonly
+                         disabled
+                         class="text-4xl font-bold text-white flex items-center justify-center"/>
+
+                  <!-- Labs Without Insurance -->
+                  <input type="text"
+                         v-if="Payments.insurance_cover === false && Payments.reason_for_payment === 'Labs'"
+                         :value="selectedLabsFalse.reduce((total, lab) => total + parseFloat(lab.price), 0).toFixed(2)"
+                         readonly
+                         disabled
+                         class="text-4xl font-bold text-white flex items-center justify-center"/>
                 </div>
+
 
                 <!-- Submit Button -->
                 <div class="pt-6">

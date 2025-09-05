@@ -1,26 +1,31 @@
 import {useAuth} from "~/composables/UseAuth";
 
 export const usePayments = () => {
+
     interface Payment {
         id?: number
         reason_for_payment?: string
-        insurance_cover?: string
+        insurance_cover?: boolean | null   // must match what you use in v-model
         price: number
-        lab: number,
-        NHIS: boolean
+        lab: number[]                      // multiple select → array
+        NHIS?: boolean
+        drug_price: number                 // number type
     }
 
-    const Payments = ref({
+    const Payments = ref<Payment>({
         reason_for_payment: '',
-        insurance_cover: null as boolean | null, // null until user chooses
+        insurance_cover: null,   // null until user chooses
         price: 0,
-
+        lab: [],                 // empty array for multiple select
+        drug_price: null           // initialize as number
     })
+
 
     const consultationTrue = ref<Payment | null>(null)
     const consultationFalse = ref<Payment | null>(null)
     const labsTrue = ref<Payment | null>(null)
     const labsFalse = ref<Payment | null>(null)
+    const drugs = ref<Payment | null>(null)
 
 
     const consultationPaymentsTrue = async () => {
@@ -89,6 +94,22 @@ export const usePayments = () => {
         }
     }
 
+    const FetchDrugs = async () => {
+        try {
+            const {data} = await useFetch(useRuntimeConfig().public.api + '/pharmacy/drugs', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                },
+            })
+            drugs.value = data.value // take first match
+            return consultationTrue.value
+        } catch (error) {
+            console.error('Error fetching consultation payments with NHIS cover:', error)
+        }
+    }
+
     return {
         consultationTrue,
         consultationFalse,
@@ -97,6 +118,8 @@ export const usePayments = () => {
         Payments,
         labsTrue,
         labsFalse,
+        FetchDrugs,
+        drugs,
         LabsTrue,
         LabsFalse
     }
