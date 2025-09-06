@@ -1,31 +1,35 @@
 import {useAuth} from "~/composables/UseAuth";
+import {toast} from "vue-sonner";
 
 export const usePayments = () => {
 
     interface Payment {
         id?: number
-        reason_for_payment?: string
-        insurance_cover?: boolean | null   // must match what you use in v-model
-        price: number
-        lab: number[]                      // multiple select → array
-        NHIS?: boolean
-        drug_price: number                 // number type
+        reasonForPayment?: string // Already correct
+        insuranceCover: boolean | null // Already correct
+        selectedLabsTrueIds: number[]
+        selectedLabsFalseIds: number[]
+        selectedDrugIds: number[]
+        consultationTruePrice?: number
+        consultationFalsePrice?: number
     }
 
     const Payments = ref<Payment>({
-        reason_for_payment: '',
-        insurance_cover: null,   // null until user chooses
-        price: 0,
-        lab: [],                 // empty array for multiple select
-        drug_price: null           // initialize as number
+        reasonForPayment: '', // Already correct
+        insuranceCover: null,
+        selectedLabsTrueIds: [],
+        selectedLabsFalseIds: [],
+        selectedDrugIds: [],
+        consultationTruePrice: undefined,
+        consultationFalsePrice: undefined
     })
 
 
-    const consultationTrue = ref<Payment | null>(null)
-    const consultationFalse = ref<Payment | null>(null)
-    const labsTrue = ref<Payment | null>(null)
-    const labsFalse = ref<Payment | null>(null)
-    const drugs = ref<Payment | null>(null)
+    const consultationTrue = ref<any | null>(null)
+    const consultationFalse = ref<any | null>(null)
+    const labsTrue = ref<any | null>(null)
+    const labsFalse = ref<any | null>(null)
+    const drugs = ref<any | null>(null)
 
 
     const consultationPaymentsTrue = async () => {
@@ -71,8 +75,8 @@ export const usePayments = () => {
                 },
 
             })
-            labsTrue.value = data.value // take first match
-            return consultationTrue.value
+            labsTrue.value = data.value || []// take first match
+            return labsTrue.value
         } catch (error) {
             console.error('Error fetching consultation payments with NHIS cover:', error)
         }
@@ -87,8 +91,8 @@ export const usePayments = () => {
                     'Authorization': `Bearer ${useAuth().authToken.value}`,
                 },
             })
-            labsFalse.value = data.value // take first match
-            return consultationTrue.value
+            labsFalse.value = data.value || [] // take first match
+            return labsFalse.value
         } catch (error) {
             console.error('Error fetching consultation payments with NHIS cover:', error)
         }
@@ -110,6 +114,30 @@ export const usePayments = () => {
         }
     }
 
+
+    const makePayment = async () => {
+        try {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api +'/payments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                },
+                body: Payments.value
+            })
+            if (error.value) {
+                console.error('Error making payment:', error.value)
+                throw new Error('Failed to make payment')
+                toast.error(error.value)
+            }
+            toast.success('Payment made successfully')
+            window.location.reload()
+            return data.value
+        } catch (error) {
+            console.error('Error making payment:', error)
+        }
+    }
+
     return {
         consultationTrue,
         consultationFalse,
@@ -121,6 +149,7 @@ export const usePayments = () => {
         FetchDrugs,
         drugs,
         LabsTrue,
-        LabsFalse
+        LabsFalse,
+        makePayment
     }
 }
