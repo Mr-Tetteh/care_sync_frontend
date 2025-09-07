@@ -61,7 +61,7 @@ const handleSubmit = async () => {
     if (Payments.value.insuranceCover === true) {
       Payments.value.consultationTruePrice = Number(consultationTrue.value?.price || 0)
     } else {
-      Payments.value.consultationFalsePrice = Number (consultationFalse.value?.price || 0)
+      Payments.value.consultationFalsePrice = Number(consultationFalse.value?.price || 0)
     }
   }
 

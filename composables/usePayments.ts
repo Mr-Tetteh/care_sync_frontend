@@ -117,7 +117,7 @@ export const usePayments = () => {
 
     const makePayment = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api +'/payments', {
+            const {data, error} = await useFetch(useRuntimeConfig().public.api + '/payments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
