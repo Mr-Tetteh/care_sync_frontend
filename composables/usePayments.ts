@@ -30,6 +30,10 @@ export const usePayments = () => {
     const labsTrue = ref<any | null>(null)
     const labsFalse = ref<any | null>(null)
     const drugs = ref<any | null>(null)
+    const labsPayments = ref<any | null>(null)
+    const drugsPayments = ref<any | null>(null)
+    const paymentss = ref()
+    const latestRecord = ref()
 
 
     const consultationPaymentsTrue = async () => {
@@ -114,7 +118,6 @@ export const usePayments = () => {
         }
     }
 
-
     const makePayment = async () => {
         try {
             const {data, error} = await useFetch(useRuntimeConfig().public.api + '/payments', {
@@ -127,14 +130,76 @@ export const usePayments = () => {
             })
             if (error.value) {
                 console.error('Error making payment:', error.value)
-                throw new Error('Failed to make payment')
                 toast.error(error.value)
             }
             toast.success('Payment made successfully')
-            window.location.reload()
+            window.location.href='/payments/Receipt'
             return data.value
         } catch (error) {
             console.error('Error making payment:', error)
+        }
+    }
+
+    const FetchLabPayments = async () => {
+        try {
+            const {data} = await useFetch(useRuntimeConfig().public.api + '/payments/LabsPayment', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                },
+            })
+            labsPayments.value = data.value // take first match
+            return labsPayments.value
+        } catch (error) {
+            console.error('Error fetching consultation payments with NHIS cover:', error)
+        }
+    }
+
+    const FetchDrugsPayments = async () => {
+        try {
+            const {data} = await useFetch(useRuntimeConfig().public.api + '/payments/DrugsPayment', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                },
+            })
+            drugsPayments.value = data.value // take first match
+            return drugsPayments.value
+        } catch (error) {
+            console.error('Error fetching consultation payments with NHIS cover:', error)
+        }
+    }
+
+    const FetchConsultationPayments = async () => {
+        try {
+            const {data} = await useFetch(useRuntimeConfig().public.api + '/payments/ConsultationPayment', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                },
+            })
+            paymentss.value = data.value
+            return paymentss.value
+        } catch (error) {
+            console.error('Error fetching consultation payments with NHIS cover:', error)
+        }
+    }
+    const FetchLatestPayment = async () => {
+        try {
+            const {data} = await useFetch(useRuntimeConfig().public.api + '/payments/LatestRequest', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+                },
+            })
+            latestRecord.value = data.value // take first match
+            return latestRecord.value
+        } catch (error) {
+            console.error('Error fetching consultation payments with NHIS cover:', error)
         }
     }
 
@@ -150,6 +215,14 @@ export const usePayments = () => {
         drugs,
         LabsTrue,
         LabsFalse,
-        makePayment
+        makePayment,
+        FetchLabPayments,
+        FetchConsultationPayments,
+        FetchDrugsPayments,
+        paymentss,
+        drugsPayments,
+        labsPayments,
+        FetchLatestPayment,
+        latestRecord
     }
 }
