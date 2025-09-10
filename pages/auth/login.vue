@@ -13,7 +13,7 @@ const onsubmit = () => {
 
 <template>
   <div
-      class="min-h-screen login-wrapper flex items-center justify-center p-4">
+      class="min-h-screen login-wrapper flex items-center justify-center p-4 overflow-x-hidden">
     <div class="relative z-10 w-full max-w-6xl">
       <!-- Form Section -->
       <div class="text-center mb-8">
