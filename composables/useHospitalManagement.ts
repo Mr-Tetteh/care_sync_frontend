@@ -28,45 +28,52 @@ export const useHospitalManagement = () => {
 
     const fetchServices = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api + '/hospital-service', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+            const { data, error } = await useFetch(
+                useRuntimeConfig().public.api + '/hospital-service',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${useAuth().authToken.value}`,
+                    },
                 }
-            })
+            )
             if (error.value) {
                 toast.error(error.value.message)
-                return
+                return []
             }
-            return data.value
+            return data.value || []
         } catch (err: any) {
-            toast.error('Error fetching services', err)
+            toast.error('Error fetching services')
+            return []
         }
     }
 
     const postService = async () => {
         try {
-            const {data, error} = await useFetch(useRuntimeConfig().public.api + '/hospital-service', {
-                method: 'POST',
-                body: service.value,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${useAuth().authToken.value}`,
+            const { data, error } = await useFetch(
+                useRuntimeConfig().public.api + '/hospital-service',
+                {
+                    method: 'POST',
+                    body: service.value,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${useAuth().authToken.value}`,
+                    },
                 }
-            })
+            )
             if (error.value) {
                 toast.error(error.value.message)
                 return
             }
             toast.success('Service created successfully')
-            window.location.reload()
             return data.value
         } catch (err) {
             console.error('Error creating service:', err)
             throw err
         }
     }
+
 
     const updateService = async (id: number) => {
         try {
