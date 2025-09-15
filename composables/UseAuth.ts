@@ -4,6 +4,7 @@ import {jwtDecode} from 'jwt-decode'
 import Swal from 'sweetalert2'
 
 export const useAuth = () => {
+    const isLoading = ref(false)
 
     const form = ref({
         email: '',
@@ -182,6 +183,7 @@ export const useAuth = () => {
 
     const login = async () => {
         try {
+            isLoading.value = true
             const {data, error} = await useFetch<LoginResponse>(
                 useRuntimeConfig().public.api + `/auth/login`,
                 {
@@ -195,6 +197,7 @@ export const useAuth = () => {
 
 
             if (error.value) {
+                isLoading.value = false
                 let errMsg = 'Login failed'
 
                 // If error.value has a data.message array
@@ -220,6 +223,7 @@ export const useAuth = () => {
             navigateTo('/dashboard')
 
         } catch (error: any) {
+            isLoading.value = false
             toast.error(error?.data?.message || 'Unexpected error')
         }
     }
@@ -245,7 +249,7 @@ export const useAuth = () => {
 
     const payloadToken = useCookie('session_token', {
         sameSite: 'lax',
-        secure: false, // true if using HTTPS
+        secure: true, // true if using HTTPS
     })
 
     const user = computed<JwtPayload | null>(() => {
@@ -323,7 +327,8 @@ export const useAuth = () => {
         forgetPassword,
         resetPassword,
         resetAccountPassword,
-        finalChangePassword
+        finalChangePassword,
+        isLoading
     }
 }
 

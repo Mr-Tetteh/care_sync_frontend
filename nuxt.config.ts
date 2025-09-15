@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     css: ['~/assets/css/tailwind.css'],
     runtimeConfig: {
         public: {
-            api: process.env.API
+            api: process.env.API,
+            credentials: 'include'
         }
     },
 

@@ -4,7 +4,7 @@ import LoginForm from "~/components/LoginForm.vue";
 
 import {useAuth} from "~/composables/UseAuth";
 
-const {form, login} = useAuth()
+const {form, login, isLoading} = useAuth()
 
 const onsubmit = () => {
   login()
@@ -104,6 +104,7 @@ const onsubmit = () => {
             <button
                 type="submit"
                 class="submit-button"
+                :disabled="isLoading"
             >
             <span class="button-content">
               <svg class="button-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
