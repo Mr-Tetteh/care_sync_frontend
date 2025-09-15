@@ -105,6 +105,15 @@ const handleSubmit = async () => {
 
               <form @submit.prevent="handleSubmit" class="space-y-8">
 
+                <div class="space-y-3">
+                  <label class="block text-lg font-semibold text-emerald-800 mb-3">
+                    <i class="bi bi-question-circle-fill text-emerald-600 mr-2"></i>
+                    Patient Unique ID
+                  </label>
+                  <input v-model="Payments.patient_id"
+                          class="w-full px-5 py-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl focus:ring-4 focus:ring-emerald-300 focus:border-emerald-500 transition-all duration-300 text-lg font-medium text-emerald-800 shadow-sm"/>
+                </div>
+
                 <!-- Payment Reason Section -->
                 <div class="space-y-3">
                   <label class="block text-lg font-semibold text-emerald-800 mb-3">
