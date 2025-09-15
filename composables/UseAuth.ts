@@ -181,35 +181,27 @@ export const useAuth = () => {
         access_token: string;
     }
 
+    // put this once at the top of composable
+    const sessionToken = useCookie('session_token', {
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+    })
+
     const login = async () => {
         try {
             isLoading.value = true
-            const {data, error} = await useFetch<LoginResponse>(
+            const { data, error } = await useFetch<LoginResponse>(
                 useRuntimeConfig().public.api + `/auth/login`,
                 {
                     method: 'POST',
                     body: form.value,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Content-Type': 'application/json' },
                 }
             )
 
-
             if (error.value) {
                 isLoading.value = false
-                let errMsg = 'Login failed'
-
-                // If error.value has a data.message array
-                if (error.value?.data?.message) {
-                    if (Array.isArray(error.value.data.message)) {
-                        errMsg = error.value.data.message.join('\n')
-                    } else {
-                        errMsg = error.value.data.message
-                    }
-                }
-
-                toast.error(errMsg)
+                toast.error(error.value.data?.message || 'Login failed')
                 return
             }
 
@@ -218,18 +210,19 @@ export const useAuth = () => {
                 return
             }
 
-            authToken.value = data.value.access_token
+            // 👇 set cookie once
+            sessionToken.value = data.value.access_token
+
             toast.success('Login successful')
             navigateTo('/dashboard')
-
-        } catch (error: any) {
+        } catch (err: any) {
             isLoading.value = false
-            toast.error(error?.data?.message || 'Unexpected error')
+            toast.error(err?.message || 'Unexpected error')
         }
     }
 
-    const logout = async () => {
-        token.value = null
+    const logout = () => {
+        sessionToken.value = null
         navigateTo('/auth/login')
     }
 
@@ -249,21 +242,16 @@ export const useAuth = () => {
 
     const payloadToken = useCookie('session_token', {
         sameSite: 'lax',
-        secure: true, // true if using HTTPS
+        secure: false, // true if using HTTPS
     })
-
     const user = computed<JwtPayload | null>(() => {
-
-        if (!payloadToken.value) {
-            return null
-        }
+        if (!sessionToken.value) return null
         try {
-            return jwtDecode<JwtPayload>(payloadToken.value)
-        } catch (err: any) {
+            return jwtDecode<JwtPayload>(sessionToken.value)
+        } catch {
             return null
         }
     })
-
 
     const forgetPassword = async () => {
         try {
