@@ -12,6 +12,7 @@ export const usePayments = () => {
         selectedDrugIds: number[]
         consultationTruePrice?: number
         consultationFalsePrice?: number
+        patient_id: string,
     }
 
     const Payments = ref<Payment>({
@@ -21,7 +22,8 @@ export const usePayments = () => {
         selectedLabsFalseIds: [],
         selectedDrugIds: [],
         consultationTruePrice: undefined,
-        consultationFalsePrice: undefined
+        consultationFalsePrice: undefined,
+        patient_id: ''
     })
 
 
@@ -129,11 +131,19 @@ export const usePayments = () => {
                 body: Payments.value
             })
             if (error.value) {
-                console.error('Error making payment:', error.value)
-                toast.error(error.value)
+                let errMsg = 'Login failed'
+                if (error.value?.data?.message) {
+                    if (Array.isArray(error.value.data.message)) {
+                        errMsg = error.value.data.message.join('\n')
+                    } else {
+                        errMsg = error.value.data.message
+                    }
+                }
+                toast.error(errMsg)
+                return
             }
             toast.success('Payment made successfully')
-            window.location.href='/payments/Receipt'
+            window.location.href = '/payments/Receipt'
             return data.value
         } catch (error) {
             console.error('Error making payment:', error)
