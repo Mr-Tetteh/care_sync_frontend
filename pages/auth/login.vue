@@ -93,7 +93,7 @@ const onsubmit = () => {
                           stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <span class="checkbox-label">Remember me</span>
+<!--                <span class="checkbox-label">Remember me</span>-->
               </label>
               <RouterLink to="/auth/forgot_password" class="forgot-link">
                 Forgot password?
